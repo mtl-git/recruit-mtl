@@ -1,0 +1,117 @@
+--- ab.c.org	2008-05-28 21:58:01.000000000 +0900
++++ ab.c	2008-09-24 22:04:33.000000000 +0900
+@@ -269,6 +269,7 @@
+ int confidence = 1;     /* Show confidence estimator and warnings */
+ int tlimit = 0;         /* time limit in secs */
+ int keepalive = 0;      /* try and do keepalive connections */
++int keepconn = 0;       /* keep connection connected after responded */
+ int windowsize = 0;     /* we use the OS default window size */
+ char servername[1024];  /* name that server reports */
+ char *hostname;         /* host name from URL */
+@@ -1266,10 +1267,16 @@
+                 fprintf(stderr, "Completed %d requests\n", done);
+                 fflush(stderr);
+             }
++            if (keepconn && verbosity >= 1) {
++                double timetaken;
++                timetaken = (double) (apr_time_now() - start) / APR_USEC_PER_SEC;
++                printf("done:\t%d\t%.3f\t(KeepAlive Off)\n", done, timetaken);
++                fflush(stdout);
++            }
+         }
+     }
+ 
+-    {
++    if (! keepconn) {
+         apr_pollfd_t remove_pollfd;
+         remove_pollfd.desc_type = APR_POLL_SOCKET;
+         remove_pollfd.desc.s = c->aprsock;
+@@ -1456,7 +1463,7 @@
+             }
+             c->gotheader = 1;
+             *s = 0;     /* terminate at end of header */
+-            if (keepalive &&
++            if ((keepalive || keepconn) &&
+             (strstr(c->cbuff, "Keep-Alive")
+              || strstr(c->cbuff, "keep-alive"))) {  /* for benefit of MSIIS */
+                 char *cl;
+@@ -1509,15 +1516,23 @@
+                 fprintf(stderr, "Completed %d requests\n", done);
+                 fflush(stderr);
+             }
++            if (keepconn && verbosity >= 1) {
++                double timetaken;
++                timetaken = (double) (apr_time_now() - start) / APR_USEC_PER_SEC;
++                printf("done:\t%d\t%.3f\t(KeepAlive On)\n", done, timetaken);
++                fflush(stdout);
++            }
+         }
+-        c->keepalive = 0;
+         c->length = 0;
+         c->gotheader = 0;
+         c->cbx = 0;
+         c->read = c->bread = 0;
+         /* zero connect time with keep-alive */
+         c->start = c->connect = lasttime = apr_time_now();
+-        write_request(c);
++        if (keepalive) {
++            c->keepalive = 0;
++            write_request(c);
++        }
+     }
+ }
+ 
+@@ -1549,7 +1564,7 @@
+         printf("Benchmarking %s ", hostname);
+     if (isproxy)
+         printf("[through %s:%d] ", proxyhost, proxyport);
+-    printf("(be patient)%s",
++    printf("(be patient)%s\n",
+            (heartbeatres ? "\n" : "..."));
+     fflush(stdout);
+     }
+@@ -1595,7 +1610,7 @@
+             "%s" "\r\n",
+             (posting == 0) ? "GET" : "HEAD",
+             (isproxy) ? fullurl : path,
+-            keepalive ? "Connection: Keep-Alive\r\n" : "",
++            (keepalive || keepconn) ? "Connection: Keep-Alive\r\n" : "",
+             cookie, auth, hdrs);
+     }
+     else {
+@@ -1607,7 +1622,7 @@
+             "%s"
+             "\r\n",
+             (isproxy) ? fullurl : path,
+-            keepalive ? "Connection: Keep-Alive\r\n" : "",
++            (keepalive || keepconn) ? "Connection: Keep-Alive\r\n" : "",
+             cookie, auth,
+             postlen,
+             (content_type[0]) ? content_type : "text/plain", hdrs);
+@@ -1843,6 +1858,7 @@
+     fprintf(stderr, "                    are a colon separated username and password.\n");
+     fprintf(stderr, "    -X proxy:port   Proxyserver and port number to use\n");
+     fprintf(stderr, "    -V              Print version number and exit\n");
++    fprintf(stderr, "    -K              Use HTTP KeepAlive and never disconnect\n");
+     fprintf(stderr, "    -k              Use HTTP KeepAlive feature\n");
+     fprintf(stderr, "    -d              Do not show percentiles served table.\n");
+     fprintf(stderr, "    -S              Do not show confidence estimators and warnings.\n");
+@@ -2016,7 +2032,7 @@
+ #endif
+ 
+     apr_getopt_init(&opt, cntxt, argc, argv);
+-    while ((status = apr_getopt(opt, "n:c:t:b:T:p:v:rkVhwix:y:z:C:H:P:A:g:X:de:Sq"
++    while ((status = apr_getopt(opt, "n:c:t:b:T:p:v:rKkVhwix:y:z:C:H:P:A:g:X:de:Sq"
+ #ifdef USE_SSL
+             "Z:f:"
+ #endif
+@@ -2028,6 +2044,9 @@
+                     err("Invalid number of requests\n");
+                 }
+                 break;
++            case 'K':
++                keepconn = 1;
++                break;
+             case 'k':
+                 keepalive = 1;
+                 break;
