@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="調整さんウオッチャー" description="調整さん上のみんなの調整状況をウォッチするよ。１時間ごとに更新するよ。" scrolling="true">
+<ModulePrefs title="調整さんウオッチャー" description="調整さん上のみんなの調整状況をウォッチするよ。１0分ごとに更新するよ。" scrolling="true">
 <Require feature="dynamic-height"/>
 <Require feature="settitle"/>
 <Require feature="minimessage"/>
 </ModulePrefs>
-<UserPref name="id" display_name="調整さんID" datatype="string" required="true"/>
+<UserPref name="url" display_name="調整さんのURL" datatype="string" required="true"/>
 
 <Content type="html" view="home">
 <![CDATA[
@@ -33,7 +33,7 @@
 </style>
 <script type="text/javascript">
 	var prefs = new gadgets.Prefs();
-	var id = prefs.getString("id");
+	var url = prefs.getString("url");
 	var msg = new gadgets.MiniMessage(__MODULE_ID__);
 	var div = document.createElement("div");
 	div.style.fontWeight ="bold";
@@ -42,18 +42,17 @@
 	var url;
 	
 	function init(){
-		if( ! id ){
-			div.innerHTML = "調整さんのURLにあるおまじない文字を入力してください。";
+		if( ! url ){
+			div.innerHTML = "調整さんのURLを入力してください。";
 			msg.createDismissibleMessage(div);
 			document.getElementById('content').style.display = "none";
 		}else {
-			getHtml(id);
+			getHtml(url);
 		}
 	};
 
-	function getHtml(id) {
+	function getHtml(url) {
 		var params = {};
-		url = "http://www.tatamilab.jp/~toshi_i/schedule/List?h=" + id;
 		//change google cache time
 		var ts = new Date().getTime();
 		ts = Math.floor(ts / (600 * 1000));
@@ -62,13 +61,12 @@
 		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
 		gadgets.io.makeRequest(request, show, params);
 	};
-
 	function show(obj){
-		if(obj.errors != "" ){
-			div.innerHTML = "データの取得に失敗。。時間をおいて再度お試しください。";
+		if(obj.rc != 200 || obj.errors != "" ){
+			div.innerHTML = "データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。";
 			msg.createDismissibleMessage(div);
 			document.getElementById('content').style.display = "none";
-		}else if( obj.data.error ){
+		}else if( !obj.data.e || obj.data.error ){
 			div.innerHTML = obj.data.error[0];
 			msg.createDismissibleMessage(div);
 			document.getElementById('content').style.display = "none";
@@ -183,7 +181,7 @@
 
 <script type="text/javascript">
 	var prefs = new gadgets.Prefs();
-	var id = prefs.getString("id");
+	var url = prefs.getString("url");
 	var msg = new gadgets.MiniMessage(__MODULE_ID__);
 	var div = document.createElement("div");
 	div.style.fontWeight ="bold";
@@ -191,93 +189,92 @@
 	
 	var url;
 
-function init(){
-	if( ! id ){
-			div.innerHTML = "調整さんのURLにあるおまじない文字を入力してください。";
-			msg.createDismissibleMessage(div);
-			document.getElementById('content').style.display = "none";
-	}else {
-		getHtml(id);
-	}
-};
-
-function getHtml(id) {
-	var params = {};
-	url = "http://www.tatamilab.jp/~toshi_i/schedule/List?h=" + id;
-	//change google cache time
-	var ts = new Date().getTime();
-	ts = Math.floor(ts / (600 * 1000));
-	 var request = url + "&JSON&nocache=" + ts;
+	function init(){
+		if( ! url ){
+				div.innerHTML = "調整さんのURLを入力してください。";
+				msg.createDismissibleMessage(div);
+				document.getElementById('content').style.display = "none";
+		}else {
+			getHtml( url );
+		}
+	};
 	
-	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-	gadgets.io.makeRequest(request, show, params);
-};
-
-function show(obj){
-	if(obj.errors != "" ){
-			div.innerHTML = "データの取得に失敗。。時間をおいて再度お試しください。";
-			msg.createDismissibleMessage(div);
-			document.getElementById('content').style.display = "none";
-	}else if( obj.data.error ){
-			div.innerHTML = obj.data.error[0];
-			msg.createDismissibleMessage(div);
-			document.getElementById('content').style.display = "none";
-	}else{
-		var json = obj.data;
-		var title = json.e.name;
-		var comment = json.e.comment;
-		var kouho_list = json.kouho_list;
-		var recs = json.recs;
+	function getHtml( url ) {
+		var params = {};
+		//change google cache time
+		var ts = new Date().getTime();
+		ts = Math.floor(ts / (600 * 1000));
+		 var request = url + "&JSON&nocache=" + ts;
 		
-		gadgets.window.setTitle("調整さん: " + title);
-		document.getElementById('title').innerHTML = title;
-		document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さんを開く]</a>";    
-		document.getElementById('comment').innerHTML = comment; 
+		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+		gadgets.io.makeRequest(request, show, params);
+	};
 		
-		var nittei = "<tr>"
-							 + "<td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>日程</td>";
-		// make table header
-		for( var i=0; i < recs.length; i++ ){
-			nittei += "<td valign='top' "
-							+ "style='border-bottom: 1px solid rgb(221, 221, 221);'>";
-			nittei += recs[i]['name'] + "</td>";
-		}
-		nittei += "</tr>";
-		
-		// make kouho
-		for( var i=0; i < kouho_list.length; i++ ){
-			nittei += "<tr";
+	function show(obj){
+		if(obj.rc != 200 || obj.errors != "" ){
+				div.innerHTML = "データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。";
+				msg.createDismissibleMessage(div);
+				document.getElementById('content').style.display = "none";
+		}else if(  !obj.data.e || obj.data.error ){
+				div.innerHTML = obj.data.error[0];
+				msg.createDismissibleMessage(div);
+				document.getElementById('content').style.display = "none";
+		}else{
+			var json = obj.data;
+			var title = json.e.name;
+			var comment = json.e.comment;
+			var kouho_list = json.kouho_list;
+			var recs = json.recs;
 			
-			var cnt = 0;
-			var td = "";
-			for( var j=0; j < recs.length; j++ ){
-				td += "<td valign='top' "
+			gadgets.window.setTitle("調整さん: " + title);
+			document.getElementById('title').innerHTML = title;
+			document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さんを開く]</a>";    
+			document.getElementById('comment').innerHTML = comment; 
+			
+			var nittei = "<tr>"
+								 + "<td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>日程</td>";
+			// make table header
+			for( var i=0; i < recs.length; i++ ){
+				nittei += "<td valign='top' "
 								+ "style='border-bottom: 1px solid rgb(221, 221, 221);'>";
-				td += recs[j]['kouho'][i] + "</td>"
-				if( recs[j]['kouho'][i]    == "○" ){
-					cnt +=2;
-				}else if ( recs[j]['kouho'][i]    == "△" ){
-					cnt += 1;
-				}
+				nittei += recs[i]['name'] + "</td>";
 			}
-			var ratio = cnt / ((kouho_list.length) * 2);
-			var tr_style = "";
-			if( ratio == 1){
-					tr_style = " style='background-color: #99CC00'";
-			}else if( ratio >= 0.7 ){
-					tr_style = " style='background-color: #D8FF62'";
-			}
+			nittei += "</tr>";
+			
+			// make kouho
+			for( var i=0; i < kouho_list.length; i++ ){
+				nittei += "<tr";
 				
-			nittei += tr_style + "><td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>" + kouho_list[i] + "</td>";
-			nittei += td + "</tr>";
-		}
-		
-		document.getElementsByTagName('table').item(0).innerHTML = nittei;
-		gadgets.window.adjustHeight();
-	}	
-};
-
-gadgets.util.registerOnLoadHandler(init);
+				var cnt = 0;
+				var td = "";
+				for( var j=0; j < recs.length; j++ ){
+					td += "<td valign='top' "
+									+ "style='border-bottom: 1px solid rgb(221, 221, 221);'>";
+					td += recs[j]['kouho'][i] + "</td>"
+					if( recs[j]['kouho'][i]    == "○" ){
+						cnt +=2;
+					}else if ( recs[j]['kouho'][i]    == "△" ){
+						cnt += 1;
+					}
+				}
+				var ratio = cnt / ((kouho_list.length) * 2);
+				var tr_style = "";
+				if( ratio == 1){
+						tr_style = " style='background-color: #99CC00'";
+				}else if( ratio >= 0.7 ){
+						tr_style = " style='background-color: #D8FF62'";
+				}
+					
+				nittei += tr_style + "><td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>" + kouho_list[i] + "</td>";
+				nittei += td + "</tr>";
+			}
+			
+			document.getElementsByTagName('table').item(0).innerHTML = nittei;
+			gadgets.window.adjustHeight();
+		}	
+	};
+	
+	gadgets.util.registerOnLoadHandler(init);
 
 </script>
 <div id="content">
