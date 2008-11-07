@@ -13,15 +13,41 @@
 	#content {
 		margin-left: 5px;
 	}
+	#wrapper {
+		display: none;
+	}
 	#content p#link {
 		margin: 3px 0px 3px 0px;
-		text-align: right;
+		float: right;
+	}
+	#content h5{
+		border-left:3px solid #666666;
+		color:#666666;
+		font-size:0.8em;
+		font-weight:bold;
+		line-height:120%;
+		margin:10px 10px 10px 0px;
+		padding:0 0 0 5px;
+	}
+	#content p#kouho{
+		line-height:110%;
+		font-size:0.8em;
+		margin:5px 20px 10px 5px;
 	}
 	#content    p a {
 		color : #A46702;
 		font-size: 0.8em;
 		text-decoration: none;
 	} 
+	#content ul {
+		font-size:0.8em;
+		margin:5px 20px 10px 5px;
+		padding-left: 20px;
+	}
+	#content span.info{
+		color: red;
+		margin: 0 2px 0 2px;
+	}
 	#content table{
 		text-align:center;
 	}
@@ -75,21 +101,29 @@
 			var title = json.e.name;
 			var comment = json.e.comment;
 			var kouho_list = json.kouho_list;
+			var lastupd_list = json.lastupd_time;
 			var recs = json.recs;
 		
 			gadgets.window.setTitle("調整さん: " + title);
-			document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さんを開く]</a>";    
+			document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さん]</a>";    
 			var nittei = "<tr>"
 								 + "<td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>日程</td>";
 			// make table header
+			var today = new Date();
+			var t = today.getTime() / 1000;
+			var cnt_register = 0;
+			
 			for( var i=0; i < recs.length; i++ ){
 				nittei += "<td valign='top' "
-								+ "style='border-bottom: 1px solid rgb(221, 221, 221);'>";
-				nittei += recs[i]['name'] + "</td>";
+								+ "style='border-bottom: 1px solid rgb(221, 221, 221);'><span title='" + parseTime( lastupd_list[i] ) + "'>";
+				nittei += recs[i]['name'] + "</span></td>";
+				//count today's regist
+				if ( parseTime( t ) == parseTime( lastupd_list[i] ) ) { cnt_register++; }
 			}
 			nittei += "</tr>";
-		
+
 			// make kouho
+			var html_kouho = "";
 			for( var i=0; i < kouho_list.length; i++ ){
 				nittei += "<tr";
 				
@@ -110,25 +144,56 @@
 				var tr_style = "";
 				if( ratio == 1 ){
 					tr_style = " style='background-color: #99CC00'";
+					html_kouho = ( ! html_kouho ) ? kouho_list[i] : html_kouho +" , " +  kouho_list[i];
 				}else if( ratio >= 0.7 ){
 					tr_style = " style='background-color: #D8FF62'";
 				}
 					
 				nittei += tr_style + "><td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>" + kouho_list[i] + "</td>";
 				nittei += td + "</tr>";
+				
 			}
-		
+			if( recs.length >0 ){ 
+				document.getElementById('wrapper').style.display = "block"; 
+				document.getElementById('regist_today').innerHTML = cnt_register;
+				document.getElementById('regist_all').innerHTML = recs.length;
+				document.getElementById('kouho').innerHTML = html_kouho;
+			}
 			document.getElementsByTagName('table').item(0).innerHTML = nittei;
 			gadgets.window.adjustHeight();
 		}		
 	};
 
+	function parseTime( s ){
+		var d = new Date();
+		d.setTime( s * 1000);
+		var year = d.getYear();
+		if (year < 2000) year += 1900;
+		//year = year.toString().substr(2,2);
+		var mon = d.getMonth()+ 1;
+		if( mon < 10 ) { mon = "0" + mon.toString(); }
+		var date = d.getDate();
+		if( date < 10 ) { date = "0" + date.toString(); }
+		var res = year + "/" + mon + "/" +date;
+		return res;
+	};
+	
 	gadgets.util.registerOnLoadHandler(init);
 
 
 </script>
 <div id="content">
 	<p id="link"></p>
+	<div id="wrapper">
+		<h5>今日の調整状況</h5>
+		<ul>
+			<li>今日<span id="regist_today" class="info"></span>人が登録しました。</li>
+			<li>合計<span id="regist_all" class="info"></span>人で調整中です。</li>
+		</ul>
+		<h5>参加者全員が○</h5>
+		<p id="kouho"></p>
+	</div>
+	<h5>候補日程</h5>
 	<table class="nittei" cellspacing="0" cellpadding="4"></table>
 </div>
 
@@ -138,6 +203,9 @@
 <style>
 	#content {
 		margin-left: 15px;
+	}
+	#wrapper {
+		display: none;
 	}
 	#content h3#title {
 		border-bottom:1px solid #CCCCCC;
@@ -150,7 +218,7 @@
 	}
 	#content p#link{
 		margin: 3px 0px 3px 0px;
-		text-align: right;
+		float: right;
 	}
 	#content    p a {
 		color : #A46702;
@@ -165,9 +233,18 @@
 		margin:15px 15px 10px 0px;
 		padding:0 0 0 5px;
 	}
-	#content p#comment{
+	#content p {
 		line-height:160%;
 		margin:10px 20px 10px 5px;
+	}
+	#content ul {
+		font-size:1em;
+		margin:5px 20px 10px 5px;
+		padding-left: 20px;
+	}
+	#content span.info{
+		color: red;
+		margin: 0 2px 0 2px;
 	}
 	#content table{
 		margin-left: 5px;
@@ -176,7 +253,19 @@
 	#content table td{
 		text-align:center;
 	}
-
+	#content .lastupdate{
+		font-size:0.8em;
+	}
+	#content #tips{
+		color:#666666;
+		font-size:0.7em;
+		margin: 0 2px 0 2px;
+	}
+	#content #expire{
+		color:red;
+		font-size:1.1em;
+		margin: 0 2px 0 2px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -224,7 +313,9 @@
 			var title = json.e.name;
 			var comment = json.e.comment;
 			var kouho_list = json.kouho_list;
+			var lastupd_list = json.lastupd_time;
 			var recs = json.recs;
+			var kigen = json.kigen_tgt;
 			
 			gadgets.window.setTitle("調整さん: " + title);
 			document.getElementById('title').innerHTML = title;
@@ -232,16 +323,23 @@
 			document.getElementById('comment').innerHTML = comment; 
 			
 			var nittei = "<tr>"
-								 + "<td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>日程</td>";
+								 + "<td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>日程<br /></td>";
 			// make table header
+			var today = new Date();
+			var t = today.getTime() / 1000;
+			var cnt_register = 0;
+
 			for( var i=0; i < recs.length; i++ ){
 				nittei += "<td valign='top' "
-								+ "style='border-bottom: 1px solid rgb(221, 221, 221);'>";
-				nittei += recs[i]['name'] + "</td>";
+								+ "style='border-bottom: 1px solid rgb(221, 221, 221);'><span title='" + parseTime( lastupd_list[i] ) + "'>";
+				nittei += recs[i]['name'] + "</span></td>";
+				//count today's regist
+				if ( parseTime( t ) == parseTime( lastupd_list[i] ) ) { cnt_register++; }
 			}
 			nittei += "</tr>";
-			
+
 			// make kouho
+			var html_kouho = "";
 			for( var i=0; i < kouho_list.length; i++ ){
 				nittei += "<tr";
 				
@@ -261,29 +359,71 @@
 				var tr_style = "";
 				if( ratio == 1){
 						tr_style = " style='background-color: #99CC00'";
+						html_kouho = ( ! html_kouho ) ? kouho_list[i] : html_kouho +" , " +  kouho_list[i];
 				}else if( ratio >= 0.7 ){
 						tr_style = " style='background-color: #D8FF62'";
 				}
 					
 				nittei += tr_style + "><td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>" + kouho_list[i] + "</td>";
-				nittei += td + "</tr>";
+				nittei += td + "</tr>";				
 			}
-			
+			if( recs.length >0 ){
+				document.getElementById('wrapper').style.display = "block";
+				document.getElementById('regist_today').innerHTML = cnt_register;
+				document.getElementById('regist_all').innerHTML = recs.length;
+				document.getElementById('kouho').innerHTML = html_kouho;
+			}
 			document.getElementsByTagName('table').item(0).innerHTML = nittei;
+			document.getElementById('expire').innerHTML = increaseMonth( kigen );
 			gadgets.window.adjustHeight();
 		}	
 	};
+	
+	function parseTime( s ){
+		var d = new Date();
+		d.setTime( s * 1000);
+		var year = d.getYear();
+		if (year < 2000) year += 1900;
+		//year = year.toString().substr(2,2);
+		var mon = d.getMonth()+ 1;
+		if( mon < 10 ) { mon = "0" + mon.toString(); }
+		var date = d.getDate();
+		if( date < 10 ) { date = "0" + date.toString(); }
+		var res = year + "/" + mon + "/" +date;
+		return res;
+	};
+	
+	function increaseMonth( s ){
+		var d = new Date();
+		d.setTime( s * 1000);
+		d.setMonth( d.getMonth() + 1);
+		console.log( d.getTime() );
+		var sec =  Math.floor( d.getTime() / 1000 );
+		return parseTime( sec );
+	}
 	
 	gadgets.util.registerOnLoadHandler(init);
 
 </script>
 <div id="content">
-    <h3 id="title"></h3>
 	<p id="link"></p>
+	<h3 id="title"></h3>
 	<h4>イベントの詳細説明</h4>
-	<p id="comment"></p>    
+	<p id="comment"></p>
+	<div id="wrapper">
+		<h4>今日の調整状況</h5>
+		<ul>
+			<li>今日<span id="regist_today" class="info"></span>人が登録しました。</li>
+			<li>合計<span id="regist_all" class="info"></span>人で調整中です。</li>
+		</ul>
+		<h4>参加者全員が○</h4>
+		<p id="kouho"></p>
+	</div>
 	<h4>候補日程</h4>
 	<table class="nittei" cellspacing="0" cellpadding="8"></table>
+	<p id="tips">※名前にマウスをのせると最終更新日が表示されます。</p>
+	<h4>ご注意</h4>
+	<p>この登録情報は<span id="expire"></span>に削除されます。ご注意くださいませ。</p>
 </div>
 
 ]]></Content>
