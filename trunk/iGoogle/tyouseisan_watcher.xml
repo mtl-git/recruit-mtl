@@ -83,7 +83,7 @@
 		var ts = new Date().getTime();
 		ts = Math.floor(ts / (600 * 1000));
 		 var request = url + "&JSON&nocache=" + ts;
-		 console.log(request);
+         //console.log(request);
 		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
 		gadgets.io.makeRequest(request, show, params);
 	};
@@ -397,7 +397,7 @@
 		var d = new Date();
 		d.setTime( s * 1000);
 		d.setMonth( d.getMonth() + 1);
-		console.log( d.getTime() );
+        //console.log( d.getTime() );
 		var sec =  Math.floor( d.getTime() / 1000 );
 		return parseTime( sec );
 	}
