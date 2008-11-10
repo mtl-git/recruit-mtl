@@ -4,6 +4,7 @@
 <Require feature="dynamic-height"/>
 <Require feature="settitle"/>
 <Require feature="minimessage"/>
+<Require feature="analytics" />
 </ModulePrefs>
 <UserPref name="url" display_name="調整さんのURL" datatype="string" required="true"/>
 
@@ -68,6 +69,15 @@
 	var url;
 	
 	function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/home');
+
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/home");
+
 		if( ! url ){
 			div.innerHTML = "調整さんのURLを入力してください。";
 			msg.createDismissibleMessage(div);
@@ -177,9 +187,8 @@
 		var res = year + "/" + mon + "/" +date;
 		return res;
 	};
-	
-	gadgets.util.registerOnLoadHandler(init);
 
+	gadgets.util.registerOnLoadHandler(init);
 
 </script>
 <div id="content">
@@ -268,6 +277,11 @@
 	}
 </style>
 
+		font-size:1.1em;
+		margin: 0 2px 0 2px;
+	}
+</style>
+
 <script type="text/javascript">
 	var prefs = new gadgets.Prefs();
 	var url = prefs.getString("url");
@@ -279,6 +293,15 @@
 	var url;
 
 	function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/canvas');
+                                    
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/canvas");
+
 		if( ! url ){
 				div.innerHTML = "調整さんのURLを入力してください。";
 				msg.createDismissibleMessage(div);
@@ -361,15 +384,6 @@
 						tr_style = " style='background-color: #99CC00'";
 						html_kouho = ( ! html_kouho ) ? kouho_list[i] : html_kouho +" , " +  kouho_list[i];
 				}else if( ratio >= 0.7 ){
-						tr_style = " style='background-color: #D8FF62'";
-				}
-					
-				nittei += tr_style + "><td valign='top' style='border-bottom: 1px solid rgb(221, 221, 221); text-align: left;'>" + kouho_list[i] + "</td>";
-				nittei += td + "</tr>";				
-			}
-			if( recs.length >0 ){
-				document.getElementById('wrapper').style.display = "block";
-				document.getElementById('regist_today').innerHTML = cnt_register;
 				document.getElementById('regist_all').innerHTML = recs.length;
 				document.getElementById('kouho').innerHTML = html_kouho;
 			}
