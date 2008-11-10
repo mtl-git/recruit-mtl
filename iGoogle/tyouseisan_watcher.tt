@@ -4,6 +4,7 @@
 <Require feature="dynamic-height"/>
 <Require feature="settitle"/>
 <Require feature="minimessage"/>
+<Require feature="analytics" />
 </ModulePrefs>
 <UserPref name="url" display_name="調整さんのURL" datatype="string" required="true" default_value="[% url %]"/>
 
@@ -68,6 +69,15 @@
 	var url;
 	
 	function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/home');
+
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/home");
+
 		if( ! url ){
 			div.innerHTML = "調整さんのURLを入力してください。";
 			msg.createDismissibleMessage(div);
@@ -279,6 +289,15 @@
 	var url;
 
 	function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/canvas');
+
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/canvas");
+
 		if( ! url ){
 				div.innerHTML = "調整さんのURLを入力してください。";
 				msg.createDismissibleMessage(div);
@@ -402,6 +421,7 @@
 		return parseTime( sec );
 	}
 	
+
 	gadgets.util.registerOnLoadHandler(init);
 
 </script>
