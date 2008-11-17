@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs 
+        title="調整さんウオッチャー" 
+        description="調整さん上のみんなの調整状況をウォッチするよ。調整さん（http://www.tatamilab.jp/~toshi_i/schedule）で登録が終わったら、このガジェットで他の人の調整状況をウォッチしよう。" 
+        title_url="http://www.tatamilab.jp/~toshi_i/schedule"
+        author="taigo.yamada"
+        author_email="mt.big5+ig_watcher@gmail.com"
+        author_affiliation="Recruit Media Technology Labs"
+        author_location="Tokyo,Japan"
+        singleton="false"
+        scrolling="true"
+        screenshot="http://mtl.recruit.co.jp/sandbox/tyouseisan/tyouseisan_280x324.png"
+        thumbnail="http://mtl.recruit.co.jp/sandbox/tyouseisan/watcher_logo.png"
+        author_photo="http://mtl.recruit.co.jp/sandbox/tyouseisan/self70x100.png"
+        author_aboutme="Recruit Media Technology LabsでWebに関する研究開発をしています。mtl.recruit.co.jp/blogにエントリしているので是非ご覧くださいませ。" 
+        author_link="http://mtl.recruit.co.jp/blog/">
+        <Require feature="dynamic-height"/>
+        <Require feature="settitle"/>
+        <Require feature="minimessage"/>
+        <Require feature="analytics" />
+        <optional feature="shareable-prefs" />
+        <Locale lang="ja" country="jp" />
+    </ModulePrefs>
+    <UserPref name="url" display_name="調整さんのURL" datatype="string" required="true" default_value="[% url %]"/>
+
+<Content type="html" view="home">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 5px;
+    }
+    #wrapper {
+        display: none;
+    }
+    #content p.link {
+        margin: 0px;
+        text-align: right;
+        cursor: pointer
+    }
+    #content h5{
+        border-left:3px solid #666666;
+        color:#666666;
+        font-size:0.8em;
+        font-weight:bold;
+        line-height:120%;
+        margin:0 10px 10px 0px;
+        padding:0 0 0 5px;
+    }
+    #content p#kouho{
+        line-height:110%;
+        font-size:0.8em;
+        margin:5px 20px 10px 5px;
+    }
+    #content p a {
+        color : #A46702;
+        font-size: 0.8em;
+        text-decoration: none;
+    } 
+    #content ul {
+        font-size:0.8em;
+        margin:5px 20px 10px 5px;
+        padding-left: 20px;
+    }
+    #content span.info{
+        color: red;
+        margin: 0 2px 0 2px;
+    }
+    #content table{
+        text-align:center;
+    }
+    #content table td{
+        text-align:center;
+        font-size : 0.8em;
+    }
+    #banner {
+        display: none;
+        margin-left: 5px;
+    }
+    #banner img{
+        border: 2px solid #DDDDDD; 
+        margin: 5px 0px 2px 0px;
+        width: 250px;
+    }
+    #banner p{
+        font-size: 0.8em;
+        margin: 2px 0px 2px 0px
+    }
+    #banner a{
+        color : #A46702;
+        text-decoration: none;
+    }
+
+</style>
+<script type="text/javascript">
+    var prefs = new gadgets.Prefs();
+    var url = prefs.getString("url");
+    
+    function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/home');
+
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/home");
+
+        //make cache image
+        //does not work. proxy url is 404 not found.
+        //var items = document.getElementsByTagName('img');
+        //for(var i=0; i< items.length; i++){
+        //    var src = items.item(i).src;
+        //    document.getElementsByTagName('img').item(i).src = gadgets.io.getProxyUrl( src );
+        //}
+
+
+        if( ! url ){
+            printError("調整さんのURLを入力してください。");
+        }else {
+            var ts = 60 * 10 //10min
+            getHtml(ts);
+        }
+    };
+
+    function getHtml( ts ) {
+        var params = {};
+        //change google cache time
+        var request = url + "&JSON";
+         //console.log(request);
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET; 
+        params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = ts;
+        gadgets.io.makeRequest(request, show, params);
+    };
+    function show(obj){
+        if(obj.rc != 200 || obj.errors != "" ){
+            printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
+        }else if( !obj.data.e || obj.data.error ){
+            printError(obj.data.error[0]);
+        }else{
+            var json = obj.data;
+            var title = json.e.name;
+            var comment = json.e.comment;
+            var kouho_list = json.kouho_list;
+            var lastupd_list = json.lastupd_time;
+            var recs = json.recs;
+        
+            gadgets.window.setTitle("調整さん: " + title);
+            document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さん]</a>";    
+            var table = document.getElementById('schedules');
+            if( table.firstChild ){
+                table.removeChild(table.firstChild);
+            }
+
+            var tbd = document.createElement("tbody");
+            //table header element
+            var trh = document.createElement("tr");
+            var tdh = document.createElement("td");
+            tdh.style.verticalAlign = "top";
+            tdh.style.borderBottom = "1px solid rgb(221, 221,221)";
+            tdh.style.textAlign = "left";
+            tdh.innerHTML = "日程";
+            trh.appendChild(tdh);
+
+            // make table header
+            var today = new Date();
+            var t = today.getTime() / 1000;
+            var cnt_register = 0;
+            
+            for( var i=0; i < recs.length; i++ ){
+                var td = document.createElement("td");
+                td.style.verticalAlign = "top";
+                td.style.borderBottom = "1px solid rgb(221, 221,221)";
+                td.innerHTML = "<span title='" + parseTime( lastupd_list[i] ) + "'>" 
+                        + recs[i]['name'] + "</span>";
+
+                trh.appendChild(td);
+                //count today's regist
+                if ( parseTime( t ) == parseTime( lastupd_list[i] ) ) { cnt_register++; }
+            }
+            tbd.appendChild(trh);
+
+            // make kouho
+            var html_kouho = "";
+            for( var i=0; i < kouho_list.length; i++ ){
+                var tr = document.createElement("tr");
+                //kouho
+                var td = document.createElement("td");
+                td.style.verticalAlign = "top";
+                td.style.borderBottom = "1px solid rgb(221, 221,221)";
+                td.style.textAlign = "left";
+                td.innerHTML = kouho_list[i];
+                tr.appendChild(td);
+                
+                var cnt = 0;
+                for( var j=0; j < recs.length; j++ ){
+                    var td = document.createElement("td");
+                    td.style.verticalAlign = "top";
+                    td.style.borderBottom = "1px solid rgb(221, 221,221)";
+
+                    td.innerHTML = recs[j]['kouho'][i];
+                    tr.appendChild(td);
+                
+                    if( recs[j]['kouho'][i]    == "○" ){
+                        cnt +=2;
+                    }else if ( recs[j]['kouho'][i]    == "△" ){
+                        cnt += 1;
+                    }
+                }
+                var ratio = cnt / ((recs.length) * 2);
+                if( ratio == 1 ){
+                    tr.style.backgroundColor = "#99CC00";
+                    html_kouho = ( ! html_kouho ) ? kouho_list[i] : html_kouho +" , " +  kouho_list[i];
+                }else if( ratio >= 0.7 ){
+                    tr.style.backgroundColor = "#D8FF62";
+                }
+                    
+               tbd.appendChild(tr); 
+            }
+
+            if( recs.length >0 ){ 
+                document.getElementById('wrapper').style.display = "block"; 
+                document.getElementById('regist_today').innerHTML = cnt_register;
+                document.getElementById('regist_all').innerHTML = recs.length;
+                document.getElementById('kouho').innerHTML = html_kouho;
+            }
+            table.appendChild(tbd);
+            gadgets.window.adjustHeight();
+        }        
+    };
+
+    function parseTime( s ){
+        var d = new Date();
+        d.setTime( s * 1000);
+        var year = d.getYear();
+        if (year < 2000) year += 1900;
+        //year = year.toString().substr(2,2);
+        var mon = d.getMonth()+ 1;
+        if( mon < 10 ) { mon = "0" + mon.toString(); }
+        var date = d.getDate();
+        if( date < 10 ) { date = "0" + date.toString(); }
+        var res = year + "/" + mon + "/" +date;
+        return res;
+    };
+
+    function printError( msg ){
+        var mm = new gadgets.MiniMessage(__MODULE_ID__);
+        var div = document.createElement("div");
+        div.style.fontWeight ="bold";
+        div.style.fontSize ="1.2em";    
+        div.innerHTML = msg;
+        mm.createDismissibleMessage(div);
+
+        gadgets.window.setTitle("調整さんウオッチャー");
+        document.getElementById('banner').style.display = "block";
+        document.getElementById('content').style.display = "none";
+
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+
+
+</script>
+<div id="content">
+    <p class="link"><a onClick="getHtml(0)">[再読み込み]</a><span id="link"></span></p>
+    <div id="wrapper">
+        <h5>今日の調整状況</h5>
+        <ul>
+            <li>今日<span id="regist_today" class="info"></span>人が登録しました。</li>
+            <li>合計<span id="regist_all" class="info"></span>人で調整中です。</li>
+        </ul>
+        <h5>参加者全員が○</h5>
+        <p id="kouho"></p>
+    </div>
+    <h5>候補日程</h5>
+    <table id="schedules" cellspacing="0" cellpadding="4"></table>
+</div>
+<div id="banner">
+    <a href="http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">
+        <img src="http://mtl.recruit.co.jp/sandbox/tyouseisan/tyouseisan_log.gif"/>
+    </a>
+    <p>このガジェットは<a href=""http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>登録や更新は調整さん上で行ってくださいね。</p>
+</div>
+</div>
+
+]]></Content>
+<Content type="html" view="canvas">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 15px;
+    }
+    #wrapper {
+        display: none;
+    }
+    #content h3#title {
+        border-bottom:1px solid #CCCCCC;
+        color:#666666;
+        font-size:1.2em;
+        font-weight:bold;
+        line-height:130%;
+        margin:2px 20px 10px 0px;
+        padding:5px 0 2px;
+    }
+    #content p.link{
+        margin: 0px;
+        text-align: right;
+        cursor: pointer;
+    }
+    #content p a {
+        color : #A46702;
+        text-decoration: none;
+    } 
+    #content h4{
+        border-left:3px solid #666666;
+        color:#666666;
+        font-size:1em;
+        font-weight:bold;
+        line-height:130%;
+        margin: 0 15px 10px 0px;
+        padding:0 0 0 5px;
+    }
+    #content p {
+        line-height:160%;
+        margin:10px 20px 10px 5px;
+    }
+    #content ul {
+        font-size:1em;
+        margin:5px 20px 10px 5px;
+        padding-left: 20px;
+    }
+    #content span.info{
+        color: red;
+        margin: 0 2px 0 2px;
+    }
+    #content table{
+        margin-left: 5px;
+        text-align:center;
+    }
+    #content table td{
+        text-align:center;
+    }
+    #content .lastupdate{
+        font-size:0.8em;
+    }
+    #content #tips{
+        color:#666666;
+        font-size:0.7em;
+        margin: 0 2px 0 2px;
+    }
+    #content #expire{
+        color:red;
+        font-size:1.1em;
+        margin: 0 2px 0 2px;
+    }
+    #banner {
+        display: none;
+        margin-left: 5px;
+    }
+    #banner img{
+        border: 2px solid #DDDDDD; 
+        margin: 5px 0px 2px 0px;
+        width: 250px;
+    }
+    #banner p{
+        margin: 2px 0px 2px 0px
+    }
+    #banner a{
+        color : #A46702;
+        text-decoration: none;
+    }
+</style>
+
+<script type="text/javascript">
+    var prefs = new gadgets.Prefs();
+    var url = prefs.getString("url");
+    
+    function init(){
+        //Track this gadget using Google Analytics.
+        // Creates a tracking object and uses reportPageview method to call gadget view
+        //var ga = new _IG_GA("UA-6254644-1");
+        //ga.reportPageview('/view/tyouseisan/canvas');
+
+        //2008.11.10 new version(opensocial?) does not work
+        // old version
+        _IG_Analytics("UA-6254644-1", "/view/tyouseisan/canvas");
+
+        //make cache image
+        //does not work. proxy url is 404 not found.
+        //var items = document.getElementsByTagName('img');
+        //for(var i=0; i< items.length; i++){
+        //var src = items.item(i).src;
+        //document.getElementsByTagName('img').item(i).src = gadgets.io.getProxyUrl( src );
+        //}
+
+        if( ! url ){
+            printError("調整さんのURLを入力してください。");
+        }else {
+            var ts = 60 * 10 //10min
+            getHtml( ts );
+        }
+    };
+    
+    function getHtml( ts ) {
+        var params = {};
+        //change google cache time
+        var request = url + "&JSON";
+        
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET; 
+        params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = ts;
+        gadgets.io.makeRequest(request, show, params);
+    };
+        
+    function show(obj){
+        if(obj.rc != 200 || obj.errors != "" ){
+            printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
+        }else if(  !obj.data.e || obj.data.error ){
+            printError(obj.data.error[0]);
+        }else{
+            var json = obj.data;
+            var title = json.e.name;
+            var comment = json.e.comment;
+            var kouho_list = json.kouho_list;
+            var lastupd_list = json.lastupd_time;
+            var recs = json.recs;
+            var kigen = json.kigen_tgt;
+            
+            gadgets.window.setTitle("調整さん: " + title);
+            document.getElementById('title').innerHTML = title;
+            document.getElementById('link').innerHTML = "<a href='" + url + "' target='_blank'>[→調整さんを開く]</a>";    
+            document.getElementById('comment').innerHTML = comment; 
+
+            var table = document.getElementById('schedules');
+            if( table.firstChild ){
+                table.removeChild(table.firstChild);
+            }
+
+            var tbd = document.createElement("tbody");
+            //table header element
+            var trh = document.createElement("tr");
+            var tdh = document.createElement("td");
+            tdh.style.verticalAlign = "top";
+            tdh.style.borderBottom = "1px solid rgb(221, 221,221)";
+            tdh.style.textAlign = "left";
+            tdh.innerHTML = "日程";
+            trh.appendChild(tdh);
+
+            
+            // make table header
+            var today = new Date();
+            var t = today.getTime() / 1000;
+            var cnt_register = 0;
+
+            for( var i=0; i < recs.length; i++ ){
+                var td = document.createElement("td");
+                td.style.verticalAlign = "top";
+                td.style.borderBottom = "1px solid rgb(221, 221,221)";
+                td.innerHTML = "<span title='" + parseTime( lastupd_list[i] ) + "'>" 
+                        + recs[i]['name'] + "</span>";
+
+                trh.appendChild(td);
+                
+                //count today's regist
+                if ( parseTime( t ) == parseTime( lastupd_list[i] ) ) { cnt_register++; }
+            }
+            tbd.appendChild(trh);
+
+            // make kouho
+            var html_kouho = "";
+            for( var i=0; i < kouho_list.length; i++ ){
+                var tr = document.createElement("tr");
+                //kouho
+                var td = document.createElement("td");
+                td.style.verticalAlign = "top";
+                td.style.borderBottom = "1px solid rgb(221, 221,221)";
+                td.style.textAlign = "left";
+                td.innerHTML = kouho_list[i];
+                tr.appendChild(td);
+                
+                var cnt = 0;
+                for( var j=0; j < recs.length; j++ ){
+                    var td = document.createElement("td");
+                    td.style.verticalAlign = "top";
+                    td.style.borderBottom = "1px solid rgb(221, 221,221)";
+
+                    td.innerHTML = recs[j]['kouho'][i];
+                    tr.appendChild(td);
+
+                    if( recs[j]['kouho'][i]    == "○" ){
+                        cnt +=2;
+                    }else if ( recs[j]['kouho'][i]    == "△" ){
+                        cnt += 1;
+                    }
+                }
+                var ratio = cnt / ((recs.length) * 2);
+                if( ratio == 1){
+                    tr.style.backgroundColor = "#99CC00";
+                    html_kouho = ( ! html_kouho ) ? kouho_list[i] : html_kouho +" , " +  kouho_list[i];
+                }else if( ratio >= 0.7 ){
+                    tr.style.backgroundColor = "#D8FF62";
+                }
+
+               tbd.appendChild(tr); 
+
+            }
+            if( recs.length >0 ){
+                document.getElementById('wrapper').style.display = "block";
+                document.getElementById('regist_today').innerHTML = cnt_register;
+                document.getElementById('regist_all').innerHTML = recs.length;
+                document.getElementById('kouho').innerHTML = html_kouho;
+            }
+            table.appendChild(tbd);
+            document.getElementById('expire').innerHTML = increaseMonth( kigen );
+            gadgets.window.adjustHeight();
+        }    
+    };
+    
+    function parseTime( s ){
+        var d = new Date();
+        d.setTime( s * 1000);
+        var year = d.getYear();
+        if (year < 2000) year += 1900;
+        //year = year.toString().substr(2,2);
+        var mon = d.getMonth()+ 1;
+        if( mon < 10 ) { mon = "0" + mon.toString(); }
+        var date = d.getDate();
+        if( date < 10 ) { date = "0" + date.toString(); }
+        var res = year + "/" + mon + "/" +date;
+        return res;
+    };
+    
+    function increaseMonth( s ){
+        var d = new Date();
+        d.setTime( s * 1000);
+        d.setMonth( d.getMonth() + 1);
+        //console.log( d.getTime() );
+        var sec =  Math.floor( d.getTime() / 1000 );
+        return parseTime( sec );
+    }
+    
+    function printError( msg ){
+        var mm = new gadgets.MiniMessage(__MODULE_ID__);
+        var div = document.createElement("div");
+        div.style.fontWeight ="bold";
+        div.style.fontSize ="1.2em";    
+        div.innerHTML = msg;
+        mm.createDismissibleMessage(div);
+
+        gadgets.window.setTitle("調整さんウオッチャー");
+        document.getElementById('content').style.display = "none";
+        document.getElementById('banner').style.display = "block";
+
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+
+</script>
+<div id="content">
+    <p class="link"><a onClick="getHtml(0)">[再読み込み]</a><span id="link"></span></p>
+    <h3 id="title"></h3>
+    <h4>イベントの詳細説明</h4>
+    <p id="comment"></p>
+    <div id="wrapper">
+        <h4>今日の調整状況</h4>
+        <ul>
+            <li>今日<span id="regist_today" class="info"></span>人が登録しました。</li>
+            <li>合計<span id="regist_all" class="info"></span>人で調整中です。</li>
+        </ul>
+        <h4>参加者全員が○</h4>
+        <p id="kouho"></p>
+    </div>
+    <h4>候補日程</h4>
+    <table id="schedules" cellspacing="0" cellpadding="8"></table>
+    <p id="tips">※名前にマウスをのせると最終更新日が表示されます。</p>
+    <h4>ご注意</h4>
+    <p>この登録情報は<span id="expire"></span>に削除されます。ご注意くださいませ。</p>
+</div>
+<div id="banner">
+    <a href="http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">
+        <img src="http://mtl.recruit.co.jp/sandbox/tyouseisan/tyouseisan_log.gif"/>
+    </a>
+    <p>このガジェットは<a href=""http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>登録や更新は調整さん上で行ってくださいね。</p>
+</div>
+
+]]></Content>
+
+</Module>
