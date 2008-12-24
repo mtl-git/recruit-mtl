@@ -1,7 +1,5 @@
 #!/usr/bin/perl -wT
 
-use lib '/home/bqbq/local/lib/perl5';
-
 use strict;
 use CGI;
 
