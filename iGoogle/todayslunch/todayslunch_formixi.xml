@@ -1,0 +1,1389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs
+        title="昼飯くん"
+        description="今日の昼飯を昼飯仲間とさっくり決めちゃおう。"
+        screenshot="http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/screenshot.png"
+        thumbnail="http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/thumbnail.png"
+        scrolling="true"
+        author="taigo.yamada"
+        author_email="mt.big5+ig_todayslunch@gmail.com"
+        author_affiliation="Recruit Media Technology Labs"
+        author_location="Tokyo,Japan"
+        author_photo="http://mtl.recruit.co.jp/sandbox/yamada/self70x100.png"
+        author_aboutme="Recruit Media Technology LabsでWebに関する研究開発をしています。mtl.recruit.co.jp/blogにエントリしているので是非ご覧くださいませ。" 
+        author_link="http://mtl.recruit.co.jp/blog/">
+    <Require feature="opensocial-0.8"/>
+    <Require feature="dynamic-height"/>
+    <Require feature="analytics" />
+    <Require feature="views" />
+    <Locale lang="ja" country="jp" />
+</ModulePrefs>
+
+<Content type="html" view="home,profile">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 2px;
+        color:#444;
+    }
+    #content a {
+        color : #0000CC;
+        text-decoration: none;
+    }
+    #content a:hover{
+        text-decoration: underline;
+    }
+    #content h3 {
+        border-left:10px solid #224499;
+        border-bottom:2px solid #224499;
+        color:#333;
+        font-weight:bold;
+        line-height:130%;
+        margin:5px 3px 10px 0px;
+        padding-left:5px; 
+        font-size:small;
+    }
+    #content #memberlist{
+        margin: 3px auto 10px 0px;
+    }
+    #content #memberlist th{
+        font-size: x-small;
+        padding: 3px 2px;
+        text-align: left;
+    }
+    #content #memberlist td{
+        padding: 0px;
+        text-align: left;
+    }
+    #content #memberlist td img{
+        width: 40px;
+    }
+    #content div.item {
+        float:left;
+        margin: 2px 5px 5px;
+        text-align:center;
+        width:80px;
+    }
+    #content div.item p{
+        margin:5px auto 3px auto;
+        font-size:x-small;
+        font-weight:bold;
+    }
+    #content div.item .red{
+        color:red;
+    }
+    #content .small{
+        font-size:x-small;
+    }
+    #content div.item .imgwrapper{
+        width: 70px;
+        height: 70px;
+        overflow: hidden;
+        background-color: black;
+        border: 1px solid black;
+        margin: 0 auto;
+    }
+    #content div.item img.photo{
+        border:0;
+        width: 70px;
+    }
+    #content div.item img.btn{
+        width: 80px;
+        cursor: pointer;
+    }
+    #content #more{
+        width: 120px;
+        cursor: pointer;
+        float:right;
+    }
+    #content #schedule-table{
+    }
+    #content .schedule-form{
+        margin:0px;
+        float:left;
+        text-align:center;
+    }
+    #content .schedule-form p{
+        border-bottom:1px solid #ddd;
+        margin:0px;
+        padding:3px 5px;
+        font-size:x-small;
+    }
+    #content #regist_schedule{
+        width:70px;
+        cursor: pointer;
+    }
+    #content #regist_schedule_end{
+        margin-top:10px;
+        width:300px;
+    }
+    #connecterror{
+        margin-left:15px;
+        font-weight:bold;
+        color: red;
+        padding: 3px 0 3px 10px;
+    }
+    .mmlib_table{
+        background-color: #ECF4FD;
+        font-size:small;
+        color:#A46702;
+    }
+
+
+</style>
+<script type="text/javascript">
+    var myApp = {
+        content: {},
+        lastupdate: "",
+        genres: {
+            "japanese":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/japanese.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/japanese_over.png"),
+                "label" : "和食",
+                "url" : ""
+            },
+            "american":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/steak.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/steak_over.png"),
+                "label" : "洋食",
+                "url" : ""
+            },
+            "chinese":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/chinese.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/chinese_over.png"),
+                "label" : "中華",
+                "url" : ""
+            },
+            "korean":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/korean.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/korean_over.png"),
+                "label" : "韓国料理",
+                "url" : ""
+            },
+            "pasta":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/pasta.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/pasta_over.png"),
+                "label" : "パスタ",
+                "url" : ""
+            },
+            "ramen":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/ramen.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/ramen_over.png"),
+                "label" : "ラーメン",
+                "url" : ""
+            },
+            "okonomiyaki":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/okonomiyaki.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/okonomiyaki_over.png"),
+                "label" : "お好み焼き",
+                "url" : ""
+            },
+            "curry":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/curry.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/curry_over.png"),
+                "label" : "カレーライス",
+                "url" : ""
+            },
+            "hamburger":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/hamburger.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/hamburger_over.png"),
+                "label" : "ハンバーガー",
+                "url" : ""
+            },
+            "other":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/strawberry.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/strawberry_over.png"),
+                "label" : "その他",
+                "url" : ""
+            }
+        },
+        friends: {},
+        myinfo: {},
+        images: {
+            "more": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/more.png"),
+            "regist_schedule": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/regist_schedule.png"),
+            "block_l": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/block_l.png"),
+            "block_s": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/block_s.png")
+        },
+        refresh: function(param, callback){
+            this._refresh();
+            var timer = setInterval( function(){
+                if( this.refreshed ){
+                    this.refreshed = 0;
+                    clearInterval(timer);
+                    timer = null;
+                    callback( param );
+                }
+            }, 20);
+        },
+        _refresh: function(){
+            //get Friends Data
+
+            var params = {};
+            var req = opensocial.newDataRequest();
+            var idspec = opensocial.newIdSpec({ "userId" : "OWNER", "groupId" : "FRIENDS" });
+            var idspecSelf = opensocial.newIdSpec({ "userId" : "OWNER" });
+            //Filter
+            //params[opensocial.DataRequest.PeopleRequestFields.FILTER ] = 
+            //opensocial.DataRequest.FilterType.HAS_APP;
+            req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), "self");
+            //req.add(req.newFetchPeopleRequest( idspec, params), "friends");
+            req.add(req.newFetchPersonAppDataRequest(idspec, "todaysLunch", params ), "todaysLunchFriend"); 
+            req.add(req.newFetchPersonAppDataRequest(idspecSelf, "todaysLunch"), "todaysLunchSelf"); 
+            req.send(this._responseHandler);
+        },
+        _responseHandler: function(data){
+            var datas = {};
+            if (data.hadError()) {
+                //error
+                myApp.showMsg("データの取得に失敗しました。<br/>ログインしていない方はログインしてご利用くださいませ！","connecterror");
+                document.getElementById('content').style.display = "none";
+            }else{
+                document.getElementById('content').style.display = "block";
+                //myApp.friends = data.get("friends").getData();
+                myApp.myinfo = data.get("self").getData();
+                datas = data.get("todaysLunchFriend").getData();
+                var dataSelf = data.get("todaysLunchSelf").getData();
+                if( dataSelf[myApp.myinfo.getId()] ){
+                    datas[myApp.myinfo.getId()] = dataSelf[myApp.myinfo.getId()];
+                }
+            }
+
+            for( var id in datas ){
+                if( ! datas[id]["todaysLunch"] ){ continue; } 
+                var json = datas[id]["todaysLunch"].replace(/&#34;/g,'"');
+                json = gadgets.json.parse( json );
+                if( !myApp.lastupdate || myApp.lastupdate < json.lastupdate){
+                    myApp.content = json.content;
+                    myApp.lastupdate = json.lastupdate;
+                    if(json.genres){
+                        myApp.genres = myApp._shuffle(json.genres);
+                    }
+                }
+            }
+
+            this.refreshed = 1;
+
+        },
+        show: function(){
+            var today = myApp._getToday();
+
+            if( ! myApp.content[today] ){
+                myApp.content[today] = {
+                    "vote":{},
+                    "member":{},
+                    "result":[]
+                };
+            }
+            var d = myApp.content[today];
+            var genres = myApp.genres;
+
+            //lunch item
+            var htmlItem = "";
+            var limit_of_display = 3; // number of item
+            var cntItem = 1;
+            for( var genre in genres ){
+                var voteCount = 0;
+                if( d.vote[genre]){
+                    voteCount = d.vote[genre];
+                }
+
+                var label = (genres[genre].label.length > 5) 
+                    ? genres[genre].label.substr(0,5) + "..."
+                    : genres[genre].label;
+
+                htmlItem += "<div class='item'>";
+                var a_pre = "";
+                var a_suff = "";
+                if(genres[genre].url){
+                    a_pre = "<a href='" + genres[genre].url + "' target='_blank'>";
+                    a_suff = "</a>";
+                }
+                htmlItem += "<p class='genre' title='" + genres[genre].label + "'>" 
+                        + a_pre + label + a_suff + "</p>";
+                        + label + "</p>";
+                htmlItem += "<div class='imgwrapper'>";
+
+                var omover = "";
+                var oc = "";
+                var omout = "";
+                if( myApp.myinfo.isOwner() ){
+                    omover = "onmouseover=\"photo_" + genre + ".src='" + genres[genre].img_over + "'\"";
+                    oc = "onclick='myApp.setContent(\"" + genre + "\")'";
+                    omout = "onmouseout=\"photo_" + genre + ".src='" + genres[genre].img + "'\"";
+                }
+
+                htmlItem += "<img class='photo' src='"  + genres[genre].img 
+                        + "' id='photo_" + genre + "' " + omover + " " + oc + " " + omout + " />" 
+                        + "</div>";
+
+                var cnt = ( ! d.vote[genre] ) 
+                        ? 0 : d.vote[genre];
+                var cssCount = "";
+                for(var i=0; i < d.result.length; i++){
+                    if(d.result[i] == genre){
+                        cssCount = "count red";
+                        break;
+                    }
+                    else{
+                        cssCount = "count";
+                    }
+                }
+                htmlItem += "<p class='" + cssCount + "'>" + voteCount + "<span class='small'>票</span></p>";
+                htmlItem += "</div>";
+
+                cntItem++;
+                if(limit_of_display < cntItem){ break; }
+
+            }
+
+            document.getElementById('items').innerHTML = htmlItem;
+
+            //lunch member
+            var table = document.getElementById('memberlist');
+            table.style.display = "none";
+            if( table.firstChild ){
+                table.removeChild(table.firstChild);
+            }
+            var tbd = document.createElement("tbody");
+            //table header
+            var tr = document.createElement("tr");
+            var th = document.createElement("th");
+            tr.appendChild(th);
+            var arrTime = document.f2.time;
+            for(var i=0; i < arrTime.length; i++){
+                var th = document.createElement("th");
+                th.innerHTML = arrTime[i].value.substr(0,2) + ":" + arrTime[i].value.substr(2,2);
+                tr.appendChild(th);
+            }
+            tbd.appendChild(tr);
+
+            var display = 0;
+            for(var id in myApp.content[today].member){
+                var m = myApp.content[today].member[id];
+                var tr = document.createElement("tr");
+                var th = document.createElement("th");
+                th.style.fontSize="x-small";
+                th.style.paddingRight="10px";
+                th.innerHTML = m['name'];
+                tr.appendChild(th);
+                for(var t in m.schedule){
+                    var td = document.createElement("td");
+                    td.innerHTML = (m.schedule[t]) 
+                        ? "<img src='" + myApp.images.block_l + "'>"
+                        : "<img src='" + myApp.images.block_s + "'>";
+                    tr.appendChild(td);
+                }
+                tbd.appendChild(tr);
+                display = 1;
+            }
+            table.appendChild(tbd);
+            if(display){ table.style.display = "block"; }
+
+            //more button
+            document.getElementById('more').src = myApp.images.more;
+            document.getElementById('regist_schedule').src = myApp.images.regist_schedule;
+            if( ! myApp.myinfo.isOwner() ){
+                document.getElementById('form_wrapper').style.display = "none";
+            }
+
+            gadgets.window.adjustHeight();
+
+        },
+        _shuffle: function( hash ){
+
+            var arr = [];
+            for(var g in hash ){
+                arr.push( g ); 
+            }    
+     
+            var today = myApp._getToday();
+            if( myApp.content[today] ){
+                var d = myApp.content[today];
+                arr.sort(function(a,b){
+                    if( ! d.vote[a] ){ d.vote[a] = 0; } 
+                    if( ! d.vote[b] ){ d.vote[b] = 0; } 
+                    return ( d.vote[a] < d.vote[b] );
+                });  
+            }else{
+                var i = arr.length;
+                while (--i) {
+                    var j = Math.floor(Math.random() * (i + 1)); 
+                    if (i == j) continue;
+                    var k = arr[i];
+                }    
+            }    
+
+            var res = {};
+            for (var i=0; i< arr.length; i++) {
+                res[ arr[ i ] ] = hash[ arr[ i ] ]; 
+            }    
+
+            return res; 
+        },   
+        _getToday: function(){
+            var d = new Date();
+            var year = d.getYear();
+            if (year < 2000) year += 1900;
+            var mon = d.getMonth()+ 1;
+            if( mon < 10 ) { mon = "0" + mon.toString(); }
+            var date = d.getDate();
+            if( date < 10 ) { date = "0" + date.toString(); }
+            var res = year + "/" + mon + "/" +date;
+            return res;
+        },
+        setContent: function(genre){
+            this.refresh( genre, this._setContent);
+        },
+        _setContent: function(genre){
+            var today = myApp._getToday();
+            var t = myApp.content[today];
+
+            if( ! t.vote[genre] ){
+                t.vote[genre] = 1;
+            }else{
+                t.vote[genre] += 1;
+            }
+
+            if( t.result.length == 0){
+                t.result.push( genre );
+            }else{
+                var arrTmp = [];
+                var flag = 0;
+                for( var i=0; i< t.result.length; i++ ){
+                    var g = t.result[i];
+                    if( g != genre && t.vote[genre] <= t.vote[g] ){
+                        arrTmp.push( g );
+                    }
+                    if( !flag && t.vote[g] <= t.vote[genre] ){
+                        arrTmp.push( genre );
+                        flag = 1; 
+                    }
+                }
+                t.result = arrTmp;
+            }
+                
+            myApp.setMember();
+            myApp.show();
+
+            myApp.updatePersonAppData();
+            var title = myApp.myinfo.getDisplayName() + "さんが「" + myApp.genres[genre].label + "」に一票いれたよ！";
+            var body = "そろそろランチのメニューが決まったかも！レッツランチ！";
+            myApp.createActivity(title, body);
+
+        },
+        setSchedule: function(){
+            this.setMember();
+            this.show();
+            //this.showMsg("時間を指定しました！","regist_schedule_end");
+
+            myApp.updatePersonAppData();
+        },
+        setMember: function(){
+            var today = myApp._getToday();
+            var t = myApp.content[today];
+            if( ! t.member[ myApp.myinfo.getId() ] ){
+                t.member[ myApp.myinfo.getId() ] = {};
+            }
+            var c = document.f2.time;
+            var s = {};
+            for( var i=0; i < c.length; i++){
+                s[ c[i].value ] = c[i].checked;
+            }
+
+            t.member[ myApp.myinfo.getId() ]['name'] = myApp.myinfo.getDisplayName();
+            t.member[ myApp.myinfo.getId() ]['schedule'] = s;
+        },
+        _retrieve: function(){
+            var res = {
+                content: this.content,
+                lastupdate: this.lastupdate,
+                genres: this.genres
+            };
+            return res;
+        },
+        updatePersonAppData: function(){
+            var d = new Date();
+            myApp.lastupdate = d.getTime();
+            str = gadgets.json.stringify(myApp._retrieve());
+            var params = {};
+            var req = opensocial.newDataRequest();
+            req.add(req.newUpdatePersonAppDataRequest("VIEWER","todaysLunch",str));
+            req.send(this._responseUpdateDataHandler);
+        },
+        _responseUpdateDataHandler: function(data){
+            if (data.hadError()) {
+                //error
+                //myApp.showMsg("データの更新に失敗しました。<br/>時間を置いて再度お試しください。", "connecterror");
+            }
+        },
+        setGenreList: function(){
+            this.refresh( null , this._setGenreList);
+        },
+        _setGenreList: function(){
+            var g = document.f.genreList.value;
+            var t = document.f.title.value; 
+            var u = document.f.url.value; 
+
+            if( !g || !t ){
+                //myApp.showMsg( "ジャンルとお店の名前は必ず入力してください。", "registerror");
+                return;
+            }
+
+            var genres = myApp.genres;
+            genres[g].label = t;
+            if ( u != "" && u.match(/http:\/\/[!#-9A-~]+\.+[a-z0-9]/i)){
+                genres[g].url = u;
+            }else{
+                genres[g].url = "";
+            }
+
+            document.f.title.value = ""; 
+            document.f.url.value = ""; 
+
+            myApp.show();
+            //myApp.showMsg("お店を登録しました!","regist_error");
+
+            myApp.updatePersonAppData();
+            var title = myApp.myinfo.getDisplayName() + "さんが「" + t + "」というお店をおススメしてるよ！";
+            var body = "今日のランチは「" + t + "」に行ってみよう！\n";
+            myApp.createActivity(title, body);
+
+        },
+        createActivity: function(title, body){
+            var params = {};  
+            params[opensocial.Activity.Field.TITLE] = title;
+            params[opensocial.Activity.Field.BODY] = body;
+            var activity = opensocial.newActivity(params); 
+            //console.log(activity);
+            opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.HIGH);
+        },
+        showMsg: function( msg, divid ){
+            var mm = new gadgets.MiniMessage(__MODULE_ID__,document.getElementById( divid ));
+            if( this.elemMsg[divid] ){
+                mm.dismissMessage( this.elemMsg[divid] );
+            }
+            this.elemMsg[divid] = mm.createDismissibleMessage( msg );
+        },
+        elemMsg: {},
+        navigateToCanvas: function(){
+            var views = gadgets.views.getSupportedViews();
+            if(views["canvas"]){
+                gadgets.views.requestNavigateTo(views["canvas"]);
+            }else{
+                return
+            }
+        }
+
+    };
+
+    function init() {
+        //Google Analytics
+        _IG_Analytics("UA-6254644-1", "/todayslunch/view/home");
+
+        //testremover();
+
+        myApp.refresh( null,myApp.show );
+    }
+
+    function testremover(){
+        var req = opensocial.newDataRequest();
+        req.add(req.newRemovePersonAppDataRequest(opensocial.IdSpec.PersonId.VIEWER), "*");
+        req.send(responseRemoverHandler);
+    }
+    function responseRemoverHandler(data){
+        if (data.hadError()) {
+            alert(data.getErrorMessage());
+        }
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+</script>
+<div id="connecterror"></div>
+<div id="content">
+    <h3>今日のランチメンバー</h3>
+    <table cellspacing="0" cellpadiing="0" id="memberlist">
+    </table>
+
+    <h3>どこ行く？</h3>
+    <img id="more" onClick="myApp.navigateToCanvas()"/>
+    <div style="clear: both;"></div>
+    <div id="items">
+    </div>
+    <div style="clear:both"></div>
+    <div id="form_wrapper">
+    <h3>時間を指定する？</h3>
+    <form name="f2">
+        <div id="schedule-table">
+            <div class="schedule-form">
+                <p>11:00</p>
+                <input type="checkbox" value="1100" name="time"/>
+            </div>
+            <div class="schedule-form">
+                <p>11:30</p>
+                <input type="checkbox" value="1130" name="time"/>
+            </div>
+            <div class="schedule-form">
+                <p>12:00</p>
+                <input type="checkbox" value="1200" name="time" checked/>
+            </div>
+            <div class="schedule-form">
+                <p>12:30</p>
+                <input type="checkbox" value="1230" name="time" checked />
+            </div>
+            <div class="schedule-form">
+                <p>13:00</p>
+                <input type="checkbox" value="1300" name="time"/>
+            </div>
+            <div class="schedule-form">
+                <p>13:30</p>
+                <input type="checkbox" value="1330" name="time"/>
+            </div>
+            <div style="clear: both;"></div>
+            <div id="regist_schedule_end"></div>
+            <img id="regist_schedule" onClick="myApp.setSchedule()"/>
+        </div>
+    </form>
+    </div>
+
+</div>
+
+]]></Content>
+
+<Content type="html" view="canvas">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 15px;
+        color:#444;
+    }
+    #content a {
+        color : #0000CC;
+        text-decoration: none;
+    }
+    #content a:hover{
+        text-decoration: underline;
+    }
+    #content #left{
+        float:left;
+        width:70%;
+    }
+    #content #right{
+        float:right;
+        clear:right;
+        width:30%;
+    }
+    #content h3 {
+        border-left:10px solid #224499;
+        border-bottom:2px solid #224499;
+        color:#333;
+        font-size:x-large;
+        font-weight:bold;
+        line-height:130%;
+        margin:5px 20px 10px 0px;
+        padding:5px 0 2px 5px;
+    }
+    #content #memberlist{
+        margin: 3px auto 10px 10px;
+    }
+    #content #memberlist th{
+        font-size: small;
+        padding: 3px 5px;
+        text-align: left;
+    }
+    #content #memberlist td{
+        padding: 0px;
+        text-align: left;
+    }
+    #content div.item {
+        float:left;
+        margin: 2px 10px 5px;
+        text-align:center;
+        width:150px;
+    }
+    #content div.item p{
+        margin:5px auto 3px auto;
+        font-weight:bold;
+    }
+    #content div.item .red{
+        color:red;
+    }
+    #content .small{
+        font-size:small;
+    }
+    #content div.item .imgwrapper{
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        background-color: black;
+        border: 1px solid black;
+    }
+    #content div.item img.photo{
+        cursor: pointer;
+    }
+    #content #schedule-table{
+        margin-left:10px;
+    }
+    #content .schedule-form{
+        margin:0px;
+        float:left;
+        text-align:center;
+    }
+    #content .schedule-form p{
+        border-bottom:1px solid #ddd;
+        margin:0px;
+        padding:3px 10px;
+        font-size:small;
+    }
+    #content #regist_schedule{
+        width:70px;
+        cursor: pointer;
+    }
+    #content #regist_schedule_end{
+        margin-top:10px;
+        width:300px;
+    }
+    #content #right .widget{
+        margin:30px 0px 5px 10px;
+    }
+    #content h4{
+        border-left:4px solid #224499;
+        border-bottom:1px solid #224499;
+        color:#224499;
+        font-size:large;
+        font-weight:bold;
+        line-height:110%;
+        margin:4px 3px 5px 3px;
+        padding:2px 0 4px 5px;
+    }
+    #content #right .widget ul li{
+    } 
+    #content #right .widget ul li .date{
+        margin-right:15px;
+    } 
+    #content #right .widget form{
+        margin:3px auto 0 20px;
+    }
+    #content #right .widget form *{
+        margin: 2px 0;
+        line-height: 22px;
+    }
+    #content #right .widget form input{
+        width: 130px;
+    }
+    #content #right .widget form .btn{
+        margin: 15px auto;
+        cursor: pointer;
+    }
+    #content #right .widget .left{
+        float: left;
+        width: 30%;
+        font-size: small;
+    }
+    #content #right .widget .right{
+        float: right;
+        clear: right;
+        width: 70%;
+    }
+
+    #content .usage{
+        margin:3px 10px 3px 10px;
+        font-size:small;
+        color: #666;
+    }
+    #connecterror{
+        margin-left:15px;
+        font-weight:bold;
+        color: red;
+        padding: 3px 0 3px 10px;
+    }
+    #content .error{
+        margin: 3px 20px 3px 10px;
+    }
+    .mmlib_table{
+        background-color: #ECF4FD;
+        font-size:small;
+        color:#A46702;
+    }
+
+
+</style>
+<script type="text/javascript">
+    var myApp = {
+        content: {},
+        lastupdate: "",
+        genres: {
+            "japanese":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/japanese.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/japanese_over.png"),
+                "label" : "和食",
+                "url" : ""
+            },
+            "american":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/steak.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/steak_over.png"),
+                "label" : "洋食",
+                "url" : ""
+            },
+            "chinese":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/chinese.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/chinese_over.png"),
+                "label" : "中華",
+                "url" : ""
+            },
+            "korean":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/korean.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/korean_over.png"),
+                "label" : "韓国料理",
+                "url" : ""
+            },
+            "pasta":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/pasta.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/pasta_over.png"),
+                "label" : "パスタ",
+                "url" : ""
+            },
+            "ramen":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/ramen.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/ramen_over.png"),
+                "label" : "ラーメン",
+                "url" : ""
+            },
+            "okonomiyaki":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/okonomiyaki.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/okonomiyaki_over.png"),
+                "label" : "お好み焼き",
+                "url" : ""
+            },
+            "curry":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/curry.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/curry_over.png"),
+                "label" : "カレーライス",
+                "url" : ""
+            },
+            "hamburger":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/hamburger.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/hamburger_over.png"),
+                "label" : "ハンバーガー",
+                "url" : ""
+            },
+            "other":{
+                "img" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/strawberry.png"),
+                "img_over" : gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/img/strawberry_over.png"),
+                "label" : "その他",
+                "url" : ""
+            }
+        },
+        friends: {},
+        myinfo: {},
+        images: {
+            "regist": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/regist.png"),
+            "regist_schedule": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/regist_schedule.png"),
+            "block_l": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/block_l.png"),
+            "block_s": gadgets.io.getProxyUrl("http://mtl.recruit.co.jp/sandbox/igoogle/todayslunch/block_s.png")
+        },
+        refresh: function(param, callback){
+            this._refresh();
+            var timer = setInterval( function(){
+                if( this.refreshed ){
+                    this.refreshed = 0;
+                    clearInterval(timer);
+                    timer = null;
+                    callback( param );
+                }
+            }, 20);
+        },
+        _refresh: function(){
+            //get Friends Data
+
+            var params = {};
+            var req = opensocial.newDataRequest();
+            var idspec = opensocial.newIdSpec({ "userId" : "OWNER", "groupId" : "FRIENDS" });
+            var idspecSelf = opensocial.newIdSpec({ "userId" : "OWNER" });
+            //Filter
+            //params[opensocial.DataRequest.PeopleRequestFields.FILTER ] = 
+            //    opensocial.DataRequest.FilterType.HAS_APP;
+            req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), "self");
+            req.add(req.newFetchPeopleRequest( idspec, params), "friends");
+            req.add(req.newFetchPersonAppDataRequest(idspec, "todaysLunch", params ), "todaysLunchFriend"); 
+            req.add(req.newFetchPersonAppDataRequest(idspecSelf, "todaysLunch"), "todaysLunchSelf"); 
+            req.send(this._responseHandler);
+        },
+        _responseHandler: function(data){
+            var datas = {};
+            if (data.hadError()) {
+                //error
+                //myApp.showMsg("データの取得に失敗しました。<br/>ログインしていない方はログインしてご利用くださいませ！","connecterror");
+                document.getElementById('content').style.display = "none";
+            }else{
+                document.getElementById('content').style.display = "block";
+                myApp.friends = data.get("friends").getData();
+                myApp.myinfo = data.get("self").getData();
+                datas = data.get("todaysLunchFriend").getData();
+                var dataSelf = data.get("todaysLunchSelf").getData();
+                if( dataSelf[myApp.myinfo.getId()] ){
+                    datas[myApp.myinfo.getId()] = dataSelf[myApp.myinfo.getId()];
+                }
+            }
+
+            for( var id in datas ){
+                if( ! datas[id]["todaysLunch"] ){ continue; } 
+                var json = datas[id]["todaysLunch"].replace(/&#34;/g,'"');
+                json = gadgets.json.parse( json );
+                if( !myApp.lastupdate || myApp.lastupdate < json.lastupdate){
+                    myApp.content = json.content;
+                    myApp.lastupdate = json.lastupdate;
+                    if(json.genres){
+                        myApp.genres = myApp._shuffle(json.genres);
+                    }
+                }
+            }
+
+            this.refreshed = 1;
+
+        },
+        show: function(){
+            var today = myApp._getToday();
+
+            if( ! myApp.content[today] ){
+                myApp.content[today] = {
+                    "vote":{},
+                    "member":{},
+                    "result":[]
+                };
+            }
+            var d = myApp.content[today];
+            var genres = myApp.genres;
+
+            //lunch item
+            var htmlItem = "";
+            for( var genre in genres ){
+                var voteCount = 0;
+                if( d.vote[genre]){
+                    voteCount = d.vote[genre];
+                }
+
+                var label = (genres[genre].label.length > 7) 
+                    ? genres[genre].label.substr(0,7) + "..."
+                    : genres[genre].label;
+
+                htmlItem += "<div class='item'>";
+                var a_pre = "";
+                var a_suff = "";
+                if(genres[genre].url){
+                    a_pre = "<a href='" + genres[genre].url + "' target='_blank'>";
+                    a_suff = "</a>";
+                }
+                htmlItem += "<p class='genre' title='" + genres[genre].label + "'>" 
+                        + a_pre + label + a_suff + "</p>";
+                htmlItem += "<div class='imgwrapper'>";
+                var omover = "";
+                var oc = "";
+                var omout = "";
+                if( myApp.myinfo.isOwner() ){
+                    omover = "onmouseover=\"photo_" + genre + ".src='" + genres[genre].img_over + "'\"";
+                    oc = "onclick='myApp.setContent(\"" + genre + "\")'";
+                    omout = "onmouseout=\"photo_" + genre + ".src='" + genres[genre].img + "'\"";
+                }
+                htmlItem += "<img class='photo' src='"  + genres[genre].img 
+                        + "' id='photo_" + genre + "' " + omover + " " + oc + " " + omout + " />" 
+                        + "</div>";
+
+                var cnt = ( ! d.vote[genre] ) 
+                        ? 0 : d.vote[genre];
+                var cssCount = "";
+                for(var i=0; i < d.result.length; i++){
+                    if(d.result[i] == genre){
+                        cssCount = "count red";
+                        break;
+                    }
+                    else{
+                        cssCount = "count";
+                    }
+                }
+                htmlItem += "<p class='" + cssCount + "'>" + voteCount + "<span class='small'>票</span></p>";
+                htmlItem += "</div>";
+
+            }
+
+            document.getElementById('items').innerHTML = htmlItem;
+
+            //lunch member
+            var table = document.getElementById('memberlist');
+            table.style.display = "none";
+            if( table.firstChild ){
+                table.removeChild(table.firstChild);
+            }
+            var tbd = document.createElement("tbody");
+            //table header
+            var tr = document.createElement("tr");
+            var th = document.createElement("th");
+            tr.appendChild(th);
+            var arrTime = document.f2.time;
+            for(var i=0; i < arrTime.length; i++){
+                var th = document.createElement("th");
+                th.innerHTML = arrTime[i].value.substr(0,2) + ":" + arrTime[i].value.substr(2,2);
+                tr.appendChild(th);
+            }
+            tbd.appendChild(tr);
+
+            var display = 0;
+            for(var id in myApp.content[today].member){
+                var m = myApp.content[today].member[id];
+                var tr = document.createElement("tr");
+                var th = document.createElement("th");
+                th.style.fontSize="medium";
+                th.style.paddingRight="10px";
+                th.innerHTML = m['name'];
+                tr.appendChild(th);
+                for(var t in m.schedule){
+                    var td = document.createElement("td");
+                    td.innerHTML = (m.schedule[t]) 
+                        ? "<img src='" + myApp.images.block_l + "'>"
+                        : "<img src='" + myApp.images.block_s + "'>";
+                    tr.appendChild(td);
+                }
+                tbd.appendChild(tr);
+                display = 1;
+            }
+            table.appendChild(tbd);
+            if(display){ table.style.display = "block"; }
+
+            //lunch history
+            var arrHistory = [];
+            var j = 0;
+            for( var day in myApp.content ){
+                if( j > 7 ){ break;}
+                var htmlHistory = "";
+                if( day != today ){
+                    htmlHistory += "<li><span class='date'>" + day + "</span>";
+
+                    var r = myApp.content[day].result;
+                    var tmpArr = [];
+                    for( var i=0; i< r.length; i++){
+                        tmpArr.push(genres[ r[i] ].label);
+                    }
+                    htmlHistory += tmpArr.join(" , ") + "</li>";
+                    arrHistory.push(htmlHistory);
+                    j++;
+                }
+                
+            }
+            arrHistory = arrHistory.reverse();
+            document.getElementById('historylist').innerHTML = arrHistory.join("\n");
+
+            //friend list
+            var htmlFriends = "";
+            if( typeof( myApp.friends.each ) == 'function'){
+                myApp.friends.each( function(d){
+                    htmlFriends += "<li>" + d.getDisplayName() + "</li>";
+                });
+            }
+            document.getElementById('friendslist').innerHTML = htmlFriends;
+
+            //kouho
+            document.getElementById('regist').src = myApp.images.regist;
+            document.getElementById('regist_schedule').src = myApp.images.regist_schedule;
+
+            if( ! myApp.myinfo.isOwner() ){
+                document.getElementById('form_wrapper').style.display = "none";
+                document.getElementById('form').style.display = "none";
+            }
+
+            gadgets.window.adjustHeight();
+        },
+        _shuffle: function( hash ){
+
+            var arr = [];
+            for(var g in hash ){
+                arr.push( g ); 
+            }    
+     
+            var today = myApp._getToday();
+            if( myApp.content[today] ){
+                var d = myApp.content[today];
+                arr.sort(function(a,b){
+                    if( ! d.vote[a] ){ d.vote[a] = 0; } 
+                    if( ! d.vote[b] ){ d.vote[b] = 0; } 
+                    return ( d.vote[a] < d.vote[b] );
+                });  
+            }else{
+                var i = arr.length;
+                while (--i) {
+                    var j = Math.floor(Math.random() * (i + 1)); 
+                    if (i == j) continue;
+                    var k = arr[i];
+                }    
+            }    
+
+            var res = {};
+            for (var i=0; i< arr.length; i++) {
+                res[ arr[ i ] ] = hash[ arr[ i ] ]; 
+            }    
+
+            return res; 
+        },
+        _getToday: function(){
+            var d = new Date();
+            var year = d.getYear();
+            if (year < 2000) year += 1900;
+            var mon = d.getMonth()+ 1;
+            if( mon < 10 ) { mon = "0" + mon.toString(); }
+            var date = d.getDate();
+            if( date < 10 ) { date = "0" + date.toString(); }
+            var res = year + "/" + mon + "/" +date;
+            return res;
+        },
+        setContent: function(genre){
+            this.refresh( genre, this._setContent);
+        },
+        _setContent: function(genre){
+
+            var today = myApp._getToday();
+            var t = myApp.content[today];
+            if( ! t.vote[genre] ){
+                t.vote[genre] = 1;
+            }else{
+                t.vote[genre] += 1;
+            }
+
+            if( t.result.length == 0){
+                t.result.push( genre );
+            }else{
+                var arrTmp = [];
+                var flag = 0;
+                for( var i=0; i< t.result.length; i++ ){
+                    var g = t.result[i];
+                    if( g != genre && t.vote[genre] <= t.vote[g] ){
+                        arrTmp.push( g );
+                    }
+                    if( !flag && t.vote[g] <= t.vote[genre] ){
+                        arrTmp.push( genre );
+                        flag = 1; 
+                    }
+                }
+                t.result = arrTmp;
+            }
+                
+            myApp.setMember();
+            myApp.show();
+
+            myApp.updatePersonAppData();
+            var title = myApp.myinfo.getDisplayName() + "さんが「" + myApp.genres[genre].label + "」に一票いれたよ！";
+            var body = "そろそろランチのメニューが決まったかも！レッツランチ！";
+            myApp.createActivity(title, body);
+
+        },
+        setSchedule: function(){
+            this.setMember();
+            this.show();
+            //this.showMsg("時間を指定しました！","regist_schedule_end");
+
+            myApp.updatePersonAppData();
+        },
+        setMember: function(){
+            var today = myApp._getToday();
+            var t = myApp.content[today];
+            if( ! t.member[ myApp.myinfo.getId() ] ){
+                t.member[ myApp.myinfo.getId() ] = {};
+            }
+            var c = document.f2.time;
+            var s = {};
+            for( var i=0; i < c.length; i++){
+                s[ c[i].value ] = c[i].checked;
+            }
+
+            t.member[ myApp.myinfo.getId() ]['name'] = myApp.myinfo.getDisplayName();
+            t.member[ myApp.myinfo.getId() ]['schedule'] = s;
+        },
+        _retrieve: function(){
+            var res = {
+                content: this.content,
+                lastupdate: this.lastupdate,
+                genres: this.genres
+            };
+            return res;
+        },
+        updatePersonAppData: function(){
+            var d = new Date();
+            myApp.lastupdate = d.getTime();
+            str = gadgets.json.stringify(myApp._retrieve());
+            var params = {};
+            var req = opensocial.newDataRequest();
+            req.add(req.newUpdatePersonAppDataRequest("VIEWER","todaysLunch",str));
+            req.send(this._responseUpdateDataHandler);
+        },
+        _responseUpdateDataHandler: function(data){
+            if (data.hadError()) {
+                //error
+                //myApp.showMsg("データの更新に失敗しました。<br/>時間を置いて再度お試しください。", "connecterror");
+            }
+        },
+        setGenreList: function(){
+            this.refresh( null , this._setGenreList);
+        },
+        _setGenreList: function(){
+            var g = document.f.genreList.value;
+            var t = document.f.title.value; 
+            var u = document.f.url.value; 
+
+            if( !g || !t ){
+                //myApp.showMsg( "ジャンルとお店の名前は必ず入力してください。", "registerror");
+                return;
+            }
+
+            var genres = myApp.genres;
+            genres[g].label = t;
+            if ( u != "" && u.match(/http:\/\/[!#-9A-~]+\.+[a-z0-9]/i)){
+                genres[g].url = u;
+            }else{
+                genres[g].url = "";
+            }
+
+            document.f.title.value = ""; 
+            document.f.url.value = ""; 
+
+            myApp.show();
+            //myApp.showMsg("お店を登録しました!","registerror");
+
+            myApp.updatePersonAppData();
+            var title = myApp.myinfo.getDisplayName() + "さんが「" + t + "」というお店をおススメしてるよ！";
+            var body = "今日のランチは「" + t + "」に行ってみよう！\n";
+            myApp.createActivity(title, body);
+
+        },
+        createActivity: function(title, body){
+            var params = {};  
+            params[opensocial.Activity.Field.TITLE] = title;
+            params[opensocial.Activity.Field.BODY] = body;
+            var activity = opensocial.newActivity(params); 
+            //console.log(activity);
+            opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.HIGH);
+        },
+        showMsg: function( msg, divid ){
+            var mm = new gadgets.MiniMessage(__MODULE_ID__,document.getElementById( divid ));
+            if( this.elemMsg[divid] ){
+                mm.dismissMessage( this.elemMsg[divid] );
+            }
+            this.elemMsg[divid] = mm.createDismissibleMessage( msg );
+        },
+        elemMsg: {}
+
+    };
+
+    function init() {
+        //Google Analytics
+        _IG_Analytics("UA-6254644-1", "/todayslunch/view/canvas");
+
+        //testremover();
+
+        myApp.refresh( null,myApp.show );
+    }
+
+    function testremover(){
+        var req = opensocial.newDataRequest();
+        req.add(req.newRemovePersonAppDataRequest(opensocial.IdSpec.PersonId.VIEWER), "*");
+        req.send(responseRemoverHandler);
+    }
+    function responseRemoverHandler(data){
+        if (data.hadError()) {
+            alert(data.getErrorMessage());
+        }
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+</script>
+<div id="connecterror"></div>
+<div id="content">
+    <div id="left">
+        <h3>今日のランチメンバー</h3>
+        <table cellspacing="0" cellpadiing="0" id="memberlist">
+        </table>
+
+        <h3>どこ行く？</h3>
+        <div id="items">
+        </div>
+        <div style="clear:both"></div>
+        <div id="form_wrapper">
+        <h3>時間を指定する？</h3>
+        <form name="f2">
+            <div id="schedule-table">
+                <div class="schedule-form">
+                    <p>11:00</p>
+                    <input type="checkbox" value="1100" name="time"/>
+                </div>
+                <div class="schedule-form">
+                    <p>11:30</p>
+                    <input type="checkbox" value="1130" name="time"/>
+                </div>
+                <div class="schedule-form">
+                    <p>12:00</p>
+                    <input type="checkbox" value="1200" name="time" checked/>
+                </div>
+                <div class="schedule-form">
+                    <p>12:30</p>
+                    <input type="checkbox" value="1230" name="time" checked />
+                </div>
+                <div class="schedule-form">
+                    <p>13:00</p>
+                    <input type="checkbox" value="1300" name="time"/>
+                </div>
+                <div class="schedule-form">
+                    <p>13:30</p>
+                    <input type="checkbox" value="1330" name="time"/>
+                </div>
+                <div style="clear: both;"></div>
+                <div id="regist_schedule_end"></div>
+                <img id="regist_schedule" onClick="myApp.setSchedule()"/>
+            </div>
+        </form>
+        </div>
+
+    </div>
+    <div id="right">
+        <div id="history" class="widget">
+            <h4>最近の人気メニュー</h4>
+            <ul id="historylist">
+            </ul>
+        </div>
+        <div id="myfriends" class="widget">
+            <h4>友達リスト</h4>
+            <ul id="friendslist">
+            </ul>
+        </div>
+        <div id="form" class="widget">
+            <h4>お気に入りのお店を候補として登録</h4>
+            <p class="usage">ジャンルごとによく行くお店を登録してね。*がついてるのは必ず入力してね。</p>
+            <div id="registerror" class="error"></div>
+            <form name="f">
+                <div class="left">
+                    <p class="formlabel">ジャンル*:</p>
+                    <p class="formlabel">お店の名前*:</p>
+                    <p class="formlabel">url:</p>
+                </div>
+                <div class="right">
+                    <select name="genreList">
+                        <option value="japanese">和食</option>
+                        <option value="american">洋食</option>
+                        <option value="chinese">中華</option>
+                        <option value="korean">韓国</option>
+                        <option value="pasta">パスタ</option>
+                        <option value="ramen">ラーメン</option>
+                        <option value="okonomiyaki">お好み焼き</option>
+                        <option value="curry">カレーライス</option>
+                        <option value="hamburger">ハンバーガー</option>
+                        <option value="other">その他</option>
+                    </select><br />
+                    <input name="title" /><br />
+                    <input name="url" /><br />
+                </div>
+                <img src="" onClick="myApp.setGenreList()" class="btn" id="regist">
+            </form>
+        </div>
+    </div>
+</div>
+
+]]></Content>
+
+</Module>
