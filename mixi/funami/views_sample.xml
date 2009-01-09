@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs title="change views">
+        <Require feature="opensocial-0.8"/>
+        <Require feature="views" />
+    </ModulePrefs>
+    <Content type="html" view="home">
+        <![CDATA[
+        home
+        ]]>
+    </Content>
+    <Content type="html" view="canvas">
+        <![CDATA[
+        canvas
+        ]]>
+    </Content>
+    <Content type="html" view="profile">
+        <![CDATA[
+        profile
+        ]]>
+    </Content>
+    <Content type="html" view="preview">
+        <![CDATA[
+        preview
+        ]]>
+    </Content>
+</Module>
