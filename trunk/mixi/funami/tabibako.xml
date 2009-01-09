@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="use Social Data">
+    <Require feature="opensocial-0.8"/>
+    <ModulePrefs title="simple mixi Appli"></ModulePrefs>
+  </ModulePrefs>
+  <Content type="html">
+  <![CDATA[
+    <script type="text/javascript">
+        function request() {
+             var req = opensocial.newDataRequest();
+             req.add(req.newFetchPersonRequest("VIEWER"), "viewer_data");
+             req.send(response);
+        }
+
+        function response(dataResponse) {
+             var viewer = dataResponse.get("viewer_data").getData();
+             var nickname = document.getElementById('nickname');
+
+             var text = document.createTextNode(viewer.getDisplayName());
+             nickname.appendChild(text);
+        }
+        gadgets.util.registerOnLoadHandler(request);
+    </script>
+
+    <p>こんにちは<span id="nickname"></span>さん.</p>
+<iframe src="http://slide.tabibako.com/travels/blogparts.html#?travel_xml=travel-37.xml" width="160" height="341" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" title="旅箱ブログパーツ">
+この部分は iframe 対応のブラウザのみ表示されます。
+</iframe>
+  ]]>
+  </Content>
+</Module>
