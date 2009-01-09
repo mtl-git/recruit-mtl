@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+ <ModulePrefs title="use Social Data">
+   <Require feature="opensocial-0.8" />
+ </ModulePrefs>
+ <Content type="html" view="canvas">
+ <![CDATA[
+this is canvas view!
+ ]]>
+ </Content>
+
+ <Content type="html" view="home">
+ <![CDATA[
+this is home view!
+ ]]>
+ </Content>
+
+ <Content type="html" view="profile">
+ <![CDATA[
+this is profile view!
+ ]]>
+ </Content>
+
+ <Content type="html" view="preview">
+ <![CDATA[
+this is preview view!
+ ]]>
+ </Content>
+
+</Module>
