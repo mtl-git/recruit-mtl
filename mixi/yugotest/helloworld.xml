@@ -10,7 +10,7 @@ this is canvas view!
 書いているプロセスも含めて読ませる。リアルタイムの双方向ではないけど、感情は伝わるかも。
 F5を押せば最初からやり直し。
 <hr>
-<textarea rows=10 cols=80 onkeyup="rec(this)"></textarea>
+<textarea rows=10 cols=80 onkeyup="rec(this)" onload="init()"></textarea>
 <input type="button" onclick="draw()" value="再生">
 <input type="button" onclick="drawFast()" value="3倍速再生">
 <p>
