@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+ <ModulePrefs title="use Social Data">
+   <Require feature="opensocial-0.8" />
+ </ModulePrefs>
+ <Content type="html" view="canvas">
+ <![CDATA[
+this is canvas view!
+<script type="text/javascript" src="http://mixi.r08.jp/js/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="http://mixi.r08.jp/js/md5.js"></script>
+<script type="text/javascript">
+  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/ad-test.js?'+(new Date()).getTime()+'">');
+  document.write('</scr'+'ipt>');
+</script>
+
+<div id="ad"></div>
+ ]]>
+ </Content>
+
+ <Content type="html" view="home">
+ <![CDATA[
+this is home view!
+ ]]>
+ </Content>
+
+ <Content type="html" view="profile">
+ <![CDATA[
+this is profile view!
+ ]]>
+ </Content>
+
+ <Content type="html" view="preview">
+ <![CDATA[
+this is preview view!
+ ]]>
+ </Content>
+
+</Module>
