@@ -2,8 +2,7 @@
 <Module>
     <ModulePrefs 
         title="mixtter" 
-        description="調整さん上のみんなの調整状況をウォッチするよ。調整さん（http://www.tatamilab.jp/~toshi_i/schedule）で登録が終わったら、このガジェットで他の人の調整状況をウォッチしよう。使い方はMedia Technology Labs Blog(http://mtl.recruit.co.jp/blog/2008/11/igoogle_1.html)にあるよ。" 
-        title_url="http://www.tatamilab.jp/~toshi_i/schedule"
+        description=""
         author="taigo.yamada"
         singleton="false"
         scrolling="true"
