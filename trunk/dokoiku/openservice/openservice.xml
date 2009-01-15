@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openServiceDescription xmlns="http://www.microsoft.com/schemas/openservicedescription/1.0">
     <homepageUrl>http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/</homepageUrl>
-    <display>    
+    <display>
         <name>ドコイク？地図</name>
         <icon>http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/favicon.ico</icon>
     </display>
     <activity category="Map">
         <activityAction context="selection">
-            <execute method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/preview.html">
+            <execute method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/map.html">
                 <parameter name="kw" value="{selection}" type="text" />
             </execute>
-            <preview method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/map.html"> 
+            <preview method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/preview.html">
                 <parameter name="kw" value="{selection}" type="text" />
-            </preview> 
+            </preview>
        </activityAction>
     </activity>
 </openServiceDescription>
