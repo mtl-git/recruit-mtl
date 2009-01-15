@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs 
+        title="mixtter" 
+        description="調整さん上のみんなの調整状況をウォッチするよ。調整さん（http://www.tatamilab.jp/~toshi_i/schedule）で登録が終わったら、このガジェットで他の人の調整状況をウォッチしよう。使い方はMedia Technology Labs Blog(http://mtl.recruit.co.jp/blog/2008/11/igoogle_1.html)にあるよ。" 
+        title_url="http://www.tatamilab.jp/~toshi_i/schedule"
+        author="taigo.yamada"
+        singleton="false"
+        scrolling="true"
+        author_photo="http://mtl.recruit.co.jp/sandbox/yamada/self70x100.png"
+        author_aboutme="Recruit Media Technology LabsでWebに関する研究開発をしています。mtl.recruit.co.jp/blogにエントリしているので是非ご覧くださいませ。" 
+        author_link="http://mtl.recruit.co.jp/blog/">
+        <Require feature="opensocial-0.8"/>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+
+<Content type="html" view="home">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 5px;
+        //background: #9AE4E8;
+    }
+    #content ul{
+        list-style:none;
+        font-size: small;
+    }
+    #content ul img{
+        float:left;
+        margin:3px 3px 5px auto;
+    }
+    #content ul li{
+        border-bottom: 1px dotted #ddd;
+        height: 60px;
+    }
+    #content ul .user{
+        color: blue;
+    }
+    #content #fm{
+        margin: 10px 5px 5px 15px;
+    }
+    #content #fm img{
+        margin-left: 10px;
+    }
+
+</style>
+<script type="text/javascript">
+    
+    var tid="";
+    function init(){
+        getTId();
+    };
+
+    function getTId(){
+        var params = {};
+        var req = opensocial.newDataRequest();
+        var idspec = opensocial.newIdSpec({ "userId" : "OWNER" });
+        req.add(req.newFetchPersonAppDataRequest(idspec, "twitterId"), "tid"); 
+        req.send(responseHandler);
+    };
+
+    function responseHandler(obj){
+        if ( obj.hadError() ){
+                printError("error.. FetchPersonAppDataRequest");
+        }
+        var d = obj.get("tid").getData();
+        console.log( d );
+
+        if( !d ){
+            console.log("dummy id");
+            tid = 'big5';
+        }
+
+        getJson(tid);
+    }
+
+
+    function getJson(tid) {
+        console.log(tid);
+        var request = 'http://twitter.com/statuses/user_timeline/'
+                    + tid + '.json'
+        var params = {};
+         //console.log(request);
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET; 
+        gadgets.io.makeRequest(request, show, params);
+    };
+    function show(obj){
+        if( obj.errors != "" ){
+            printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
+        }
+
+        var json = obj.data;
+        var list = "<ul>";
+        var c = document.getElementById('main');
+        for (var i in json){
+            var d = json[i];
+            list += "<li><img src='" 
+                + d.user.profile_image_url 
+                + "'><span class='user'>" + d.user.screen_name 
+                + "</span>:<span class='text'>" 
+                + d.text + "</span></li>";
+        }
+        list += "</ul>";
+        c.innerHTML = list;
+
+    };
+    function setTId(){
+        var tid = document.f.tid.value;
+        if( !tid ){
+            printError("input your twitter'name'");
+            return;
+        }
+        getJson(tid);
+        var params = {};
+        var req = opensocial.newDataRequest();
+        req.add(req.newUpdatePersonAppDataRequest("VIEWER","twitterId",tid));
+        req.send(responseUpdateDataHandler);
+    }
+    function responseUpdateDataHandler(obj){
+        console.log(obj);
+        if( obj.errors != "" ){
+            printError("error.. UpdatePersonAppData");
+        }
+        
+    }
+    function printError( msg ){
+        var div = document.getElementById("error");
+        div.style.fontWeight ="bold";
+        div.style.fontSize ="1.2em";    
+        div.innerHTML = msg;
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+
+
+</script>
+<div id="content">
+    <form name="f">
+        <div id="fm">
+        <span class='label'>twitter' name:</span><input name="tid" />
+        <img src="http://bqbq.sakura.ne.jp/lab/igoogle/todayslunch/regist.png" onClick="setTId()" id="button"/>
+        </div>
+    </form>
+    <hr>
+    <div id="main">loading...</div>
+    <div id="error"></div>
+</div>
+
+]]></Content>
+<Content type="html" view="preview,profile,canvas">
+<![CDATA[
+<style>
+    #content {
+        margin-left: 5px;
+        //background: #9AE4E8;
+    }
+    #content ul{
+        list-style:none;
+        font-size: small;
+    }
+    #content ul img{
+        float:left;
+        margin:3px 3px 5px auto;
+    }
+    #content ul li{
+        border-bottom: 1px dotted #ddd;
+        height: 60px;
+    }
+    #content ul .user{
+        color: blue;
+    }
+
+</style>
+<script type="text/javascript">
+    
+    var tid="";
+    function init(){
+        getTId();
+    };
+
+    function getTId(){
+        var params = {};
+        var req = opensocial.newDataRequest();
+        var idspec = opensocial.newIdSpec({ "userId" : "OWNER" });
+        req.add(req.newFetchPersonAppDataRequest(idspec, "twitterId"), "tid"); 
+        req.send(responseHandler);
+    };
+
+    function responseHandler(obj){
+        if ( obj.hadError() ){
+                printError("error.. FetchPersonAppDataRequest");
+        }
+        var d = obj.get("tid").getData();
+        console.log( d );
+
+        if( !d ){
+            console.log("dummy id");
+            tid = 'big5';
+        }
+
+        getJson(tid);
+    }
+
+
+
+    function getJson( ) {
+        var request = 'http://twitter.com/statuses/user_timeline/big5.json'
+        var params = {};
+         //console.log(request);
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET; 
+        gadgets.io.makeRequest(request, show, params);
+    };
+    function show(obj){
+        if( obj.errors != "" ){
+            printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
+        }
+
+        var json = obj.data;
+        var list = "<ul>";
+        var c = document.getElementById('content');
+        for (var i in json){
+            var d = json[i];
+            list += "<li><img src='" 
+                + d.user.profile_image_url 
+                + "'><span class='user'>" + d.user.screen_name 
+                + "</span>:<span class='text'>" 
+                + d.text + "</span></li>";
+        }
+        list += "</ul>";
+        c.innerHTML = list;
+
+    };
+    function printError( msg ){
+        var div = document.getElementById("error");
+        div.style.fontWeight ="bold";
+        div.style.fontSize ="1.2em";    
+        div.innerHTML = msg;
+
+        document.getElementById('content').style.display = "none";
+
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+
+
+</script>
+<div id="content">
+    loading...
+    <div id="error"></div>
+</div>
+
+]]></Content>
+
+</Module>
