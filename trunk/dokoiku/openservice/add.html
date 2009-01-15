@@ -3,22 +3,22 @@
 <head> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 <title>ドコイク？ OpenService アクセラレータ（IE8対応）</title> 
+<meta name="robots" content="index,nofollow">
+<script type="text/javascript"><!--
+    function getAccelerator_next(){
+        try {
+            window.external.addService('openservice.xml');
+        } catch(e) {
+            window.alert("お使いのブラウザでは利用できません。");
+        }
+    }
+//--></script>
 </head>
 <body>
 
 <h2>ドコイク？ OpenService アクセラレータ（IE8対応）</h2>
 
 <input type=button value="アクセラレータを追加する" onClick="getAccelerator_next()">
-
-<script type="text/javascript"><!--
-function getAccelerator_next(){
-    try {
-        window.external.addService('openservice.xml');
-    } catch(e) {
-        window.alert("お使いのブラウザでは利用できません。");
-    }
-}
-//--></script>
 
 </body>
 </html>

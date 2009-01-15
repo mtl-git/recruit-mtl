@@ -2,8 +2,7 @@
 <html> 
 <head> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
-<title>ドコイク？地図 OpenService アクセラレータ</title> 
-<meta name="robots" content="noindex,nofollow">
+<title>ドコイク？ OpenService アクセラレータ（IE8対応）</title> 
 <script type="text/javascript"><!--
 	var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
 	var query;
@@ -42,7 +41,7 @@
 		if ( ! data.results.poi.length ) return error( '店舗が見つかりません。' );
 		var code = data.results.poi[0].code;
 		if ( ! code ) return error( '店舗が見つかりません。' );
-		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=1/';
+		var url = 'http://map.doko.jp/m/sc='+code+'/kw='+query;
 		info();
 		location.href = url;
 	}
