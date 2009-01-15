@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <os:openServiceDescription xmlns:os="http://www.microsoft.com/schemas/openservicedescription/1.0">
-	<os:homepageUrl>http://maps.example.com</os:homepageUrl>
+	<os:homepageUrl>http://www.doko.jp/</os:homepageUrl>
 	<os:display>
 		<os:name>ドコイク？で検索</os:name>
 		<os:icon>http://www.doko.jp/favicon.ico</os:icon>
