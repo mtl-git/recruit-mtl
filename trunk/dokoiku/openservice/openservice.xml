@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openServiceDescription xmlns="http://www.microsoft.com/schemas/openservicedescription/1.0">
-    <homepageUrl>http://maps.google.com/maps</homepageUrl>
+    <homepageUrl>http://www.doko.jp/</homepageUrl>
     <display>    
-            <name>ドコイク？で検索</name>
-            <icon>http://www.doko.jp/favicon.ico</icon>
+        <name>ドコイク？で検索</name>
+        <icon>http://www.doko.jp/favicon.ico</icon>
     </display>
     <activity category="Local">
         <activityAction context="selection">
-            <preview method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/preview.html">
-                <parameter name="kw" value="{selection}" type="text" />
-            </preview>
             <execute method="get" action="http://www.doko.jp/search/search/">
                 <parameter name="kw" value="{selection}" type="text" />
             </execute>
