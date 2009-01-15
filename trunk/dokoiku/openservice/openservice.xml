@@ -11,6 +11,9 @@
             <execute method="get" action="http://www.doko.jp/search/search/">
                 <parameter name="kw" value="{selection}" type="text" />
             </execute>
-        </activityAction>
+            <preview method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/preview.html"> 
+                <parameter name="kw" value="{selection}" type="text" />
+            </preview> 
+       </activityAction>
     </activity>
 </openServiceDescription>
