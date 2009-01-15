@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<title>ドコイク？ OpenService アクセラレータ（IE8対応）</title> 
+<script type="text/javascript"><!--
+	var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
+    function init () {
+		var query = location.search;
+		if ( query.substr(0,4) != '?kw=' ) return error('URLが正しくありません。');
+		query = query.substr(4);
+		var len = query.indexOf( '&' );
+		if ( len > -1 ) query = query.substr( 0, len );
+		var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=callback&pagesize=1&keyword='+query;
+		info();
+		request_json( url );
+	}
+	function request_json (url) {
+		var elem = document.createElement('script');
+		elem.setAttribute( 'type', 'text/javascript' );
+		elem.setAttribute( 'charset', 'UTF-8' );
+		document.body.appendChild( elem );
+		elem.src = url;
+	}
+	function info (mess) {
+		if ( ! mess ) mess = '.';
+		var elem = document.getElementById('info_area');
+		elem.innerHTML += mess;
+	}
+	function error (mess) {
+		var elem = document.createElement('p');
+		elem.innerHTML = mess;
+		document.body.appendChild( elem );
+	}
+	function callback (data) {
+		info();
+		if ( ! data ) return error( 'APIレスポンスが正しくありません。' );
+		if ( ! data.results ) return error( 'APIレスポンスが正しくありません。' );
+		if ( ! data.results.poi ) return error( 'APIレスポンスが正しくありません。' );
+		if ( ! data.results.poi.length ) return error( '店舗が見つかりません。' );
+		var code = data.results.poi[0].code;
+		if ( ! code ) return error( '店舗が見つかりません。' );
+		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=1/';
+		info();
+		location.href = url;
+	}
+	window.onload = init;
+//--></script>
+</head>
+<body>
+
+<p id="info_area">loading...</p>
+
+</body>
+</html>
