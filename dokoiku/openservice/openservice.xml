@@ -2,16 +2,15 @@
 <openServiceDescription xmlns="http://www.microsoft.com/schemas/openservicedescription/1.0">
     <homepageUrl>http://www.doko.jp/</homepageUrl>
     <display>    
-        <name>ドコイク？で検索</name>
-        <icon>http://www.doko.jp/favicon.ico</icon>
-        <description>ドコでも探せる日本最大級ローカルサーチ。全国の周辺の店舗情報・地図情報・レビュー情報が探せる。</description>
+        <name>ドコイク？地図</name>
+        <icon>http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/favicon.ico</icon>
     </display>
-    <activity category="Local">
+    <activity category="Map">
         <activityAction context="selection">
-            <execute method="get" action="http://www.doko.jp/search/search/">
+            <execute method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/preview.html">
                 <parameter name="kw" value="{selection}" type="text" />
             </execute>
-            <preview method="get" action="http://www.doko.jp/search/search/"> 
+            <preview method="get" action="http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/map.html"> 
                 <parameter name="kw" value="{selection}" type="text" />
             </preview> 
        </activityAction>
