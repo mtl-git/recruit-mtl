@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openServiceDescription xmlns="http://www.microsoft.com/schemas/openservicedescription/1.0">
-    <homepageUrl>http://www.doko.jp/</homepageUrl>
+    <homepageUrl>http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/</homepageUrl>
     <display>    
         <name>ドコイク？地図</name>
         <icon>http://recruit-mtl.googlecode.com/svn/trunk/dokoiku/openservice/favicon.ico</icon>
