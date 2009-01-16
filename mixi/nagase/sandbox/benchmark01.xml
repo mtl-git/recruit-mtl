@@ -150,7 +150,7 @@ function outputPeople(people) {
     var icon     = person.getField(opensocial.Person.Field.THUMBNAIL_URL);
     var url      = person.getField(opensocial.Person.Field.PROFILE_URL);
     var id       = person.getId();
-    ht.push(["<li><a href=\"",url,"\" onclick=\"get_friends('",id,"');return false;\" title=\"",id,"\" target=\"_blank\"><img src=\"",icon,"\" width=\"32\" />",nickname,"</a></li>"].join(""));
+    ht.push(["<li><a href=\"",url,"\" onclick=\"getFriends('",id,"');return false;\" title=\"",id,"\" target=\"_blank\"><img src=\"",icon,"\" width=\"32\" />",nickname,"</a></li>"].join(""));
   });
   ht.push("</ul>");
   output(ht.join("")); 
