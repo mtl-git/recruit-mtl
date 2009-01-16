@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Module>
+  <ModulePrefs title="【AB】モアイとばし" description="モアイをとばす テスト">
+    <Require feature="opensocial-0.8"/> 
+    <Require feature="dynamic-height"/> 
+    <Require feature="setprefs" />
+    <Require feature="flash" />
+    <Require feature="views" />
+  </ModulePrefs>
+  <Content type="html">
+  <![CDATA[
+<style type="text/css">
+body { margin:0; }
+</style>
+<div id="flashcontent"></div>
+<script type="text/javascript">
+gadgets.util.registerOnLoadHandler(function(){
+var dir = "http://www.ab-road.net/doc/blogparts/";
+var loghtml = dir + "log/" + document.location.toString().replace(/\?(.*)$/,"") + "/log.html?rnd=" + Math.round(Math.random()*1000000);
+var opts = {width:160,height:180,bgColor:"#ffffff",loghtml:loghtml};
+gadgets.flash.embedFlash(dir+"moai2_fla8.swf", "flashcontent", 8, opts);
+gadgets.window.adjustHeight(opts.height+20);
+});
+
+</script>
+  ]]>
+  </Content>
+</Module>
+

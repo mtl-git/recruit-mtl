@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Module>
+  <ModulePrefs title="いば〜る" description="textareaの内容をevalします">
+    <Require feature="opensocial-0.8"/> 
+    <Require feature="dynamic-height"/> 
+    <Require feature="setprefs" />
+    <Require feature="flash" />
+    <Require feature="views" />
+  </ModulePrefs>
+  <UserPref name="test" datatype="hidden" default_value="0" />
+  <Content type="html">
+  <![CDATA[
+<style type="text/css">
+body, p, form { margin:0; text-align:center; } 
+#ta { width:97%; height:60px; display:block; margin:0 auto; }
+#output { width:97%; margin:0 auto; text-align:left; background:#000; color:#fff; font-size:small; padding:5px; }
+</style>
+<form id="wrapper" onsubmit="doEval();return false;">
+<div id="output">output</div>
+<textarea id="ta">output(new Date());</textarea> 
+<p><input type="submit" value="イバる" onclick="doEval();return false;" /></p>
+</form>
+<script type="text/javascript">
+function doEval() {
+	try {
+		eval(document.getElementById("ta").value);
+	} catch(e) { output(e) }
+}
+function output(t) {
+	document.getElementById("output").innerHTML = t.toString();
+}
+</script>
+  ]]>
+  </Content>
+</Module>
+
