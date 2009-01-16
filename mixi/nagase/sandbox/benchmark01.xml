@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Module>
+  <ModulePrefs title="benchmark01" description="Update/FetchPersonAppDataRequest">
+    <Require feature="opensocial-0.8"/> 
+    <Require feature="dynamic-height"/> 
+  </ModulePrefs>
+  <UserPref name="test" datatype="hidden" default_value="0" />
+  <Content type="html">
+  <![CDATA[
+<style type="text/css">
+body { font-size:10pt; }
+#output { max-height:500px; overflow:auto; }
+</style>
+<form>
+  <fieldset>
+    <button onclick="get_viewer_profile();return false;">get_viewer_profile()</button>
+    <button onclick="get_friends();return false;">get_friends()</button>
+  </fieldset>
+  <fieldset>
+    <button onclick="update_data();return false;">update_data()</button>
+    <button onclick="fetch_data();return false;">fetch_data()</button>
+    <label for="key">Key</label><input type="text" id="key" style="width:50px;" />
+    <label for="val">Value</label><input type="text" id="val" style="width:100px;" /> 
+  </fieldset>
+</form>
+<div id="output"></div>
+<script type="text/javascript" src="http://ngsdev.org/js/lib/jquery.js"></script>
+<script type="text/javascript">
+function output(t) {
+  $("#output").html(t.toString());
+  gadgets.window.adjustHeight($("#output").height()+200);
+}
+
+function update_data() {
+  var keys = $("#key").val().split(",");
+  var value = $("#val").val();
+  if(keys.length>1) {
+    alert("cannot use mulitiple keys");
+    return;
+  }
+  if(!keys[0]) {
+    alert("no key!");
+    return;
+  }
+  var request = mixi.newDataRequest();
+  request.add(
+    request.newUpdatePersonAppDataRequest(
+opensocial.IdSpec.PersonId.VIEWER
+, keys[0], value)
+  );
+  request.send(function (response) {
+    console.log(response);
+    if(response.hadError()) {
+      alert(response.getErrorMessage());
+      return;
+    }
+    alert("updated!");
+  });
+  
+}
+
+function fetch_data() {
+  var keys = $("#key").val().split(",");
+  if(!keys.length||!keys[0]) {
+    alert("no keys!");
+    return;
+  }
+  var request = mixi.newDataRequest();
+  request.add(
+    request.newFetchPersonRequest(
+opensocial.IdSpec.PersonId.VIEWER
+),
+    "viewer"
+  );
+  request.add(
+    request.newFetchPersonAppDataRequest(opensocial.IdSpec.PersonId.VIEWER, keys),
+    "viewer_data"
+  );
+  request.send(function (response) { 
+    console.log(response);
+    if(response.hadError()) {
+      alert(response.getErrorMessage());
+      return;
+    }
+    var viewer = response.get("viewer").getData();
+    var data   = response.get("viewer_data").getData();
+    var vals = [];
+    $.each(keys,function(){
+      vals.push(data[this]);
+    });
+    $("#val").val(vals.join());
+  });
+}
+
+function get_viewer_profile() {
+  var request = opensocial.newDataRequest();
+  request.add(
+    request.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER),
+    "viewer_data"
+  );
+  request.send(function (response) {
+    var item = response.get("viewer_data");
+    if (item.hadError()) {
+      alert(item.getError());
+      return;
+    }
+    var person = item.getData();
+    console.log(person);
+    var nickname = person.getDisplayName();
+    var icon     = person.getField(opensocial.Person.Field.THUMBNAIL_URL);
+    var url      = person.getField(opensocial.Person.Field.PROFILE_URL);
+    output([nickname,icon,url].join("<br>"))
+  });
+}
+
+function get_friends(id) {
+    id = id || "VIEWER";
+    var request = opensocial.newDataRequest();
+    var viewer_friends = opensocial.newIdSpec({userId:
+id
+//"OWNER"
+//"VIEWER"
+, groupId: "FRIENDS"});
+    var opt = {};
+    opt[opensocial.DataRequest.PeopleRequestFields.FILTER] = opensocial.DataRequest.FilterType.ALL;
+    opt[opensocial.DataRequest.PeopleRequestFields.MAX] = 1000;
+    request.add(
+      request.newFetchPeopleRequest(viewer_friends, opt),
+      "friends_data"
+    );
+    request.send(function (response) {
+        var item = response.get("friends_data");
+        if (item.hadError()) {
+            alert(item.getError());
+            return;
+        } 
+        outputPeople(item.getData());
+    });
+}
+
+function outputPeople(people) {
+  console.log(people);
+  var ht = ["<ul>"];
+  people.each(function (person) {
+    var nickname = person.getDisplayName();
+    var icon     = person.getField(opensocial.Person.Field.THUMBNAIL_URL);
+    var url      = person.getField(opensocial.Person.Field.PROFILE_URL);
+    var id       = person.getId();
+    ht.push(["<li><a href=\"",url,"\" onclick=\"get_friends('",id,"');return false;\" title=\"",id,"\" target=\"_blank\"><img src=\"",icon,"\" width=\"32\" />",nickname,"</a></li>"].join(""));
+  });
+  ht.push("</ul>");
+  output(ht.join("")); 
+}
+
+</script> 
+]]> </Content>
+</Module>
+
