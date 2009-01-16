@@ -13,14 +13,18 @@ body { font-size:10pt; }
 </style>
 <form>
   <fieldset>
-    <button onclick="get_viewer_profile();return false;">get_viewer_profile()</button>
-    <button onclick="get_friends();return false;">get_friends()</button>
+    <button onclick="getViewerProfile();return false;">getViewerProfile()</button>
+    <button onclick="getFriends();return false;">getFriends()</button>
   </fieldset>
   <fieldset>
-    <button onclick="update_data();return false;">update_data()</button>
-    <button onclick="fetch_data();return false;">fetch_data()</button>
+    <button onclick="updateData();return false;">updateData()</button>
+    <button onclick="fetchData();return false;">fetchData()</button>
     <label for="key">Key</label><input type="text" id="key" style="width:50px;" />
     <label for="val">Value</label><input type="text" id="val" style="width:100px;" /> 
+  </fieldset>
+  <fieldset>
+    <input type="text" id="actmsg" style="width:150px;" /> 
+    <button onclick="sendActivity();return false;">sendActivity()</button>
   </fieldset>
 </form>
 <div id="output"></div>
@@ -31,7 +35,7 @@ function output(t) {
   gadgets.window.adjustHeight($("#output").height()+200);
 }
 
-function update_data() {
+function updateData() {
   var keys = $("#key").val().split(",");
   var value = $("#val").val();
   if(keys.length>1) {
@@ -59,7 +63,7 @@ opensocial.IdSpec.PersonId.VIEWER
   
 }
 
-function fetch_data() {
+function fetchData() {
   var keys = $("#key").val().split(",");
   if(!keys.length||!keys[0]) {
     alert("no keys!");
@@ -92,7 +96,7 @@ opensocial.IdSpec.PersonId.VIEWER
   });
 }
 
-function get_viewer_profile() {
+function getViewerProfile() {
   var request = opensocial.newDataRequest();
   request.add(
     request.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER),
@@ -113,7 +117,7 @@ function get_viewer_profile() {
   });
 }
 
-function get_friends(id) {
+function getFriends(id) {
     id = id || "VIEWER";
     var request = opensocial.newDataRequest();
     var viewer_friends = opensocial.newIdSpec({userId:
@@ -150,6 +154,18 @@ function outputPeople(people) {
   });
   ht.push("</ul>");
   output(ht.join("")); 
+}
+
+function sendActivity() {
+  var msg = $("#actmsg").val();
+  if(!msg) {
+    alert("input message!");
+    return;
+  }
+  var params = {};
+  params[opensocial.Activity.Field.TITLE] = msg;
+  var activity = opensocial.newActivity(params);
+  opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.LOW);
 }
 
 </script> 
