@@ -163,9 +163,9 @@ function sendActivity() {
     return;
   }
   var params = {};
-  params[opensocial.Activity.Field.TITLE] = msg;
-  var activity = opensocial.newActivity(params);
-  opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.LOW);
+  params[mixi.Activity.Field.TITLE] = msg;
+  var activity = mixi.newActivity(params);
+  mixi.requestCreateActivity(activity, mixi.CreateActivityPriority.LOW);
 }
 
 </script> 
