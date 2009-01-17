@@ -29,6 +29,7 @@ body { font-size:10pt; }
 </form>
 <div id="output"></div>
 <script type="text/javascript" src="http://ngsdev.org/js/lib/jquery.js"></script>
+<script type="text/javascript" src="http://user1.matsumoto.ne.jp/~goma/js/utf.js" charset="shift_jis"></script>
 <script type="text/javascript">
 function output(t) {
   $("#output").html(t.toString());
@@ -37,7 +38,8 @@ function output(t) {
 
 function updateData() {
   var keys = $("#key").val().split(",");
-  var value = $("#val").val();
+  var value = utf.URLencode( $("#val").val() );
+  alert(value);
   if(keys.length>1) {
     alert("cannot use mulitiple keys");
     return;
@@ -90,7 +92,7 @@ opensocial.IdSpec.PersonId.VIEWER
     var data   = response.get("viewer_data").getData();
     var vals = [];
     $.each(keys,function(){
-      vals.push(data[this]);
+      vals.push(utf.URLdecode(data[this]));
     });
     $("#val").val(vals.join());
   });
