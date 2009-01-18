@@ -2,36 +2,111 @@
 <Module>
  <ModulePrefs title="use Social Data">
    <Require feature="opensocial-0.8" />
+   <Require feature="views"/>
  </ModulePrefs>
  <Content type="html" view="canvas">
  <![CDATA[
-this is canvas view!
-<script type="text/javascript" src="http://mixi.r08.jp/js/jquery-1.2.6.min.js"></script>
-<script type="text/javascript" src="http://mixi.r08.jp/js/md5.js"></script>
+<h1>this is canvas view!</h1>
+
 <script type="text/javascript">
-  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/ad-test.js?'+(new Date()).getTime()+'">');
+  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/recruit-util.js?'+(new Date()).getTime()+'">');
   document.write('</scr'+'ipt>');
+</script>
+
+<script type="text/javascript">
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/base.css");
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/debug.css", true);
+
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/jquery-1.2.6.min.js");
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/md5.js");
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/ad-test.js", true);
 </script>
 
 <div id="ad"></div>
  ]]>
  </Content>
 
+
+
  <Content type="html" view="home">
  <![CDATA[
-this is home view!
+<h1>this is home view!</h1>
+
+<script type="text/javascript">
+  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/recruit-util.js?'+(new Date()).getTime()+'">');
+  document.write('</scr'+'ipt>');
+</script>
+
+<script type="text/javascript">
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/base.css");
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/debug.css", true);
+
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/jquery-1.2.6.min.js");
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/views-test.js", true);
+</script>
+
+<div id="navi"></div>
+
+<div id="notice">
+  <h2>ユーザーインターフェース等</h2>
+  <blockquote>
+    <p>わかりやすく、つかいやすいユーザーインターフェースでなくてはなりません。</p>
+    <p>homeやshow_friendでの表示領域が極端に大きくすることで、他のものの表示を阻害してはなりません。</p>
+    <p>show_friendでの表示内容がアプリが追加しないと全く利用できない等の悪質なものであってはなりません。コミュニケーションが発生するような要素を盛り込んでください。</p>
+    <p>音を発生させるアプリについては、デフォルト値はミュート状態でなくてはなりません。</p>
+    <p>外部リンクは、不可とします。<br />
+      ただし、サービスを提供するために真に必要な場合は除きます。その場合も、<strong>homeからの外部リンクは不可</strong>とします。</p>
+    <cite><a href="http://developer.mixi.co.jp/beta/document/appli_certification">mixiアプリ認定基準（案）</a></cite>
+  </blockquote>
+  <p>※強調は作者による</p>
+</div>
  ]]>
  </Content>
 
+
+
  <Content type="html" view="profile">
  <![CDATA[
-this is profile view!
+
+<h1>this is profile view!</h1>
  ]]>
  </Content>
 
  <Content type="html" view="preview">
  <![CDATA[
-this is preview view!
+<h1>this is preview view!</h1>
+
+<script type="text/javascript">
+  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/recruit-util.js?'+(new Date()).getTime()+'">');
+  document.write('</scr'+'ipt>');
+</script>
+
+<script type="text/javascript">
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/base.css");
+  RECRUIT.Util.importStyle("http://mixi.r08.jp/css/debug.css", true);
+
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/jquery-1.2.6.min.js");
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/md5.js");
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/ad-test.js", true);
+</script>
+
+<div id="notice">
+  <h2>広告について</h2>
+  <p>※強調は作者による</p>
+  <blockquote>
+    <p>広告の表示は、可能ですが、表示場所は<strong>home、show_friendページに表示してはなりません</strong>。</p>
+    <p>広告の表示は、過度に大きいものは認められません。</p>
+    <cite><a href="http://developer.mixi.co.jp/beta/document/appli_certification">mixiアプリ認定基準（案）</a></cite>
+  </blockquote>
+  <blockquote>
+    <p>アプリ上に広告を掲載することは可能です。<br />
+      ただし、原則として、広告目的に特化したアプリは提供できません。</p>
+    <p>広告を表示する場合は、それが広告であると明示する必要があります。</p>
+    <p>広告は、mixi Platform 利用規約に定める禁止事項に類するものを掲載してはなりません。</p>
+    <cite><a href="http://developer.mixi.co.jp/beta/document/appli_guideline">mixiアプリガイドライン（案）</a></cite>
+  </blockquote>
+</div>
+<div id="ad"></div>
  ]]>
  </Content>
 
