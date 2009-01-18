@@ -4,6 +4,12 @@
    <Require feature="opensocial-0.8" />
    <Require feature="views"/>
  </ModulePrefs>
+
+
+
+
+
+
  <Content type="html" view="canvas">
  <![CDATA[
 <h1>this is canvas view!</h1>
@@ -22,9 +28,25 @@
   RECRUIT.Util.importScript("http://mixi.r08.jp/js/ad-test.js", true);
 </script>
 
+<script type="text/javascript">
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/views-test.js", true);
+</script>
+
+<div id="navi"></div>
+
 <div id="ad"></div>
  ]]>
  </Content>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,12 +87,37 @@
 
 
 
+
+
+
+
  <Content type="html" view="profile">
  <![CDATA[
 
+<script type="text/javascript">
+  document.write('<scr'+'ipt type="text/javascript" src="http://mixi.r08.jp/js/recruit-util.js?'+(new Date()).getTime()+'">');
+  document.write('</scr'+'ipt>');
+</script>
+
 <h1>this is profile view!</h1>
- ]]>
+
+<script type="text/javascript">
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/views-test.js", true);
+</script>
+
+<div id="navi"></div>
+]]>
  </Content>
+
+
+
+
+
+
+
+
+
+
 
  <Content type="html" view="preview">
  <![CDATA[
@@ -89,6 +136,12 @@
   RECRUIT.Util.importScript("http://mixi.r08.jp/js/md5.js");
   RECRUIT.Util.importScript("http://mixi.r08.jp/js/ad-test.js", true);
 </script>
+
+<script type="text/javascript">
+  RECRUIT.Util.importScript("http://mixi.r08.jp/js/views-test.js", true);
+</script>
+
+<div id="navi"></div>
 
 <div id="notice">
   <h2>広告について</h2>
