@@ -38,9 +38,9 @@
             function fetch() {
                 var req  = mixi.newDataRequest();
                 var p = {};
-                p[opensocial.IdSpec.Field.USER_ID[]] = opensocial.IdSpec.PersonId.VIEWER;
+                p[opensocial.IdSpec.Field.USER_ID] = opensocial.IdSpec.PersonId.VIEWER;
                 var idSpec = opensocial.newIdSpec(p);
-                req.add(req.newFetchPersonRequest(idSpec),"viewer");
+                req.add(req.newFetchPersonRequest("VIEWER"),"viewer");
                 req.add(req.newFetchPersonAppDataRequest(idSpec,cols ), "viewer_data");
                 req.send( fetch_callback );
             };
