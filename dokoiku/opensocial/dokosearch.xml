@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="ドコイク？店舗検索アプリ" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
+    	<Require feature="dynamic-height" />
+	</ModulePrefs>
+	<Content type="html"><![CDATA[
+
+<script type="text/javascript"><!--
+	var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
+	var query;
+    function start_search (btn) {
+		var form = btn.form;
+		query = form.kw.value;
+		var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=callback&pagesize=20&keyword='+query;
+		info();
+		request_json( url );
+	}
+	function request_json (url) {
+		var elem = document.createElement('script');
+		elem.setAttribute( 'type', 'text/javascript' );
+		elem.setAttribute( 'charset', 'UTF-8' );
+		document.body.appendChild( elem );
+		elem.src = url;
+	}
+	function info (mess) {
+		if ( ! mess ) mess = '.';
+		var elem = document.getElementById('info_area');
+		elem.innerHTML += mess;
+	}
+	function error (mess) {
+		var elem = document.createElement('p');
+		elem.innerHTML = mess;
+		document.body.appendChild( elem );
+	}
+	function callback (data) {
+		info();
+		if ( ! data ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+		if ( ! data.results ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+		if ( ! data.results.poi ) return error( '店舗情報が見つかりませんでした。' );
+		if ( ! data.results.poi.length ) return error( '店舗情報が見つかりませんでした。' );
+		var code = data.results.poi[0].code;
+		if ( ! code ) return error( '店舗情報が見つかりませんでした。' );
+		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=2/';
+		info();
+		var preview = document.getElementById('shop_preview');
+		while( preview.childNodes.length ) {
+			preview.removeChild( preview.lastChild );
+		}
+		var iframe = document.createElement('iframe');
+		preview.appendChild( iframe );
+		iframe.src = url;
+		iframe.style.width  = '320px';
+		iframe.style.height = '400px';
+		iframe.frameborder  = '0';
+		iframe.scrolling    = 'no';
+		setTimeout( init, 1 );
+	}
+	function init () {
+        gadgets.window.adjustHeight();
+	}
+//--></script>
+<style><!--
+	body { margin: 0; padding: 0; }
+	img { border: 0; }
+	iframe { border: 0; }
+	.input_text { width: 200px; }
+	.select_code { width: 200px; }
+--></style>
+
+<form onSubmit="start_search(this);">
+
+<div id="shop_preview">
+<a href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？"></a>
+</div>
+
+<!--
+<div id="shop_list">
+<select class="select_code" name="code">
+</select>
+</div>
+-->
+
+<div id="shop_form">
+<input class="input_text" type="text" name="kw" value="">
+<input class="input_submit" type="button" value="検索" onClick="start_search(this);">
+</div>
+
+<div id="info_area"></div>
+
+</form>
+
+	]]></Content>
+</Module>
