@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+    <ModulePrefs title="RWS API request for mixi (meaning w/o minimessage module)"> 
+    </ModulePrefs>
+    <Content type="html">
+    <![CDATA[ 
+        <div id="content-div"></div>
+        <script type="text/javascript">
+            var view = document.getElementById( 'content-div' );
+            function request (){    
+                view.innerHTML = '';
+                var params = {};
+                params[ gadgets.io.RequestParameters.CONTENT_TYPE ] = gadgets.io.ContentType.JSON;
+                // params[ gadgets.io.RequestParameters.METHOD ] = gadgets.io.MethodType.GET;
+                // params[ gadgets.io.RequestParameters.REFRESH_INTERVAL ] = 0;  // does this work?
+                var url = "http://webservice.recruit.co.jp/ab-road/tour/v1/?key=7b18731dfad050ca&area=EUR&format=json";  
+                gadgets.io.makeRequest( url, callback, params );
+            };
+            function callback ( obj ){  
+                if( obj.errors.length > 0 ){
+                    view.innerHTML = obj.errors.join( '<br>' );
+                    return;
+                }
+                var tours = obj.data.results.tour;
+                var html = '<ol>';
+                for( var i=0; i<tours.length; i++ ){
+                    var t = tours[ i ];
+                    html += '<li>' + t.title.substr( 0, 30 ) + '</li>';
+                }
+                html += '</ol>';
+                view.innerHTML = html;
+            };
+        </script>
+        <div style="margin-top:10px">
+            <input type="button" value="make API request" onclick="request()"/>
+        </div>
+    ]]>
+    </Content> 
+</Module>
