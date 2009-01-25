@@ -163,7 +163,7 @@
         height: 404px;
     }
     #info_area {
-        width: 100px;
+        width: 60px;
         height: 30px;
         float: left;
     }
@@ -171,7 +171,7 @@
         float: right;
     }
     #shop_list {
-        width: 100px;
+        width: 60px;
         float: left;
     }
     #shop_list ul {
