@@ -12,10 +12,11 @@
 <script type="text/javascript" src="http://test.ngsdev.org/jopensocial/src/jopensocial.js?rnd=2"></script>
 <script type="text/javascript" src="http://test.ngsdev.org/grss/genericrss.js?rnd=2"></script>
 <div id="wrapper">
+  <div id="loading">読み込み中</div>
   <div id="pref" class="view">
     <h2>フィードを管理</h2>
     <p class="add-feed caption"><span class="link">追加</span></p>
-    <ul class="feeds">
+    <ul class="list feeds">
     </ul>
     <form onsubmit="return false;">
       <button id="submit-feeds-button">登録</button>
@@ -24,7 +25,7 @@
   </div>
   <div id="list" class="view">
     <p class="go-pref caption"><span class="link">フィードを管理</span></p> 
-    <ul class="entries">
+    <ul class="list entries">
     </ul>
   </div>
 </div>
