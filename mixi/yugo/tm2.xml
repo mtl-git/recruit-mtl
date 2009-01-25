@@ -22,7 +22,7 @@
                 console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
                     var row = obj.data[i];
-                    html += '<div style="float:left;text-align:center">' ;
+                    html += '<div style="float:left;text-align:center;width:150f">' ;
                     html += '<a href="' + row.url + '" target="_blank">'
                     html += row.title + 
                     html += '<img src="' + row.img + '">';
