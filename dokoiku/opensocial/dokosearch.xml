@@ -60,7 +60,7 @@
 	}
 //--></script>
 <style><!--
-	body { margin: 0; padding: 0; }
+	body { margin: 0; padding: 0; width: 441px; }
 	img { border: 0; }
 	iframe { border: 0; }
 	.input_text { width: 200px; }
@@ -69,8 +69,12 @@
 
 <form onSubmit="start_search(this);">
 
+<table border="0" cellpadding="0" cellspacing="0"><tr><td colspan="2" valign="top">
+
 <div id="shop_preview">
 <a href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？"></a>
+<div style="height:100px;"></div>
+
 </div>
 
 <!--
@@ -80,12 +84,23 @@
 </div>
 -->
 
+</td><td valign="top">
+<div id="info_area"></div>
+</td></tr><tr><td valign="bottom">
+
 <div id="shop_form">
 <input class="input_text" type="text" name="kw" value="">
 <input class="input_submit" type="button" value="検索" onClick="start_search(this);">
 </div>
 
-<div id="info_area"></div>
+
+</td><td colspan="2" width="162" valign="bottom">
+
+<img src="https://www.recruit.co.jp/corporate/shared/crrecruit2.gif">
+
+</td></tr></table>
+
+
 
 </form>
 
