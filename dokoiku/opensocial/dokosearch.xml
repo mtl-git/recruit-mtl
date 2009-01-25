@@ -108,6 +108,7 @@
     // データを保存する
     function update_viewer_store ( key, value ) {
         var req = opensocial.newDataRequest();
+	    if ( mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
         var viewer = opensocial.IdSpec.PersonId.VIEWER;
         req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), 'update1' );
         req.send();
@@ -116,18 +117,19 @@
     // データを読み出す
     function fetch_viewer_store ( key, callok, callng ) {
         var req = opensocial.newDataRequest();
+	    if ( mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
         var p = {};
         var viewer = opensocial.IdSpec.PersonId.VIEWER;
         p[ opensocial.IdSpec.Field.USER_ID ] = viewer;
         var ispc = opensocial.newIdSpec( p );
 
-		// リクエスト毎の識別子を付ける
+        // リクエスト毎の識別子を付ける
         var REQKEY_USER = 'userid1';
         var REQKEY_DATA = 'data1';
         req.add( req.newFetchPersonRequest( viewer ), REQKEY_USER );
         req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQKEY_DATA );
 
-		if ( ! callng ) callng = function() {};
+        if ( ! callng ) callng = function() {};
         var func = function ( res ) {
 			// viewerのユーザIDを取り出す
 //          var viewid = res.get(REQKEY_USER).getData().getId();
