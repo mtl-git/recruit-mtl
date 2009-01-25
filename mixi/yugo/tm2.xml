@@ -19,9 +19,10 @@
             function callback ( obj ){
                 console.log(obj);
                 console.log(obj.length);
-                for( var i=0; i<obj.length; i++ ){
-                   console.log(obj[i]);
-                    html += '<li>' + obj[i].title + '</li>';
+                html = "énÇ‹ÇÈÇÊÅI";
+                for( var i=0; i<obj.data.length; i++ ){
+                   console.log(obj.data[i]);
+                    html += '<li>' + obj.data[i].title + '</li>';
                 }
                 html += '</ol>';
                 view.innerHTML = html;
