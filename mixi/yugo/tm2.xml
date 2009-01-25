@@ -18,11 +18,11 @@
                 gadgets.io.makeRequest( url, callback, params );
             };
             function callback ( obj ){
+                var html = "";
                 console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
-                    var imgsrc = "http://img.townmarket.jp/thumb/" + obj.data[i].img + '/t_newtop.jpg"/>';
                     html += '<li>' ;
-                    html += '<img src="' + imgsrc + '">';
+                    html += '<img src="' + obj.data[i].img + '">';
                     html += obj.data[i].title + '</li>';
                 }
                 html += '</ol>';
