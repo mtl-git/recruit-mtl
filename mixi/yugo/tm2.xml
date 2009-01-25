@@ -19,13 +19,12 @@
             };
             function callback ( obj ){
                 console.log(obj);
-                console.log(obj.length);
                 for( var i=0; i<obj.data.length; i++ ){
                    console.log(obj.data[i]);
                     html += '<li>' ;
-                    html += '<img src="http://"'
-                    
-                    html += '<li>' + <img src> + obj.data[i].title + '</li>';
+                    html += '<img src="http://img.townmarket.jp/thumb/';
+                    html += obj.data[i].photo + '/t_newtop.jpg"/>';
+                    html += obj.data[i].title + '</li>';
                 }
                 html += '</ol>';
                 view.innerHTML = html;
