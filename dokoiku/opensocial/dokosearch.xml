@@ -90,86 +90,97 @@
         var rpin = data.results.poi[0].code;
         if ( ! rpin ) return disp_mess( '店舗情報が見つかりませんでした。' );
         display_preview( rpin );
-		save_last_rpin( rpin );
+        save_last_rpin( rpin );
         update_list( data.results.poi );
     }
 
     // ブログパーツの表示
-	function display_preview ( rpin ) {
+    function display_preview ( rpin ) {
         var url = 'http://map.doko.jp/blogparts/b/sc='+rpin+'/sz=2/';
         now_loading( url );
-	}
-
-    // ブログパーツの表示
-	function save_last_rpin ( rpin ) {
-		update_viewer_store( 'rpin', rpin );
-	}
-
-    // データを保存する
-    function update_viewer_store ( key, value ) {
-        var req = opensocial.newDataRequest();
-	    if ( mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
-        var viewer = opensocial.IdSpec.PersonId.VIEWER;
-        req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), 'update1' );
-        req.send();
     }
 
-    // データを読み出す
-    function fetch_viewer_store ( key, callok, callng ) {
+    // ブログパーツの表示
+    function save_last_rpin ( rpin ) {
+        update_viewer_store( 'rpin', rpin );
+    }
+
+    // viewerのデータを保存する関数
+    function update_viewer_store ( key, value, callbk ) {
         var req = opensocial.newDataRequest();
-	    if ( mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
-        var p = {};
+        if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
         var viewer = opensocial.IdSpec.PersonId.VIEWER;
-        p[ opensocial.IdSpec.Field.USER_ID ] = viewer;
+        var REQID_DATA = 'data1';
+        req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), REQID_DATA );
+        req.send( callbk );
+    }
+
+    // viewerのデータを読み出す関数
+    function fetch_viewer_store ( key, callok, callng ) {
+        var person = opensocial.IdSpec.PersonId.VIEWER;
+		fetch_store( person, key, callok, callng );
+    }
+
+    // ownerのデータを読み出す関数
+    function fetch_owner_store ( key, callok, callng ) {
+        var person = opensocial.IdSpec.PersonId.OWNER;
+		fetch_store( person, key, callok, callng );
+    }
+
+    // viewerのデータを読み出す関数
+    function fetch_store ( person, key, callok, callng ) {
+        var req = opensocial.newDataRequest();
+        if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
+
+        // ユーザID
+        var p = {};
+        var uidkey = opensocial.IdSpec.Field.USER_ID;
+        p[uidkey] = person;
         var ispc = opensocial.newIdSpec( p );
 
         // リクエスト毎の識別子を付ける
-        var REQKEY_USER = 'userid1';
-        var REQKEY_DATA = 'data1';
-        req.add( req.newFetchPersonRequest( viewer ), REQKEY_USER );
-        req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQKEY_DATA );
+        var REQID_USER = 'user1';
+        var REQID_DATA = 'data1';
+        req.add( req.newFetchPersonRequest( person ), REQID_USER );
+        req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQID_DATA );
 
         if ( ! callng ) callng = function() {};
         var func = function ( res ) {
-
-dump( res );
-
-			// viewerのユーザIDを取り出す
-//          var viewid = res.get(REQKEY_USER).getData().getId();
-			// ↑エラー処理なし、↓エラー処理あり
+            // personのユーザIDを取り出す
+//          var viewid = res.get(REQID_USER).getData().getId();
             if ( ! res ) return callng( res );
-            var u1 = res.get(REQKEY_USER);
+            var u1 = res.get(REQID_USER);
             if ( ! u1 ) return callng( res );
             var u2 = u1.getData();
             if ( ! u2 ) return callng( res );
-            var viewid = u2.getId();
-            if ( ! viewid ) return callng( res );
+            var userid = u2.getId();
+            if ( ! userid ) return callng( res );
 
-			// ユーザIDとキーを指定してデータを取り出す
-//          var value = (res.get(REQKEY_DATA).getData())[viewid][key];
-			// ↑エラー処理なし、↓エラー処理あり
-            var d1 = res.get(REQKEY_DATA);
+            // ユーザIDとキーを指定してデータを取り出す
+//          var value = (res.get(REQID_DATA).getData())[userid][key];
+            var d1 = res.get(REQID_DATA);
             if ( ! d1 ) return callng( res );
             var d2 = d1.getData();
             if ( ! d2 ) return callng( res );
-            var d3 = d2[viewid];
+            var d3 = d2[userid];
+            if ( ! d3 && d2[key] ) d3 = d2;     // bug?
             if ( ! d3 ) return callng( res );
             var value = d3[key];
 
-			// 取り出した値だけを引数にしてOKコールバック関数を呼ぶ
-			if ( callok ) callok( value );
+            // 成功時は値を引数にしてOKコールバック関数を呼ぶ
+            if ( callok ) callok( value );
         };
         req.send( func );
     }
 
-	// ダンプする
-	function dump ( data ) {
-		if ( ! JKL ) return;
-		if ( ! JKL.Dumper ) return;
+    // ダンプする
+    function dump ( data ) {
+        if ( ! JKL ) return;
+        if ( ! JKL.Dumper ) return;
         var dumper = new JKL.Dumper();
         data = dumper.dump( data );
-		alert( data );
-	}
+        alert( data );
+    }
 
     // 検索結果リストの表示
     function update_list (list) {
@@ -194,7 +205,7 @@ dump( res );
                 var rpin = shop.code;
                 var onclick = function () {
                     display_preview( rpin );
-					save_last_rpin( rpin );
+                    save_last_rpin( rpin );
                 };
                 $(li).bind( 'click', onclick );
             })();
@@ -219,7 +230,7 @@ dump( res );
         var midnavi_width  = 250;
         var midnavi_offset =  10;
         var iframe_offset = $.browser.msie ? 21 : 5;
-		var canvas_padding = 5;
+        var canvas_padding = 5;
         var canvas_addwid   = canvas_padding*3 + ava_width + midnavi_width;
         var gadget_min    = 441;
         var gadget_width  = window_width;
@@ -241,8 +252,8 @@ dump( res );
                 avaelem.css('float','right');
 
                 var canelem = $('#content_canvas');
-				canelem.css('float','left');
-				canelem.css('margin-left',canvas_padding+'px');
+                canelem.css('float','left');
+                canelem.css('margin-left',canvas_padding+'px');
             } else {
                 $('#midnavi_parts').html('');
                 $('#apviaapps_parts').html('');
@@ -280,7 +291,8 @@ dump( res );
     function window_onload () {
         init_width();
         disp_mess('お店を検索できます。');
-		fetch_viewer_store( 'rpin', display_preview );
+//      fetch_viewer_store( 'rpin', display_preview );
+        fetch_owner_store( 'rpin', display_preview );
     }
     $(window_onload);
 //--></script>
