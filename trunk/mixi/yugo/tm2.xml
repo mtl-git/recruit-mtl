@@ -18,6 +18,7 @@
             };
             function callback ( obj ){
                 for( var i=0; i<obj.length; i++ ){
+                    console.log(obj[i].title);
                     html += '<li>' + obj[i].title + '</li>';
                 }
                 html += '</ol>';
