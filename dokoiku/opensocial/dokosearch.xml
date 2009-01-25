@@ -10,6 +10,7 @@
     var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
     var keyword;
     var pagenum;
+    var pagesize = 20;
 
     // 検索を開始する
     function start_search (btn) {
@@ -25,7 +26,7 @@
         if ( offset ) pagenum += offset;
         var container = document.getElementById('shop_list');
         empty_element( container );
-        var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=search_result&pagesize=20&keyword='+keyword+'&pagenum='+pagenum;
+        var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=search_result&pagesize='+pagesize+'&keyword='+keyword+'&pagenum='+pagenum;
         now_loading();
         request_jsonp( url );
     }
@@ -35,9 +36,9 @@
         var libload = document.getElementById('lib_message');
         var html = libload.innerHTML;
         var container = document.getElementById('shop_preview');
-		container.innerHTML = html;
-		var elem = container.getElementsByTagName('p')[0];
-		$(elem).text( mess );
+        container.innerHTML = html;
+        var elem = container.getElementsByTagName('p')[0];
+        $(elem).text( mess );
         adjust_height();
     }
 
@@ -100,8 +101,6 @@
         var container = document.getElementById('shop_list');
         empty_element( container );
         var ul = document.createElement('ul');
-        ul.style.height = '360px';
-//      ul.style.overflowY = 'scroll';
         container.appendChild( ul );
         for( var i=0; i<list.length; i++ ) {
             var li = document.createElement('li');
@@ -125,44 +124,52 @@
             })();
         }
 
-        var nextimg = document.createElement('img');
-        container.appendChild( nextimg );
-        nextimg.src = 'http://www.doko.jp/search/common/ads/img/skin_a_marker.gif';
-        nextimg.title = 'Page '+(pagenum+1);
-        var nextpage = function () {
-            call_search(+1);
-        };
-        $(nextimg).bind( 'click', nextpage );
+        if ( list.length == pagesize ) {
+            var nextimg = document.createElement('img');
+            container.appendChild( nextimg );
+            nextimg.src = 'http://www.doko.jp/search/common/ads/img/skin_a_marker.gif';
+            nextimg.title = 'Page '+(pagenum+1);
+            var nextpage = function () {
+                call_search(+1);
+            };
+            $(nextimg).bind( 'click', nextpage );
+        }
     }
 
     function init_width () {
-//		var gadget_width  = 441;
-		var gadget_width  = 420;
-		var iframe_offset = 21;
-		var preview_width = 320;
-		var copy_width = 162;
-		var submit_width = 40;
-		$('#area_upper').width( gadget_width );
-		$('#area_lower').width( gadget_width );
-		$('#shop_preview').width( preview_width+iframe_offset );
-		$('#info_area').width( gadget_width-preview_width-iframe_offset );
-		$('#shop_list').width( gadget_width-preview_width-iframe_offset );
-		$('#shop_form').width( gadget_width-copy_width );
-		$('#input_kw').width( gadget_width-copy_width-submit_width-10 );
-		$('#input_submit').width( submit_width );
-		$('#copyright').width( copy_width );
-	}
+//      var gadget_width  = 441;
+        var gadget_width  = 420;
+        var iframe_offset = $.browser.msie ? 21 : 5;
+        var preview_width = 320;
+        var copy_width = 162;
+        var submit_width = 40;
+        $('#area_upper').width( gadget_width );
+        $('#area_lower').width( gadget_width );
+        $('#shop_preview').width( preview_width+iframe_offset );
+        $('#info_area').width( gadget_width-preview_width-iframe_offset );
+        $('#shop_list').width( gadget_width-preview_width-iframe_offset );
+        $('#shop_form').width( gadget_width-copy_width );
+        $('#input_kw').width( gadget_width-copy_width-submit_width-10 );
+        $('#input_submit').width( submit_width );
+        $('#copyright').width( copy_width );
+    }
 
     // ガジェットの高さの調整
     function adjust_height () {
+        setTimeout( call_adjust, 1 );
+    }
+
+    // ガジェットの高さの調整
+    function call_adjust () {
         gadgets.window.adjustHeight();
     }
 
-    function first_message () {
+    // 初期化
+    function window_onload () {
+        init_width();
         disp_mess('お店を検索できます。');
     }
-    $(init_width);
-    $(first_message);
+    $(window_onload);
 //--></script>
 <style><!--
     body, img, table, tr, td, div, form, ul, iframe { margin: 0; padding: 0; border: 0; }
@@ -177,10 +184,7 @@
     }
     #shop_preview p {
         margin: 1em 0;
-		padding: 0;
-    }
-    .elem_library {
-        display: none;
+        padding: 0;
     }
     #shop_preview iframe {
         width: 100%;
@@ -200,9 +204,9 @@
         overflow: hidden;
     }
     #shop_list li {
-        height: 15px;
-        padding: 1px 0 2px 1px;
-        line-height: 15px;
+        height: 14px;
+        padding: 1px 0 1px 1px;
+        line-height: 16px;
         font-size: 11px;
         overflow: hidden;
         cursor: pointer;
@@ -227,6 +231,9 @@
     }
     #copyright img {
         margin-top: 12px;
+    }
+    .elem_library {
+        display: none;
     }
 --></style>
 
