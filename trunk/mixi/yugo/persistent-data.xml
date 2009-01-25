@@ -52,6 +52,7 @@
                     return;
                 }
                 console.log(me.getId());
+                console.log(vwd.getData());
                 var data = ( vwd.getData() )[ me.getId() ];
                 if( !data ){
                     out.innerHTML = 'persistent data is empty.';
