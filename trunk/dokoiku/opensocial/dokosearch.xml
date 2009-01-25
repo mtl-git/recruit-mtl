@@ -131,6 +131,9 @@
 
         if ( ! callng ) callng = function() {};
         var func = function ( res ) {
+
+dump( res );
+
 			// viewerのユーザIDを取り出す
 //          var viewid = res.get(REQKEY_USER).getData().getId();
 			// ↑エラー処理なし、↓エラー処理あり
