@@ -28,6 +28,16 @@
         var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=search_result&pagesize=20&keyword='+keyword+'&pagenum='+pagenum;
         now_loading();
         request_jsonp( url );
+    }
+
+    // メッセージ表示
+    function disp_mess (mess) {
+        var libload = document.getElementById('lib_message');
+        var html = libload.innerHTML;
+        var container = document.getElementById('shop_preview');
+		container.innerHTML = html;
+		var elem = container.getElementsByTagName('p')[0];
+		$(elem).text( mess );
         adjust_height();
     }
 
@@ -47,6 +57,7 @@
         }
         var src = "javascript:void(document.write('" + html + "'));";
         iframe.src = src;
+        adjust_height();
     }
 
     // エレメントを空にする
@@ -66,21 +77,14 @@
         elem.src = url;
     }
 
-    // エラー表示
-    function error (mess) {
-        var elem = document.createElement('p');
-        elem.innerHTML = mess;
-        document.body.appendChild( elem );
-    }
-
     // 検索結果コールバック関数
     function search_result (data) {
-        if ( ! data ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
-        if ( ! data.results ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
-        if ( ! data.results.poi ) return error( '店舗情報が見つかりませんでした。' );
-        if ( ! data.results.poi.length ) return error( '店舗情報が見つかりませんでした。' );
+        if ( ! data ) return disp_mess( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+        if ( ! data.results ) return disp_mess( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+        if ( ! data.results.poi ) return disp_mess( '店舗情報が見つかりませんでした。' );
+        if ( ! data.results.poi.length ) return disp_mess( '店舗情報が見つかりませんでした。' );
         var code = data.results.poi[0].code;
-        if ( ! code ) return error( '店舗情報が見つかりませんでした。' );
+        if ( ! code ) return disp_mess( '店舗情報が見つかりませんでした。' );
         update_preview( code );
         update_list( data.results.poi );
     }
@@ -131,29 +135,49 @@
         $(nextimg).bind( 'click', nextpage );
     }
 
+    function init_width () {
+//		var gadget_width  = 441;
+		var gadget_width  = 420;
+		var iframe_offset = 21;
+		var preview_width = 320;
+		var copy_width = 162;
+		var submit_width = 40;
+		$('#area_upper').width( gadget_width );
+		$('#area_lower').width( gadget_width );
+		$('#shop_preview').width( preview_width+iframe_offset );
+		$('#info_area').width( gadget_width-preview_width-iframe_offset );
+		$('#shop_list').width( gadget_width-preview_width-iframe_offset );
+		$('#shop_form').width( gadget_width-copy_width );
+		$('#input_kw').width( gadget_width-copy_width-submit_width-10 );
+		$('#input_submit').width( submit_width );
+		$('#copyright').width( copy_width );
+	}
+
     // ガジェットの高さの調整
     function adjust_height () {
         gadgets.window.adjustHeight();
     }
-    $(adjust_height);
+
+    function first_message () {
+        disp_mess('お店を検索できます。');
+    }
+    $(init_width);
+    $(first_message);
 //--></script>
 <style><!--
     body, img, table, tr, td, div, form, ul, iframe { margin: 0; padding: 0; border: 0; }
     li { margin: 0; padding: 0; list-style: none; }
     iframe { overflow: hidden; }
-    .input_text { width: 200px; }
-    .select_code { width: 100%; }
-    #area_upper {
-        width: 441px;
-    }
     #area_lower {
-        width: 441px;
         clear: left;
         margin-bottom: 10px;
     }
     #shop_preview {
-        width: 341px;
         float: left;
+    }
+    #shop_preview p {
+        margin: 1em 0;
+		padding: 0;
     }
     .elem_library {
         display: none;
@@ -163,15 +187,13 @@
         height: 404px;
     }
     #info_area {
-        width: 60px;
         height: 30px;
         float: left;
     }
-    #info_area img {
-        float: right;
+    #info_area a {
+        margin-left: 4px;
     }
     #shop_list {
-        width: 60px;
         float: left;
     }
     #shop_list ul {
@@ -198,11 +220,9 @@
         float: right;
     }
     #shop_form {
-        width: 259px;
         float: left;
     }
     #copyright {
-        width: 162px;
         float: left;
     }
     #copyright img {
@@ -215,20 +235,19 @@
 <form onSubmit="start_search(); return false;">
 
 <div id="area_upper">
-    <div id="shop_preview">
-    <a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？"></a>
-    <div id="first_message">&nbsp;</div>
-    </div>
+    <div id="shop_preview"></div>
     <div id="info_area">
+<!--
     <a target="_blank" href="http://www.doko.jp/search/auth/myPage/"><img src="http://www.doko.jp/search/images/btn_for_mydoko.gif"></a>
+-->
     </div>
     <div id="shop_list"></div>
 </div>
 
 <div id="area_lower">
     <div id="shop_form">
-    <input class="input_text" type="text" name="kw" value="">
-    <input class="input_submit" type="button" value="検索" onClick="start_search(this);">
+    <input id="input_kw" type="text" name="kw" value="">
+    <input id="input_submit" type="button" value="検索" onClick="start_search(this);">
     </div>
 
     <div id="copyright">
@@ -246,6 +265,12 @@
 <a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
 <img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 130px 66px 0px 65px;">
 </div>
+
+<div class="elem_library" id="lib_message">
+<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+<p>&nbsp;</p>
+</div>
+
 </div>
 
     ]]></Content>
