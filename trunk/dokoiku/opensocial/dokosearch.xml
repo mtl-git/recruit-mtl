@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
     <ModulePrefs title="ドコイク？お店検索" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
+        <Require feature="opensocial-0.8" />
         <Require feature="dynamic-height" />
         <Require feature="views" />
     </ModulePrefs>
     <Content type="html"><![CDATA[
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.kawa.net/works/js/jkl/share/jkl-dumper.js"></script>
 <script type="text/javascript"><!--
     var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
     var keyword;
@@ -85,17 +87,84 @@
         if ( ! data.results ) return disp_mess( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
         if ( ! data.results.poi ) return disp_mess( '店舗情報が見つかりませんでした。' );
         if ( ! data.results.poi.length ) return disp_mess( '店舗情報が見つかりませんでした。' );
-        var code = data.results.poi[0].code;
-        if ( ! code ) return disp_mess( '店舗情報が見つかりませんでした。' );
-        update_preview( code );
+        var rpin = data.results.poi[0].code;
+        if ( ! rpin ) return disp_mess( '店舗情報が見つかりませんでした。' );
+        display_preview( rpin );
+		save_last_rpin( rpin );
         update_list( data.results.poi );
     }
 
     // ブログパーツの表示
-    function update_preview (code) {
-        var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=2/';
+	function display_preview ( rpin ) {
+        var url = 'http://map.doko.jp/blogparts/b/sc='+rpin+'/sz=2/';
         now_loading( url );
+	}
+
+    // ブログパーツの表示
+	function save_last_rpin ( rpin ) {
+		update_viewer_store( 'rpin', rpin );
+	}
+
+    // データを保存する
+    function update_viewer_store ( key, value ) {
+        var req = opensocial.newDataRequest();
+        var viewer = opensocial.IdSpec.PersonId.VIEWER;
+        req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), 'update1' );
+        req.send();
     }
+
+    // データを読み出す
+    function fetch_viewer_store ( key, callok, callng ) {
+        var req = opensocial.newDataRequest();
+        var p = {};
+        var viewer = opensocial.IdSpec.PersonId.VIEWER;
+        p[ opensocial.IdSpec.Field.USER_ID ] = viewer;
+        var ispc = opensocial.newIdSpec( p );
+
+		// リクエスト毎の識別子を付ける
+        var REQKEY_USER = 'userid1';
+        var REQKEY_DATA = 'data1';
+        req.add( req.newFetchPersonRequest( viewer ), REQKEY_USER );
+        req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQKEY_DATA );
+
+		if ( ! callng ) callng = function() {};
+        var func = function ( res ) {
+			// viewerのユーザIDを取り出す
+//          var viewid = res.get(REQKEY_USER).getData().getId();
+			// ↑エラー処理なし、↓エラー処理あり
+            if ( ! res ) return callng( res );
+            var u1 = res.get(REQKEY_USER);
+            if ( ! u1 ) return callng( res );
+            var u2 = u1.getData();
+            if ( ! u2 ) return callng( res );
+            var viewid = u2.getId();
+            if ( ! viewid ) return callng( res );
+
+			// ユーザIDとキーを指定してデータを取り出す
+//          var value = (res.get(REQKEY_DATA).getData())[viewid][key];
+			// ↑エラー処理なし、↓エラー処理あり
+            var d1 = res.get(REQKEY_DATA);
+            if ( ! d1 ) return callng( res );
+            var d2 = d1.getData();
+            if ( ! d2 ) return callng( res );
+            var d3 = d2[viewid];
+            if ( ! d3 ) return callng( res );
+            var value = d3[key];
+
+			// 取り出した値だけを引数にしてOKコールバック関数を呼ぶ
+			if ( callok ) callok( value );
+        };
+        req.send( func );
+    }
+
+	// ダンプする
+	function dump ( data ) {
+		if ( ! JKL ) return;
+		if ( ! JKL.Dumper ) return;
+        var dumper = new JKL.Dumper();
+        data = dumper.dump( data );
+		alert( data );
+	}
 
     // 検索結果リストの表示
     function update_list (list) {
@@ -117,9 +186,10 @@
             }
             li.title = title;
             (function(){
-                var code = shop.code;
+                var rpin = shop.code;
                 var onclick = function () {
-                    update_preview( code );
+                    display_preview( rpin );
+					save_last_rpin( rpin );
                 };
                 $(li).bind( 'click', onclick );
             })();
@@ -145,7 +215,7 @@
         var midnavi_offset =  10;
         var iframe_offset = $.browser.msie ? 21 : 5;
 		var canvas_padding = 5;
-        var canvas_addwid   = canvas_padding*4 + ava_width + midnavi_width;
+        var canvas_addwid   = canvas_padding*3 + ava_width + midnavi_width;
         var gadget_min    = 441;
         var gadget_width  = window_width;
 
@@ -164,7 +234,6 @@
                 avaelem.height( ava_height );
                 avaelem.css('border','1px solid red');
                 avaelem.css('float','right');
-                avaelem.css('margin-right',canvas_padding+'px');
 
                 var canelem = $('#content_canvas');
 				canelem.css('float','left');
@@ -206,6 +275,7 @@
     function window_onload () {
         init_width();
         disp_mess('お店を検索できます。');
+		fetch_viewer_store( 'rpin', display_preview );
     }
     $(window_onload);
 //--></script>
