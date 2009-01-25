@@ -37,8 +37,11 @@
             };
             function fetch() {
                 var req  = mixi.newDataRequest();
-                req.add(req.newFetchPersonRequest("VIEWER"),"viewer");
-                req.add(req.newFetchPersonAppDataRequest("VIEWER",cols ), "viewer_data");
+                var p = {};
+                p[opensocial.IdSpec.Field.USER_ID[]] = opensocial.IdSpec.PersonId.VIEWER;
+                var idSpec = opensocial.newIdSpec(p);
+                req.add(req.newFetchPersonRequest(idSpec),"viewer");
+                req.add(req.newFetchPersonAppDataRequest(idSpec,cols ), "viewer_data");
                 req.send( fetch_callback );
             };
             function fetch_callback( res ) {
@@ -53,6 +56,7 @@
                 }
                 console.log(me.getId());
                 console.log(vwd.getData());
+                
                 var data = ( vwd.getData() )[ me.getId() ];
                 if( !data ){
                     out.innerHTML = 'persistent data is empty.';
