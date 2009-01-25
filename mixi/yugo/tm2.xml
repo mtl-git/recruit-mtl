@@ -24,7 +24,7 @@
                     var row = obj.data[i];
                     html += '<li>' ;
                     html += '<a href="' + row.url + '" target="_blank">'
-                    html += '<img src="' + row.img + '" style="vertical-align:top">';
+                    html += '<img src="' + row.img + '" style="float:left">';
                     html += row.title + "</a>";
                     html += row.desc + '</li>';
                 }
