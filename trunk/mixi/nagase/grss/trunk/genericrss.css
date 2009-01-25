@@ -1,0 +1,13 @@
+/**
+ * Generic RSS Reader
+ * @author Atushi Nagase
+ */
+
+body { font-size:10pt; color:#333; background:#fff; }
+
+.view { display:none; }
+#list { display:block; }
+#wrapper.pref #pref { display:block; }
+#wrapper.pref #list { display:none; }
+
+span.link { color:#009; font-size:0.8em; text-decoration:underline; cursor:pointer; }
