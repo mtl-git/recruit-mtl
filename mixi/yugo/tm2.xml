@@ -24,12 +24,12 @@
                     var row = obj.data[i];
                     html += '<div style="float:left;text-align:center;width:150f">' ;
                     html += '<a href="' + row.url + '" target="_blank">'
-                    html += row.title + 
+                    html += row.title + "<br/>";
                     html += '<img src="' + row.img + '">';
                     html += "</a>";
                     html += row.desc + '</div>';
                     if(i % 3 == 2){
-                      html += '<br style="clear:both">';
+                      html += '<br style="clear:both" />';
                     }
                 }
                 html += '</ol>';
