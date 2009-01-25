@@ -137,8 +137,7 @@
     }
 
     function init_width () {
-//      var gadget_width  = 441;
-        var gadget_width  = 420;
+        var gadget_width  = 441;
         var iframe_offset = $.browser.msie ? 21 : 5;
         var preview_width = 320;
         var copy_width = 162;
