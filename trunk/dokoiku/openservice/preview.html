@@ -42,7 +42,7 @@
 		if ( ! data.results.poi.length ) return error( '店舗が見つかりません。' );
 		var code = data.results.poi[0].code;
 		if ( ! code ) return error( '店舗が見つかりません。' );
-		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=1/';
+		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=2/';
 		info();
 		location.href = url;
 	}
