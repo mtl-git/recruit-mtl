@@ -23,8 +23,7 @@
                 for( var i=0; i<obj.data.length; i++ ){
                     var row = obj.data[i];
                     html += '<table width="150" style="float:left">' ;
-                    html += '<tr><td align="center" valign="middle" height="147">
-' ;
+                    html += '<tr><td align="center" valign="middle" height="147">';
                     html += '<a href="' + row.url + '" target="_blank">'
                     html += '<img src="' + row.img + '">';
                     html += "</a>";
