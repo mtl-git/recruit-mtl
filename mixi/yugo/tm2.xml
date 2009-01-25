@@ -18,7 +18,7 @@
             };
             function callback ( obj ){
                 for( var i=0; i<obj.length; i++ ){
-                    html += '<li>' + obj.title + '</li>';
+                    html += '<li>' + obj[i].title + '</li>';
                 }
                 html += '</ol>';
                 view.innerHTML = html;
