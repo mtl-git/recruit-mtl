@@ -14,18 +14,19 @@
                 params[ gadgets.io.RequestParameters.CONTENT_TYPE ] = gadgets.io.ContentType.JSON;
                 // params[ gadgets.io.RequestParameters.METHOD ] = gadgets.io.MethodType.GET;
                 params[ gadgets.io.RequestParameters.REFRESH_INTERVAL ] = 0;  // does this work?
-                var url = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/yugo/sample.js";  
+                var url = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/yugo/sample.js?ss";  
                 gadgets.io.makeRequest( url, callback, params );
             };
             function callback ( obj ){
                 console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
-                    var imgsrc = "http://img.townmarket.jp/thumb/" + obj.data[i].photo + '/t_newtop.jpg"/>';
+                    var imgsrc = "http://img.townmarket.jp/thumb/" + obj.data[i].img + '/t_newtop.jpg"/>';
                     html += '<li>' ;
-                    html += imgsrc;
+                    html += '<img src="' + imgsrc + '">';
                     html += obj.data[i].title + '</li>';
                 }
                 html += '</ol>';
+                console.log(html);
                 view.innerHTML = html;
             };
         </script>
