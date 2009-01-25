@@ -37,17 +37,19 @@
             };
             function fetch() {
                 var req  = mixi.newDataRequest();
+                console.log(req);
                 req.add(req.newFetchPersonAppDataRequest("VIEWER",cols ), "viewer_data");
                 req.send( fetch_callback );
             };
             function fetch_callback( res ) {
-                var vwd = res.get( "viewer_data" );
+                var vwd = res.get("viewer_data");
                 me = vw.getData();
-                if( res.hadError() ){
+                if(res.hadError()){
                     out.innerHTML = res.getErrorMessage();
                     return;
                 }
                 var data = ( vwd.getData() )[ me.getId() ];
+                console.log(data);
                 if( !data ){
                     out.innerHTML = 'persistent data is empty.';
                     return;
