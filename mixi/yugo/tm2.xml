@@ -17,6 +17,7 @@
                 gadgets.io.makeRequest( url, callback, params );
             };
             function callback ( obj ){
+                console.log(obj);
                 for( var i=0; i<obj.length; i++ ){
                     html += '<li>' + obj[i].title + '</li>';
                 }
