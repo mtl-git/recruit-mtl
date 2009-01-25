@@ -21,9 +21,12 @@
                 var html = "";
                 console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
+                    var row = obj.data[i];
                     html += '<li>' ;
-                    html += '<img src="' + obj.data[i].img + '">';
-                    html += obj.data[i].title + '</li>';
+                    html += '<a href="' + row.url + '">'
+                    html += '<img src="' + row.img + '" style="vertical-align:top">';
+                    html += row.title + "</a><br/>";
+                    html += row.desc + '</li>';
                 }
                 html += '</ol>';
                 console.log(html);
