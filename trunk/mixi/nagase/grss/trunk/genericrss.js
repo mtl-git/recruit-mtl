@@ -19,6 +19,7 @@ $.gadgets.ready(function(){
   $("p.add-feed span.link").bind("click",appendInput);
   $("#submit-feeds-button").bind("click",acceptPref);
   $("#cancel-feeds-button").bind("click",listView);
+  wrapper.addClass("loading");
   $.opensocial.data.get(PrefKey.FEEDS,"owner",function(d){
     if(!d||!d.length) return prefView();
     feeds = d;
@@ -26,6 +27,7 @@ $.gadgets.ready(function(){
   });
 
   function prefView() {
+    wrapper.removeClass("loading");
     wrapper.addClass("pref");
     wrapper.removeClass("list");
     feeds = feeds || [];
@@ -36,7 +38,7 @@ $.gadgets.ready(function(){
   }
 
   function listView() {
-    wrapper.addClass("list");
+    wrapper.addClass("loading");
     wrapper.removeClass("pref");
     cue = 0;
     entries = [];
@@ -54,6 +56,7 @@ $.gadgets.ready(function(){
       "<\/li>"
     ].join(""));
     $("li#feed"+i+" span.link").bind("click",removeInput);
+    $.gadgets.height("auto");
   }
 
   function removeInput(i) {
@@ -89,7 +92,7 @@ $.gadgets.ready(function(){
       }
       cue++; 
       getFeed();
-    },MAX_ENTRY_SIZE,true);
+    },MAX_ENTRY_SIZE,$.gadgets.view().getName()=="canvas");
   }
 
   function onCompleteFeed() {
@@ -111,6 +114,8 @@ $.gadgets.ready(function(){
       ].join(""));
     });
     entries_ul.html(ht.join(""));
+    wrapper.removeClass("loading");
+    wrapper.addClass("list");
     $.gadgets.height("auto");
   }
 

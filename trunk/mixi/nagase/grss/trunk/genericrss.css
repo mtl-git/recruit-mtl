@@ -6,8 +6,27 @@
 body { font-size:10pt; color:#333; background:#fff; }
 
 .view { display:none; }
-#list { display:block; }
+#wrapper.list #list { display:block; }
 #wrapper.pref #pref { display:block; }
-#wrapper.pref #list { display:none; }
+
+
 
 span.link { color:#009; font-size:0.8em; text-decoration:underline; cursor:pointer; }
+
+ul.list,
+ul.list li { list-style:none; margin:0; padding:0; }
+ul.list li { border-top:1px solid #ccc; }
+
+li.entry p.head { margin:0; padding:5px; }
+li.entry p.head span,
+li.entry p.head strong { display:block; }
+li.entry p.head span { font-size:0.8em; }
+
+li.odd p.head,
+ul.feeds li.odd { background-color:#eee; }
+ul.feeds li { padding:5px; }
+ul.feeds li span.remove { display:inline-block; padding:2px; }
+ul.feeds { padding:0 0 10px 0; }
+
+div#loading { display:none; }
+div#wrapper.loading div#loading { display:block; position:absolute; top:0; left:0; background:#c00; color:#fff; font-weight:bold; padding:2px; }
