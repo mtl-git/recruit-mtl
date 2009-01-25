@@ -43,14 +43,15 @@
             };
             function fetch_callback( res ) {
                 var vw  = res.get( "viewer" );
-                console.log(vw);
+                //console.log(vw);
                 me = vw.getData();
                 var vwd = res.get("viewer_data");
-                console.log(vwd);
+                //console.log(vwd);
                 if(res.hadError()){
                     out.innerHTML = res.getErrorMessage();
                     return;
                 }
+                consolo.log(me.getId());
                 var data = ( vwd.getData() )[ me.getId() ];
                 if( !data ){
                     out.innerHTML = 'persistent data is empty.';
