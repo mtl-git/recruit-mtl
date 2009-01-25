@@ -36,6 +36,7 @@
                 fetch();
             };
             function fetch() {
+                var req  = mixi.newDataRequest();
                 req.add(req.newFetchPersonRequest("VIEWER"),"viewer");
                 req.add(req.newFetchPersonAppDataRequest("VIEWER",cols ), "viewer_data");
                 req.send( fetch_callback );
