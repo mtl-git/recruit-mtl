@@ -1,108 +1,260 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="ドコイク？店舗検索アプリ" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
-    	<Require feature="dynamic-height" />
-	</ModulePrefs>
-	<Content type="html"><![CDATA[
+    <ModulePrefs title="オススメのお店ご紹介（ドコイク？）" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
+        <Require feature="dynamic-height" />
+    </ModulePrefs>
+    <Content type="html"><![CDATA[
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 <script type="text/javascript"><!--
-	var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
-	var query;
+    var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
+
+    // 検索を開始する
+
+    var keyword;
+    var pagenum;
+
     function start_search (btn) {
-		var form = btn.form;
-		query = form.kw.value;
-		var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=callback&pagesize=20&keyword='+query;
-		info();
-		request_json( url );
-	}
-	function request_json (url) {
-		var elem = document.createElement('script');
-		elem.setAttribute( 'type', 'text/javascript' );
-		elem.setAttribute( 'charset', 'UTF-8' );
-		document.body.appendChild( elem );
-		elem.src = url;
-	}
-	function info (mess) {
-		if ( ! mess ) mess = '.';
-		var elem = document.getElementById('info_area');
-		elem.innerHTML += mess;
-	}
-	function error (mess) {
-		var elem = document.createElement('p');
-		elem.innerHTML = mess;
-		document.body.appendChild( elem );
-	}
-	function callback (data) {
-		info();
-		if ( ! data ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
-		if ( ! data.results ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
-		if ( ! data.results.poi ) return error( '店舗情報が見つかりませんでした。' );
-		if ( ! data.results.poi.length ) return error( '店舗情報が見つかりませんでした。' );
-		var code = data.results.poi[0].code;
-		if ( ! code ) return error( '店舗情報が見つかりませんでした。' );
-		var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=2/';
-		info();
-		var preview = document.getElementById('shop_preview');
-		while( preview.childNodes.length ) {
-			preview.removeChild( preview.lastChild );
-		}
-		var iframe = document.createElement('iframe');
-		preview.appendChild( iframe );
-		iframe.src = url;
-		iframe.style.width  = '320px';
-		iframe.style.height = '400px';
-		iframe.frameborder  = '0';
-		iframe.scrolling    = 'no';
-		setTimeout( init, 1 );
-	}
-	function init () {
+        var form = document.forms[0];
+        if ( btn ) form = btn.form;
+        keyword = form.kw.value;
+        pagenum = 1;
+        call_search(0);
+    }
+
+    function call_search (offset) {
+        if ( offset ) pagenum += offset;
+        var container = document.getElementById('shop_list');
+        empty_element( container );
+        var url = 'http://api.doko.jp/v1/searchPOI.do?key='+API_KEY+'&format=json&callback=search_result&pagesize=20&keyword='+keyword+'&pagenum='+pagenum;
+        now_loading();
+        request_json( url );
+        adjust_height();
+    }
+
+    function now_loading (url) {
+        var container = document.getElementById('shop_preview');
+        empty_element( container );
+        var iframe = document.createElement('iframe');
+        container.appendChild( iframe );
+        iframe.frameborder = '0';
+        iframe.scrolling = 'no';
+        var libload = document.getElementById('lib_loading');
+        var html = libload.innerHTML;
+        html += '<style>body { margin:0; padding:0; width: 320px; height: 400px; overflow: hidden; }</style>';
+        if ( url ) {
+            html += '<script>setTimeout(function(){location.href="'+url+'";},1);</script>';
+        }
+        var src = "javascript:void(document.write('" + html + "'));";
+        iframe.src = src;
+    }
+    function empty_element (elem) {
+        while( elem.childNodes.length ) {
+            elem.removeChild( elem.lastChild );
+        }
+    }
+
+    function request_json (url) {
+        var elem = document.createElement('script');
+        elem.setAttribute( 'type', 'text/javascript' );
+        elem.setAttribute( 'charset', 'UTF-8' );
+        var container = document.getElementById('shop_preview');
+        container.appendChild( elem );
+        elem.src = url;
+    }
+    function error (mess) {
+        var elem = document.createElement('p');
+        elem.innerHTML = mess;
+        document.body.appendChild( elem );
+    }
+    function search_result (data) {
+        if ( ! data ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+        if ( ! data.results ) return error( '現在、この機能はご利用いただけません。(ドコイク？Webサービス)' );
+        if ( ! data.results.poi ) return error( '店舗情報が見つかりませんでした。' );
+        if ( ! data.results.poi.length ) return error( '店舗情報が見つかりませんでした。' );
+        var code = data.results.poi[0].code;
+        if ( ! code ) return error( '店舗情報が見つかりませんでした。' );
+        update_preview( code );
+        update_list( data.results.poi );
+    }
+    function update_preview (code) {
+        var url = 'http://map.doko.jp/blogparts/b/sc='+code+'/sz=2/';
+        now_loading( url );
+/*
+        var elem = document.getElementById('shop_preview');
+        empty_element( elem );
+        var iframe = document.createElement('iframe');
+        elem.appendChild( iframe );
+        iframe.src = url;
+        iframe.scrolling = 'no';
+        iframe.border = '0';
+        setTimeout( adjust_height, 1 );
+*/
+    }
+    function update_list (list) {
+        var container = document.getElementById('shop_list');
+        empty_element( container );
+        var ul = document.createElement('ul');
+        ul.style.height = '360px';
+//      ul.style.overflowY = 'scroll';
+        container.appendChild( ul );
+        for( var i=0; i<list.length; i++ ) {
+            var li = document.createElement('li');
+            ul.appendChild( li );
+            var shop = list[i];
+            var txt = document.createTextNode( shop.name );
+            li.appendChild( txt );
+            var title = shop.name;
+            if ( shop.address ) {
+                shop.address.match( /^([^ ]*?(都府?|道|府|県))/ );
+                var pref = RegExp.$1;
+                if ( pref ) title += '（'+pref+'）';
+                li.title = title;
+            }
+            (function(){
+                var code = shop.code;
+                var onclick = function () {
+                    update_preview( code );
+                };
+                $(li).bind( 'click', onclick );
+            })();
+        }
+
+        var nextimg = document.createElement('img');
+        container.appendChild( nextimg );
+        nextimg.src = 'http://www.doko.jp/search/common/ads/img/skin_a_marker.gif';
+        nextimg.title = 'Page '+(pagenum+1);
+        var nextpage = function () {
+            call_search(+1);
+        };
+        $(nextimg).bind( 'click', nextpage );
+    }
+    function adjust_height () {
         gadgets.window.adjustHeight();
-	}
+    }
+    $(adjust_height);
 //--></script>
 <style><!--
-	body { margin: 0; padding: 0; width: 441px; }
-	img { border: 0; }
-	iframe { border: 0; }
-	.input_text { width: 200px; }
-	.select_code { width: 200px; }
+    body { margin: 0; padding: 0; }
+    img { border: 0; }
+    table, tr, td, form, ul, iframe { margin: 0; padding: 0; border: 0; }
+    li { margin: 0; padding: 0; list-style: none; }
+    iframe { overflow: hidden; }
+    .input_text { width: 200px; }
+    .select_code { width: 100%; }
+
+    #area_upper {
+        width: 441px;
+    }
+    #area_lower {
+        width: 441px;
+        clear: left;
+    }
+
+    #shop_preview {
+        width: 341px;
+        float: left;
+    }
+    .elem_library {
+        display: none;
+    }
+    #shop_preview iframe {
+        width: 100%;
+        height: 404px;
+    }
+    #info_area {
+        width: 100px;
+        height: 30px;
+        float: left;
+    }
+    #info_area img {
+        float: right;
+    }
+    #shop_list {
+        width: 100px;
+        float: left;
+    }
+    #shop_list ul {
+        overflow: hidden;
+    }
+    #shop_list li {
+        height: 15px;
+        padding: 1px 0 2px 1px;
+        line-height: 15px;
+        font-size: 11px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    #shop_list li:hover {
+        color: red;
+        background: yellow;
+        text-decoration: underline;
+    }
+    #shop_list img {
+        cursor: pointer;
+        width: 16px;
+        height: 15px;
+        margin-top: 1px;
+        float: right;
+    }
+    #shop_form {
+        width: 279px;
+        float: left;
+    }
+    #copyright {
+        width: 162px;
+        float: left;
+    }
+    #copyright img {
+        margin-top: 12px;
+    }
+    #apviaapps_parts {
+        float: left;
+    }
+    #content_canvas {
+        float: left;
+    }
 --></style>
 
-<form onSubmit="start_search(this);">
+<div id="all">
+<div id="content_canvas">
+<form onSubmit="start_search(); return false;">
 
-<table border="0" cellpadding="0" cellspacing="0"><tr><td colspan="2" valign="top">
+<div id="area_upper">
+    <div id="shop_preview">
+    <a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？"></a>
+    <div id="first_message">&nbsp;</div>
+    </div>
+    <div id="info_area">
 
-<div id="shop_preview">
-<a href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？"></a>
-<div style="height:100px;"></div>
+<a target="_blank" href="http://www.doko.jp/search/auth/myPage/"><img src="http://www.doko.jp/search/images/btn_for_mydoko.gif"></a>
 
 </div>
-
-<!--
-<div id="shop_list">
-<select class="select_code" name="code">
-</select>
-</div>
--->
-
-</td><td valign="top">
-<div id="info_area"></div>
-</td></tr><tr><td valign="bottom">
-
-<div id="shop_form">
-<input class="input_text" type="text" name="kw" value="">
-<input class="input_submit" type="button" value="検索" onClick="start_search(this);">
+    <div id="shop_list"></div>
 </div>
 
+<div id="area_lower">
+    <div id="shop_form">
+    <input class="input_text" type="text" name="kw" value="">
+    <input class="input_submit" type="button" value="検索" onClick="start_search(this);">
+    </div>
 
-</td><td colspan="2" width="162" valign="bottom">
-
-<img src="https://www.recruit.co.jp/corporate/shared/crrecruit2.gif">
-
-</td></tr></table>
-
-
+    <div id="copyright">
+    <img src="https://www.recruit.co.jp/corporate/shared/crrecruit2.gif">
+    </div>
+</div>
 
 </form>
 
-	]]></Content>
+</div>
+<div id="apviaapps_parts"></div>
+</div>
+
+<div class="elem_library" id="lib_loading">
+<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+<img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 130px 66px 0px 65px;">
+</div>
+</div>
+
+    ]]></Content>
 </Module>
