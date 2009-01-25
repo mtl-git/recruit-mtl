@@ -51,7 +51,7 @@
                     out.innerHTML = res.getErrorMessage();
                     return;
                 }
-                consolo.log(me.getId());
+                console.log(me.getId());
                 var data = ( vwd.getData() )[ me.getId() ];
                 if( !data ){
                     out.innerHTML = 'persistent data is empty.';
