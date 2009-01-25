@@ -22,7 +22,7 @@
                 var var1 = form.var1.value || '';
                 // json object
                 // request update
-                var req = opensocial.newDataRequest();
+                var req = mixi.newDataRequest();
                 //更新はVIWERにしかかけない
                 req.add( req.newUpdatePersonAppDataRequest("VIEWER",cols, var1));
                 req.send( update_callback );
@@ -36,7 +36,7 @@
                 fetch();
             };
             function fetch() {
-                var req  = opensocial.newDataRequest();
+                var req  = mixi.newDataRequest();
                 req.add(req.newFetchPersonAppDataRequest("VIEWER",cols ), "viewer_data");
                 req.send( fetch_callback );
             };
@@ -58,7 +58,7 @@
                     + '</ul>';
             };
             function clear_pd() {
-                var req = opensocial.newDataRequest();
+                var req = mixi.newDataRequest();
                 req.add( req.newRemovePersonAppDataRequest( opensocial.IdSpec.PersonId.VIEWER, cols ), "clear_data" );
                 req.send( clear_callback );
             };
