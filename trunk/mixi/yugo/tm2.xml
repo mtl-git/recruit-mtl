@@ -27,6 +27,7 @@
                     html += '<a href="' + row.url + '" target="_blank">'
                     html += '<img src="' + row.img + '">';
                     html += "</a>";
+                    html += "</td></tr>";
                     html += "<tr><td><strong>" + row.title + "</strong></td></tr>";
                     html += "<tr><td>" + row.desc + "</td></tr>";
                     html += '</table>';
