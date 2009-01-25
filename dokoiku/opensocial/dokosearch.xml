@@ -198,7 +198,7 @@
         float: right;
     }
     #shop_form {
-        width: 279px;
+        width: 259px;
         float: left;
     }
     #copyright {
