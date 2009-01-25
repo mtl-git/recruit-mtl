@@ -2,6 +2,7 @@
 <Module>
     <ModulePrefs title="ドコイク？お店検索" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
         <Require feature="dynamic-height" />
+        <Require feature="views" />
     </ModulePrefs>
     <Content type="html"><![CDATA[
 
@@ -137,13 +138,51 @@
     }
 
     function init_width () {
-        var gadget_width  = 441;
+        var window_width  = $(document.body).width();
+        var ava_width     = 160;
+        var ava_height    = 400;
+        var midnavi_width  = 250;
+        var midnavi_offset =  10;
         var iframe_offset = $.browser.msie ? 21 : 5;
+		var canvas_padding = 5;
+        var canvas_addwid   = canvas_padding*4 + ava_width + midnavi_width;
+        var gadget_min    = 441;
+        var gadget_width  = window_width;
+
+        var curview = gadgets.views.getCurrentView();  
+        if ( curview.getName() == 'canvas' ) {
+            if ( gadget_min+canvas_addwid < window_width ) {
+                gadget_width = window_width - canvas_addwid;
+
+                var dkelem = $('#midnavi_parts');
+                dkelem.width( midnavi_width );
+                dkelem.css('float','left');
+                dkelem.css('margin-left',canvas_padding+'px');
+
+                var avaelem = $('#apviaapps_parts');
+                avaelem.width( ava_width );
+                avaelem.height( ava_height );
+                avaelem.css('border','1px solid red');
+                avaelem.css('float','right');
+                avaelem.css('margin-right',canvas_padding+'px');
+
+                var canelem = $('#content_canvas');
+				canelem.css('float','left');
+				canelem.css('margin-left',canvas_padding+'px');
+            } else {
+                $('#midnavi_parts').html('');
+                $('#apviaapps_parts').html('');
+            }
+        }
+        if ( gadget_width < gadget_min ) {
+            gadget_width = gadget_min
+        }
+
         var preview_width = 320;
         var copy_width = 162;
         var submit_width = 40;
         $('#area_upper').width( gadget_width );
-        $('#area_lower').width( gadget_width );
+        $('#area_lower').width( gadget_width ).css('margin',canvas_padding+'px 0');
         $('#shop_preview').width( preview_width+iframe_offset );
         $('#info_area').width( gadget_width-preview_width-iframe_offset );
         $('#shop_list').width( gadget_width-preview_width-iframe_offset );
@@ -176,7 +215,6 @@
     iframe { overflow: hidden; }
     #area_lower {
         clear: left;
-        margin-bottom: 10px;
     }
     #shop_preview {
         float: left;
@@ -236,17 +274,13 @@
     }
 --></style>
 
-<div id="all">
+<div id="content_all">
 <div id="content_canvas">
 <form onSubmit="start_search(); return false;">
 
 <div id="area_upper">
     <div id="shop_preview"></div>
-    <div id="info_area">
-<!--
-    <a target="_blank" href="http://www.doko.jp/search/auth/myPage/"><img src="http://www.doko.jp/search/images/btn_for_mydoko.gif"></a>
--->
-    </div>
+    <div id="info_area"></div>
     <div id="shop_list"></div>
 </div>
 
@@ -264,6 +298,7 @@
 </form>
 
 </div>
+<div id="midnavi_parts"></div>
 <div id="apviaapps_parts"></div>
 </div>
 
