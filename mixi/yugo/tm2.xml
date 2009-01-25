@@ -20,10 +20,9 @@
             function callback ( obj ){
                 console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
-                   console.log(obj.data[i]);
+                    var imgsrc = "http://img.townmarket.jp/thumb/" + obj.data[i].photo + '/t_newtop.jpg"/>';
                     html += '<li>' ;
-                    html += '<img src="http://img.townmarket.jp/thumb/';
-                    html += obj.data[i].photo + '/t_newtop.jpg"/>';
+                    html += imgsrc;
                     html += obj.data[i].title + '</li>';
                 }
                 html += '</ol>';
