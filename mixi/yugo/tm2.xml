@@ -132,8 +132,8 @@
         </script>
         <div style="margin-top:10px;clear:both" >
             <form id=frm name=frm>
-	            <input type="text" name="s_url" id="s_url" style="width:200"/>
-            	<input type="button" value="検索" onclick="request(this.form)"/>
+	            　　　あなたの地域のタウンマーケットＵＲＬを入れてください<input type="text" name="s_url" id="s_url" style="width:200"/><br>
+            	　　　<input type="button" value="検索" onclick="request(this.form)"/>
             </form>
         </div>
     ]]>
