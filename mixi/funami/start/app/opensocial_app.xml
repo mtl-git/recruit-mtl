@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<%= data['module'] %>
+<Content type="html" view="home">
+<![CDATA[
+<%= data['home'] %> 
+]]>
+</Content>
+<Content type="html" view="canvas">
+<![CDATA[
+<%= data['canvas'] %> 
+]]>
+</Content>
+<Content type="html" view="profile">
+<![CDATA[
+<%= data['profile'] %> 
+]]>
+</Content>
+<Content type="html" view="preview">
+<![CDATA[
+<%= data['preview'] %> 
+]]>
+</Content>
+</Module>
+
