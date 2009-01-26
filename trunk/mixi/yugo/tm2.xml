@@ -2,6 +2,7 @@
 <Module>
     <ModulePrefs title="TM TEST"> 
        <Require feature="opensocial-0.8"/>
+       <Require feature="dynamic-height" />
     </ModulePrefs>
     <Content type="html">
     <![CDATA[ 
@@ -42,6 +43,7 @@
                     html += '</table>';
                 }
                 view.innerHTML = html;
+                adjust_height();
             };
             //データ永続化共通モジュール（update）
             function update_viewer_store ( key, value, callbk ) {
