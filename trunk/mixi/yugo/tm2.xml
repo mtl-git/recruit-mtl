@@ -124,7 +124,7 @@
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
-				document.forms["frm"].s_url.value = val;
+				document.frm.elements.s_url.value = val;
 			}
 			init();
         </script>
