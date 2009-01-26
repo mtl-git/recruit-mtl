@@ -20,25 +20,20 @@
     #content_tab.ui-tabs {
         padding: 0;
     }
-    #content_tab.ui-tabs .ui-tabs-nav {
-        padding: 2px 2px 0 2px;
+    #content_tab.ui-tabs .ui-tabs-panel {
+        padding: 0;
     }
-    #content_tab.ui-tabs .ui-tabs-nav li a {
-        padding: 2px;
+    #content_tab.ui-tabs .ui-tabs-nav {
+        padding: 2px 0 0 2px;
     }
     #content_tab.ui-tabs .ui-tabs-nav li {
         width: 30%;
         text-align: center;
     }
-    #content_tab.ui-tabs .ui-tabs-selected {
-        font-weight: bold;
+    #content_tab.ui-tabs .ui-tabs-nav li a {
+        padding: 2px;
     }
-    #content_tab.ui-tabs .ui-tabs-panel {
-        padding: 0;
-    }
-    #content_tab.ui-tabs .ui-widget-header {
-        border-width: 0 0 1px 0;
-    }
+
 --></style>
 <script type="text/javascript"><!--
     // ガジェットの高さの調整
@@ -59,9 +54,10 @@
         // タブの初期化と見た目の調整
         var opt = { select: onselect };
         $("#content_tab").tabs(opt);
-        $("#content_tab").removeClass('ui-corner-all');
-        $("#content_tab").addClass('ui-corner-top');
-        $("#content_tab ul").removeClass('ui-widget-content ui-corner-all');
+        $("#content_tab").removeClass('ui-widget-content ui-corner-all');
+        $("#content_tab ul").removeClass('ui-corner-all');
+        $("#content_tab ul").addClass('ui-corner-top');
+        $("#content_tab div").removeClass('ui-corner-bottom');
 
         // アプリの高さを整える
         adjust_height();
@@ -78,14 +74,14 @@
         <li><a href="#tab2">タブその２</a></li>
         <li><a href="#tab3">タブその３</a></li>
     </ul>
-    <div id="tab1">
-        タブ１の中身
+    <div id="tab1" style="border: 1px solid #AAAAAA; border-width: 0 1px 1px 1px;">
+        タブ１の中身（枠付き）
     </div>
     <div id="tab2">
         <img src="http://farm4.static.flickr.com/3361/3223961921_63b8e9a404.jpg?v=0">
     </div>
     <div id="tab3">
-        タブ３の中身
+        タブ３の中身（枠ナシ）
     </div>
 </div>
 
