@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+    <ModulePrefs title="TM TEST"> 
+    </ModulePrefs>
+    <Content type="html">
+    <![CDATA[ 
+        <style>
+        #all {
+        margin: 0px;
+        padding: 0px;
+        width: 941px;
+        height: 100%;
+        }
+        #apviaapps_parts {
+        float: left;
+        margin: 0px;
+        padding: 0px;
+        width: 160px;
+        height: 100%;
+        background: #aaaaaa;
+        }
+        #content_canvas {
+        float: left;
+        font-size: 12px;
+        margin: 0px;
+        padding: 0px;
+        color:#444444;
+        width: 781px;
+        }
+        </style>
+        <div id="content-div"></div>
+        <script type="text/javascript">
+            var view = document.getElementById( 'content-div' );
+            //データを保存する
+            function request (form){    
+                update_viewer_store("s_url",form.s_url.value,function(){alert('Store OK!')});
+            };
+            //データ永続化共通モジュール（update）
+            function update_viewer_store ( key, value, callbk ) {
+              var req = opensocial.newDataRequest();
+              if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
+              var viewer = opensocial.IdSpec.PersonId.VIEWER;
+              var REQID_DATA = 'data1';
+              req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), REQID_DATA );
+              req.send( callbk );
+            }
+            //データ永続化共通モジュール（fetch）
+            function fetch_viewer_store ( key, callok, callng ) {
+              var req = opensocial.newDataRequest();
+              if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
+              // ユーザID
+              var p = {};
+              var viewer = opensocial.IdSpec.PersonId.VIEWER;
+              var uidkey = opensocial.IdSpec.Field.USER_ID;
+              p[uidkey] = viewer;
+              var ispc = opensocial.newIdSpec( p );
+              // リクエスト毎の識別子を付ける
+              var REQID_USER = 'user1';
+              var REQID_DATA = 'data1';
+              req.add( req.newFetchPersonRequest( viewer ), REQID_USER );
+              req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQID_DATA );
+              if ( ! callng ) callng = function() {};
+              var func = function ( res ) {
+                // viewerのユーザIDを取り出す
+                // var viewid = res.get(REQID_USER).getData().getId();
+                if ( ! res ) return callng( res );
+                var u1 = res.get(REQID_USER);
+                if ( ! u1 ) return callng( res );
+                var u2 = u1.getData();
+                //console.log(u2);
+                if ( ! u2 ) return callng( res );
+                var viewid = u2.getId();
+                if ( ! viewid ) return callng( res );
+                // ユーザIDとキーを指定してデータを取り出す
+                // var value = (res.get(REQID_DATA).getData())[viewid][key];
+                var d1 = res.get(REQID_DATA);
+                //console.log(d1);
+                if ( ! d1 ) return callng( res );
+                var d2 = d1.getData();
+                if ( ! d2 ) return callng( res );
+                var d3 = d2[viewid];
+                if ( ! d3 && d2[key] ) d3 = d2; // bug?
+                if ( ! d3 ) return callng( res );
+                console.log(d3);
+                var value = d3[key];
+                // 成功時は値を引数にしてOKコールバック関数を呼ぶ
+                if ( callok ) callok( value );
+              };
+              req.send( func );
+            }
+        </script>
+        <div style="margin-top:10px;clear:both" >
+            <form>
+	            <input type="text" name="s_url" style="width:200"/>
+            	<input type="button" value="検索" onclick="request(this.form)"/>
+            </form>
+        </div>
+    ]]>
+    </Content> 
+</Module>
