@@ -65,14 +65,14 @@
                 // ユーザIDとキーを指定してデータを取り出す
                 // var value = (res.get(REQID_DATA).getData())[viewid][key];
                 var d1 = res.get(REQID_DATA);
-                console.log(d1);
+                //console.log(d1);
                 if ( ! d1 ) return callng( res );
                 var d2 = d1.getData();
-                console.log(d2);
                 if ( ! d2 ) return callng( res );
                 var d3 = d2[viewid];
                 if ( ! d3 && d2[key] ) d3 = d2; // bug?
                 if ( ! d3 ) return callng( res );
+                console.log(d3);
                 var value = d3[key];
                 // 成功時は値を引数にしてOKコールバック関数を呼ぶ
                 if ( callok ) callok( value );
