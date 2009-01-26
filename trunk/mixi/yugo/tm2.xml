@@ -59,8 +59,8 @@
                     html += '<img src="' + row.img + '">';
                     html += "</a>";
                     html += "</td></tr>";
-                    html += "<tr><td><strong>" + row.title + "</strong></td></tr>";
-                    html += '<tr><td style="font-size: x-small;">' + row.desc.substr(4) + "</td></tr>";
+                    html += "<tr><td bgcolor="#E4EDB6"><strong>" + row.title + "</strong></td></tr>";
+                    html += '<tr><td style="font-size: small;background-color:#FFF7E4">' + row.desc.substr(4) + "</td></tr>";
                     html += '</table>';
                 }
                 view.innerHTML = html;
