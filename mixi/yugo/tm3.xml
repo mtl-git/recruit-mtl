@@ -24,6 +24,7 @@
                 }
             }
             //データ永続化共通モジュール（update）
+            /*
             function update_viewer_store ( key, value, callbk ) {
               var req = opensocial.newDataRequest();
               if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
@@ -76,6 +77,7 @@
               };
               req.send( func );
             }
+            */
         </script>
     ]]>
     </Content> 
