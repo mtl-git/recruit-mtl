@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
     <ModulePrefs title="jQuery UI Library タブのサンプル" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://ui.jquery.com/images/demo-landing-widgets.gif" thumbnail="http://ui.jquery.com/favicon.ico">
-        <Require feature="opensocial-0.8" />
-        <Require feature="views" />
         <Require feature="dynamic-height" />
     </ModulePrefs>
     <Content type="html"><![CDATA[
@@ -70,6 +68,7 @@
     };
     $(window_onload);
 //--></script>
+<script type="text/javascript">/* dummy for iGoogle */</script>
 </head>
 <body>
 
