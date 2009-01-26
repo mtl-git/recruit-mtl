@@ -124,6 +124,7 @@
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
+				console.log(document.forms);
 				console.log(val);
 				var ele = document.getElementById("s_url");
 				console.log(ele);
