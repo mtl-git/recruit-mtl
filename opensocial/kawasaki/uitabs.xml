@@ -36,7 +36,7 @@
     #content_tab.ui-tabs .ui-tabs-panel {
         padding: 0;
     }
-    #content_tab.ui-widget-header {
+    #content_tab.ui-tabs .ui-widget-header {
         border-width: 0 0 1px 0;
     }
 --></style>
