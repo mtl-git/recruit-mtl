@@ -17,26 +17,26 @@
         overflow: hidden;
         font-size: 12px;
     }
-    .ui-tabs {
+    #content_tab.ui-tabs {
         padding: 0;
     }
-    .ui-tabs .ui-tabs-nav {
+    #content_tab.ui-tabs .ui-tabs-nav {
         padding: 2px 2px 0 2px;
     }
-    .ui-tabs .ui-tabs-nav li a {
+    #content_tab.ui-tabs .ui-tabs-nav li a {
         padding: 2px;
     }
-    .ui-tabs .ui-tabs-nav li {
+    #content_tab.ui-tabs .ui-tabs-nav li {
         width: 30%;
         text-align: center;
     }
-    .ui-tabs .ui-tabs-selected {
+    #content_tab.ui-tabs .ui-tabs-selected {
         font-weight: bold;
     }
-    .ui-tabs .ui-tabs-panel {
+    #content_tab.ui-tabs .ui-tabs-panel {
         padding: 0;
     }
-    .ui-widget-header {
+    #content_tab.ui-widget-header {
         border-width: 0 0 1px 0;
     }
 --></style>
@@ -68,7 +68,7 @@
     };
     $(window_onload);
 //--></script>
-<script type="text/javascript">/* dummy for iGoogle */</script>
+<script type="text/javascript"></script>
 </head>
 <body>
 
