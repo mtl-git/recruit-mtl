@@ -6,7 +6,7 @@
     <Content type="html">
     <![CDATA[
         <div id="input">
-            <FORM>
+            <FORM onsubmit="return false">
                 var1: <INPUT TYPE="text" name="s_url"/><br/>
                 <INPUT TYPE="button" value="save" onclick="update( this.form )"/><br/>
                 <INPUT TYPE="button" value="clear" onclick="clear_pd( this.form )"/>
