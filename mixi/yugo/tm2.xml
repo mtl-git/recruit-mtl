@@ -60,7 +60,7 @@
                     html += "</a>";
                     html += "</td></tr>";
                     html += '<tr><td style="background-color:#E4EDB6;overflow:hidden" height="50"><strong>' + row.title + "</strong></td></tr>";
-                    html += '<tr><td style="font-size: small;background-color:#FFF7E4;overflow:hidden" height="50">' + row.desc.substr(4) + "</td></tr>";
+                    html += '<tr><td style="font-size: small;background-color:#FFF7E4;overflow:hidden" height="60">' + row.desc.substr(4) + "</td></tr>";
                     html += '</table>';
                 }
                 view.innerHTML = html;
