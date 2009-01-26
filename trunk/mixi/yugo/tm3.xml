@@ -4,31 +4,12 @@
     </ModulePrefs>
     <Content type="html">
     <![CDATA[ 
-        <style>
-        #all {
-        margin: 0px;
-        padding: 0px;
-        width: 941px;
-        height: 100%;
-        }
-        #apviaapps_parts {
-        float: left;
-        margin: 0px;
-        padding: 0px;
-        width: 160px;
-        height: 100%;
-        background: #aaaaaa;
-        }
-        #content_canvas {
-        float: left;
-        font-size: 12px;
-        margin: 0px;
-        padding: 0px;
-        color:#444444;
-        width: 781px;
-        }
-        </style>
-        <div id="content-div"></div>
+        <div style="margin-top:10px;clear:both" >
+            <form>
+	            <input type="text" name="s_url" style="width:200"/>
+            	<input type="button" value="検索" onclick="request(this.form)"/>
+            </form>
+        </div>
         <script type="text/javascript">
             var view = document.getElementById( 'content-div' );
             //データを保存する
@@ -95,12 +76,6 @@
               req.send( func );
             }
         </script>
-        <div style="margin-top:10px;clear:both" >
-            <form>
-	            <input type="text" name="s_url" style="width:200"/>
-            	<input type="button" value="検索" onclick="request(this.form)"/>
-            </form>
-        </div>
     ]]>
     </Content> 
 </Module>
