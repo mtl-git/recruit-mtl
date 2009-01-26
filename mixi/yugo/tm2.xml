@@ -43,7 +43,6 @@
             };
             function callback ( obj ){
                 var html = "";
-                console.log(obj);
                 for( var i=0; i<obj.data.length; i++ ){
                     var row = obj.data[i];
                     html += '<table width="150" style="float:left">' ;
@@ -56,8 +55,6 @@
                     html += "<tr><td>" + row.desc + "</td></tr>";
                     html += '</table>';
                 }
-                html += '</ol>';
-                console.log(html);
                 view.innerHTML = html;
             };
         </script>
