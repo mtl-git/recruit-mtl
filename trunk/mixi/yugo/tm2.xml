@@ -31,7 +31,7 @@
         <div id="content-div"></div>
         <script type="text/javascript">
             var view = document.getElementById( 'content-div' );
-            function request (){    
+            function request (url){    
                 view.innerHTML = '';
                 var params = {};
                 var ts = (new Date()).getTime();
@@ -60,6 +60,10 @@
         </script>
         <div style="margin-top:10px;clear:both" >
             <input type="button" value="make API request" onclick="request()"/>
+            <form name="frm" action="#" onsubmit="request(this)">
+	            <input type="text" name="url" id="url" />
+            	<input type="submit" value="検索"/>
+            </form>
         </div>
     ]]>
     </Content> 
