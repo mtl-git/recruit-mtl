@@ -129,7 +129,7 @@
 			}
         </script>
         <div style="margin-top:10px;clear:both" >
-            <form action="#">
+            <form>
 	            <input type="text" name="url" style="width:200"/>
             	<input type="button" value="検索" onclick="request(this.form.url.value)"/>
             </form>
