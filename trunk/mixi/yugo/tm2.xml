@@ -130,7 +130,7 @@
 				console.log(ele);
 				ele.value = val;
 			}
-			init();
+			gagets.util.registerOnLoadHandler(init);
         </script>
         <div style="margin-top:10px;clear:both" >
             <form id=frm name=frm>
