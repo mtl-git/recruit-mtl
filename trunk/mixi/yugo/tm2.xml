@@ -125,7 +125,7 @@
 			}
 			function fetch_ok(val){
 				console.log(document.forms);
-				console.log(val);
+				console.log(document.getElementById("frm"));
 				var ele = document.getElementById("s_url");
 				console.log(ele);
 				ele.value = val;
