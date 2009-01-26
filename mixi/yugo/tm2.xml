@@ -111,6 +111,14 @@
 				request(document.forms["frm"]);
 			}
 			gadgets.util.registerOnLoadHandler(init);
+			
+			// ガジェットの高さの調整
+		    function adjust_height () {
+		        var func = function () {
+		            gadgets.window.adjustHeight();
+		        };
+		        setTimeout( func, 1 );
+		    }
         </script>
         <div style="margin-top:20px;clear:both;text-align:center" >
             <form id=frm name=frm>
