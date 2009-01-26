@@ -33,8 +33,7 @@
         <script type="text/javascript">
             var view = document.getElementById( 'content-div' );
             function request (form){    
-                //update_viewer_store("s_url",form.s_url.value,function(){alert('Store OK!')});
-                //return;
+                update_viewer_store("s_url",form.s_url.value,function(){alert('Store OK!')});
                 view.innerHTML = '';
                 var params = {};
                 //var ts = (new Date()).getTime();
@@ -47,7 +46,7 @@
 					alert("URLを指定してね");
 					return;
 				}
-                console.log(req_url);
+                update_viewer_store("s_url",form.s_url.value,function(){alert('Store OK!')});
                 gadgets.io.makeRequest( req_url, callback, params );
             };
             function callback ( obj ){
@@ -123,11 +122,12 @@
               req.send( func );
             }
 			function init(){
-				fetch_viewer_store("url",fetch_ok);
+				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
 				forms.frm.url.value = val;
 			}
+			init();
         </script>
         <div style="margin-top:10px;clear:both" >
             <form>
