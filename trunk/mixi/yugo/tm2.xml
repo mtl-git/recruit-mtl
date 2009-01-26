@@ -60,7 +60,7 @@
                     html += "</a>";
                     html += "</td></tr>";
                     html += "<tr><td><strong>" + row.title + "</strong></td></tr>";
-                    html += '<tr><td style="font-size: x-small;">' + row.desc.substr(3) + "</td></tr>";
+                    html += '<tr><td style="font-size: x-small;">' + row.desc.substr(4) + "</td></tr>";
                     html += '</table>';
                 }
                 view.innerHTML = html;
