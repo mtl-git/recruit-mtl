@@ -31,7 +31,7 @@
         <div id="content-div"></div>
         <script type="text/javascript">
             var view = document.getElementById( 'content-div' );
-            function request (url){    
+            function request (form){    
                 view.innerHTML = '';
                 var params = {};
                 var ts = (new Date()).getTime();
