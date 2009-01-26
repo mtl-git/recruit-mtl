@@ -33,7 +33,7 @@
             var view = document.getElementById( 'content-div' );
             function request (form){    
                 //update_viewer_store("s_url",form.s_url.value,function(){alert('Store OK!')});
-                return;
+                //return;
                 view.innerHTML = '';
                 var params = {};
                 //var ts = (new Date()).getTime();
