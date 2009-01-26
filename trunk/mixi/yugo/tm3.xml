@@ -33,7 +33,7 @@
             var view = document.getElementById( 'content-div' );
             //データを保存する
             function request (form){
-                update_viewer_store("s_url",form.s_url.value,update_callback});
+                update_viewer_store("s_url",form.s_url.value,update_callback);
             };
             function update_callback( res ) {
             	if( res.hadError() ){
