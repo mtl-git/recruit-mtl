@@ -27,7 +27,7 @@
                 gadgets.io.makeRequest( req_url, callback, params );
             };
             function callback ( obj ){
-				console.log(obj);
+				//console.log(obj);
                 view.innerHTML = '<img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 130px 66px 0px 65px;">';
 ;
 				var html = "";
@@ -92,7 +92,7 @@
                 var d3 = d2[viewid];
                 if ( ! d3 && d2[key] ) d3 = d2; // bug?
                 if ( ! d3 ) return callng( res );
-                console.log(d3);
+                //console.log(d3);
                 var value = d3[key];
                 // 成功時は値を引数にしてOKコールバック関数を呼ぶ
                 if ( callok ) callok( value );
@@ -100,7 +100,7 @@
               req.send( func );
             }
 			function init(){
-				console.log("init start!");
+				//console.log("init start!");
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
