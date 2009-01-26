@@ -55,9 +55,6 @@
                     html += "<tr><td><strong>" + row.title + "</strong></td></tr>";
                     html += "<tr><td>" + row.desc + "</td></tr>";
                     html += '</table>';
-                    if(i % 3 == 2){
-                      html += '<br style="clear:both" />';
-                    }
                 }
                 html += '</ol>';
                 console.log(html);
