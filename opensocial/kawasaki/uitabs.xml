@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="jQuery UI Library タブのサンプル" author="kawanet" title_url="http://www.kawa.net/" height="250" screenshot="http://ui.jquery.com/images/demo-landing-widgets.gif" thumbnail="http://ui.jquery.com/favicon.ico">
+        <Require feature="views" />
+    	<Require feature="dynamic-height" />
+	</ModulePrefs>
+	<Content type="html"><![CDATA[
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="http://jquery-ui.googlecode.com/svn/trunk/themes/base/ui.core.css" type="text/css">
+<link rel="stylesheet" href="http://jquery-ui.googlecode.com/svn/trunk/themes/base/ui.theme.css" type="text/css">
+<link rel="stylesheet" href="http://jquery-ui.googlecode.com/svn/trunk/themes/base/ui.tabs.css" type="text/css">
+<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/trunk/ui/ui.core.js"></script>
+<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/trunk/ui/ui.tabs.js"></script>
+<style><!--
+    body {
+		padding: 0; margin: 0;
+		font-size: 12px;
+	}
+    .ui-tabs {
+		padding: 0;
+	}
+    .ui-tabs .ui-tabs-nav {
+        padding: 2px 2px 0 2px;
+    }
+    .ui-tabs .ui-tabs-nav li a {
+        padding: 2px;
+    }
+    .ui-tabs .ui-tabs-nav li {
+        width: 30%;
+        text-align: center;
+    }
+    .ui-tabs .ui-tabs-selected {
+		font-weight: bold;
+	}
+    .ui-tabs .ui-tabs-panel {
+        padding: 0;
+    }
+	.ui-widget-header {
+		border-width: 0 0 1px 0;
+	}
+--></style>
+<script type="text/javascript"><!--
+    // ガジェットの高さの調整
+    function adjust_height () {
+        var func = function () {
+            gadgets.window.adjustHeight();
+        };
+        setTimeout( func, 1 );
+    }
+
+    // 初期化
+    function window_onload () {
+        // ビューをスタイルシート(class)に反映(window.onload後)
+        var curview = gadgets.views.getCurrentView();
+        $(document.body).addClass('view_'+curview.getName());
+
+        // タブが選択されたときに呼ばれる関数
+        var onselect = function (event, ui) {
+            adjust_height();
+        };
+
+        // タブの初期化
+        var opt = { select: onselect };
+        $("#content_tab").tabs(opt);
+		$("#content_tab").removeClass('ui-corner-all');
+		$("#content_tab").addClass('ui-corner-top');
+		$("#content_tab ul").removeClass('ui-widget-content ui-corner-all');
+
+        // アプリの高さを整える
+        adjust_height();
+    };
+    $(window_onload);
+//--></script>
+</head>
+<body>
+
+<div id="content_tab">
+    <ul>
+        <li><a href="#tab1">タブその１</a></li>
+        <li><a href="#tab2">タブその２</a></li>
+        <li><a href="#tab3">タブその３</a></li>
+    </ul>
+    <div id="tab1">
+        タブ１の中身
+    </div>
+    <div id="tab2">
+        <img src="http://farm4.static.flickr.com/3361/3223961921_63b8e9a404.jpg?v=0">
+    </div>
+    <div id="tab3">
+        タブ３の中身
+    </div>
+</div>
+
+	]]></Content>
+</Module>
