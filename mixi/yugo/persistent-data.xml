@@ -94,7 +94,7 @@
             };
             function clear_pd() {
                 var req = mixi.newDataRequest();
-                req.add( req.newRemovePersonAppDataRequest( opensocial.IdSpec.PersonId.VIEWER, cols ), "clear_data" );
+                req.add( req.newRemovePersonAppDataRequest( opensocial.IdSpec.PersonId.VIEWER, ["url"] ), "clear_data" );
                 req.send( clear_callback );
             };
             function clear_callback( res ) {
