@@ -19,6 +19,7 @@
     }
     #content_tab.ui-tabs {
         padding: 0;
+		margin-bottom: 1px;
     }
     #content_tab.ui-tabs .ui-tabs-panel {
         padding: 0;
