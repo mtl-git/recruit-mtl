@@ -58,6 +58,7 @@
               var u1 = res.get(REQID_USER);
               if ( ! u1 ) return callng( res );
               var u2 = u1.getData();
+              console.log(u2);
               if ( ! u2 ) return callng( res );
               var viewid = u2.getId();
               if ( ! viewid ) return callng( res );
