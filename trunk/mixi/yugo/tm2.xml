@@ -124,11 +124,9 @@
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
-				console.log(document.forms);
-				console.log(document.getElementById("frm"));
 				var ele = document.getElementById("s_url");
-				console.log(ele);
 				ele.value = val;
+				request(document.forms["frm"]);
 			}
 			gadgets.util.registerOnLoadHandler(init);
         </script>
