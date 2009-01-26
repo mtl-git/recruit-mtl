@@ -60,9 +60,8 @@
                     html += "</a>";
                     html += "</td></tr>";
                     html += "<tr><td><strong>" + row.title + "</strong></td></tr>";
-                    html += '<tr><td style="font-size: x-small;">' + row.desc + "</td></tr>";
+                    html += '<tr><td style="font-size: x-small;">' + row.desc.substr(3) + "</td></tr>";
                     html += '</table>';
-                    console.log(row.desc);
                 }
                 view.innerHTML = html;
             };
