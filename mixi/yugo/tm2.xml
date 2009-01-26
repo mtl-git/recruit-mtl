@@ -3,6 +3,7 @@
     <ModulePrefs title="TM TEST"> 
        <Require feature="opensocial-0.8"/>
        <Require feature="dynamic-height" />
+       <Require feature="views" />
     </ModulePrefs>
     <Content type="html">
     <![CDATA[ 
