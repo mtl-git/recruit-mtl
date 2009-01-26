@@ -60,7 +60,7 @@
         </script>
         <div style="margin-top:10px;clear:both" >
             <input type="button" value="make API request" onclick="request()"/>
-            <form name="frm" action="#" onsubmit="request(this)">
+            <form name="frm" action="#" onsubmit="request(this);return false">
 	            <input type="text" name="url" id="url" />
             	<input type="submit" value="検索"/>
             </form>
