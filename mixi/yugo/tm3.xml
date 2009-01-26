@@ -15,7 +15,7 @@
             //データを保存する
             function request (form){
 				console.log(opensocial);
-                update_viewer_store("s_url",form.s_url.value,update_callback);
+                //update_viewer_store("s_url",form.s_url.value,update_callback);
             };
             function update_callback( res ) {
             	if( res.hadError() ){
