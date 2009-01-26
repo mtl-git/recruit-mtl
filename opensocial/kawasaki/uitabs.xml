@@ -51,16 +51,12 @@
 
     // 初期化
     function window_onload () {
-        // ビューをスタイルシート(class)に反映(window.onload後)
-        var curview = gadgets.views.getCurrentView();
-        $(document.body).addClass('view_'+curview.getName());
-
         // タブが選択されたときに呼ばれる関数
         var onselect = function (event, ui) {
             adjust_height();
         };
 
-        // タブの初期化
+        // タブの初期化と見た目の調整
         var opt = { select: onselect };
         $("#content_tab").tabs(opt);
 		$("#content_tab").removeClass('ui-corner-all');
