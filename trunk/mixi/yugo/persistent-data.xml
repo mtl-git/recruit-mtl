@@ -7,7 +7,7 @@
     <![CDATA[
         <div id="input">
             <FORM>
-                var1: <INPUT TYPE="text" name="url"/><br/>
+                var1: <INPUT TYPE="text" name="s_url"/><br/>
                 <INPUT TYPE="button" value="save" onclick="update( this.form )"/><br/>
                 <INPUT TYPE="button" value="clear" onclick="clear_pd( this.form )"/>
             </FORM>
@@ -17,7 +17,7 @@
         <script type="text/javascript">
             var out = document.getElementById( 'output' );
             function update( form ) {
-              update_viewer_store("url",form.url.value,update_callback)
+              update_viewer_store("url",form.s_url.value,update_callback)
             };
             function update_viewer_store ( key, value, callbk ) {
               var req = opensocial.newDataRequest();
