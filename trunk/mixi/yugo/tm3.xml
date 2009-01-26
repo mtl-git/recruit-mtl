@@ -15,8 +15,8 @@
             var view = document.getElementById( 'content-div' );
             //データを保存する
             function request (form){
-				console.log(opensocial);
-                //update_viewer_store("s_url",form.s_url.value,update_callback);
+				//console.log(opensocial);
+                update_viewer_store("s_url",form.s_url.value,update_callback);
             };
             function update_callback( res ) {
             	if( res.hadError() ){
@@ -25,7 +25,7 @@
                 }
             }
             //データ永続化共通モジュール（update）
-            /*
+            
             function update_viewer_store ( key, value, callbk ) {
               var req = opensocial.newDataRequest();
               if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
@@ -78,7 +78,7 @@
               };
               req.send( func );
             }
-            */
+            
         </script>
     ]]>
     </Content> 
