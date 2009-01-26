@@ -18,13 +18,16 @@
             var out = document.getElementById( 'output' );
             var cols = ['var1'];
             function update( form ) {
-                out.innerHTML = 'updating...';
-                var var1 = form.var1.value || '';
-                var req = mixi.newDataRequest();
-                //更新はVIWERにしかかけない
-                req.add( req.newUpdatePersonAppDataRequest("VIEWER",cols, var1));
-                req.send( update_callback );
+              update_viewer_store("url",form.val1,update_callback)
             };
+            function update_viewer_store ( key, value, callbk ) {
+              var req = opensocial.newDataRequest();
+              if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
+              var viewer = opensocial.IdSpec.PersonId.VIEWER;
+              var REQID_DATA = 'data1';
+              req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), REQID_DATA );
+              req.send( callbk );
+            }
             function update_callback( res ) {
                 if( res.hadError() ){
                     out.innerHTML = res.getErrorMessage();
@@ -33,36 +36,57 @@
                 out.innerHTML = '<b>update success</b><br/>'; 
                 fetch();
             };
+            //データの取り出し
+            function fetch_viewer_store ( key, callok, callng ) {
+              var req = opensocial.newDataRequest();
+              if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
+              // ユーザID
+              var p = {};
+              var viewer = opensocial.IdSpec.PersonId.VIEWER;
+              var uidkey = opensocial.IdSpec.Field.USER_ID;
+              p[uidkey] = viewer;
+              var ispc = opensocial.newIdSpec( p );
+              // リクエスト毎の識別子を付ける
+              var REQID_USER = 'user1';
+              var REQID_DATA = 'data1';
+              req.add( req.newFetchPersonRequest( viewer ), REQID_USER );
+              req.add( req.newFetchPersonAppDataRequest( ispc, [key] ), REQID_DATA );
+              if ( ! callng ) callng = function() {};
+              var func = function ( res ) {
+              // viewerのユーザIDを取り出す
+              // var viewid = res.get(REQID_USER).getData().getId();
+              if ( ! res ) return callng( res );
+              var u1 = res.get(REQID_USER);
+              if ( ! u1 ) return callng( res );
+              var u2 = u1.getData();
+              if ( ! u2 ) return callng( res );
+              var viewid = u2.getId();
+              if ( ! viewid ) return callng( res );
+              // ユーザIDとキーを指定してデータを取り出す
+              // var value = (res.get(REQID_DATA).getData())[viewid][key];
+              var d1 = res.get(REQID_DATA);
+              if ( ! d1 ) return callng( res );
+              var d2 = d1.getData();
+              if ( ! d2 ) return callng( res );
+              var d3 = d2[viewid];
+              if ( ! d3 && d2[key] ) d3 = d2; // bug?
+              if ( ! d3 ) return callng( res );
+              var value = d3[key];
+              // 成功時は値を引数にしてOKコールバック関数を呼ぶ
+              if ( callok ) callok( value );
+              };
+              req.send( func );
+            }
             function fetch() {
-                var req  = mixi.newDataRequest();
-                var p = {};
-                p[opensocial.IdSpec.Field.USER_ID] = opensocial.IdSpec.PersonId.VIEWER;
-                var idSpec = opensocial.newIdSpec(p);
-                req.add(req.newFetchPersonRequest("VIEWER"),"viewer");
-                req.add(req.newFetchPersonAppDataRequest(idSpec,cols ), "viewer_data");
-                req.send( fetch_callback );
+                fetch_viewer_store("val1",fetch_callback);
             };
-            function fetch_callback( res ) {
-                var vw  = res.get( "viewer" );
-                //console.log(vw);
-                me = vw.getData();
-                var vwd = res.get("viewer_data");
-                //console.log(vwd);
-                if(res.hadError()){
-                    out.innerHTML = res.getErrorMessage();
-                    return;
-                }
-                console.log(me.getId());
-                console.log(vwd.getData());
-                var data = ( vwd.getData() )[ me.getId() ];
-                console.log(data);
-                if( !data ){
+            function fetch_callback( val ) {
+                if( !val ){
                     out.innerHTML = 'persistent data is empty.';
                     return;
                 }
-                var var1 = data.var1 || 'blank';
                 out.innerHTML = '<ul>'
-                    + '<li>' + var1 + '</li>'
+                    + '<li>' + val + '</li>'
                     + '</ul>';
             };
             function clear_pd() {
