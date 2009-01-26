@@ -124,13 +124,13 @@
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
-				document.forms["frm"].elements.s_url.value = val;
+				getElementById("s_url").value = val;
 			}
 			init();
         </script>
         <div style="margin-top:10px;clear:both" >
             <form id=frm name=frm>
-	            <input type="text" name="s_url" style="width:200"/>
+	            <input type="text" name="s_url" id="s_url" style="width:200"/>
             	<input type="button" value="検索" onclick="request(this.form)"/>
             </form>
         </div>
