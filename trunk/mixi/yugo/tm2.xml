@@ -44,7 +44,6 @@
 					alert("URLを指定してね");
 					return;
 				}
-                //var url = "http://www.oedolab.com/te/tm/scr.php?url=http%3A%2F%2Ftownmarket.jp%2FCSP%2FCSP01%2FCSP0100091%2F12%2F2345%2F210%2F1%2F1%2F0%2F";  
                 gadgets.io.makeRequest( req_url, callback, params );
             };
             function callback ( obj ){
