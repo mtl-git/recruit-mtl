@@ -121,6 +121,7 @@
               req.send( func );
             }
 			function init(){
+				console.log("init start!");
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
