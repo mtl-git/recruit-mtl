@@ -131,11 +131,12 @@
 			}
 			gadgets.util.registerOnLoadHandler(init);
         </script>
-        <div style="margin-top:10px;clear:both" >
+        <div style="margin-top:20px;clear:both;text-align:center" >
             <form id=frm name=frm>
-	            　　　あなたの地域のタウンマーケットＵＲＬを入れてください<br>
-	            　　　<input type="text" name="s_url" id="s_url" style="width:400"/><br>
-            	　　　<input type="button" value="この地域に設定" onclick="request(this.form)"/>
+	            あなたの地域のタウンマーケットＵＲＬを入れてください<br>
+	            <input type="text" name="s_url" id="s_url" style="width:400"/><br>
+            	<input type="button" value="この地域に設定" onclick="request(this.form)"/><br>
+            	<a href="http://townmarket.jp">タウンマーケットで自分の地域を検索</a>
             </form>
         </div>
     ]]>
