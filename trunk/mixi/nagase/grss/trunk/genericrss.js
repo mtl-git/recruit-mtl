@@ -15,6 +15,7 @@ $.gadgets.ready(function(){
   var feeds_ul = $("#pref ul.feeds");
   var cue, entries;
   var entries_ul = $("#list ul.entries");
+	var content_id;
   $("p.go-pref span.link").bind("click",prefView);
   $("p.add-feed span.link").bind("click",appendInput);
   $("#submit-feeds-button").bind("click",acceptPref);
@@ -27,6 +28,7 @@ $.gadgets.ready(function(){
   });
 
   function prefView() {
+		content_id = "pref";
     wrapper.removeClass("loading");
     wrapper.addClass("pref");
     wrapper.removeClass("list");
@@ -38,6 +40,7 @@ $.gadgets.ready(function(){
   }
 
   function listView() {
+		content_id = "list";
     wrapper.addClass("loading");
     wrapper.removeClass("pref");
     cue = 0;
@@ -120,7 +123,7 @@ $.gadgets.ready(function(){
   }
 
   function getDateString(t) {
-    var date = new Date(t*1000);
+    var date = new Date(t*($.opensocial.container.mixi?1:1000));
     var today = new Date();
     if(date.getDate()==today.getDate())
       return [format2Digs(date.getHours()),":",format2Digs(date.getMinutes())].join("");
@@ -139,6 +142,9 @@ $.gadgets.ready(function(){
 
   function error(msg) {
     alert(msg);
+    wrapper.addClass(content_id);
+    wrapper.removeClass("loading");
+    $.gadgets.height("auto");
     return false;
   }
 
