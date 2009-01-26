@@ -16,9 +16,11 @@
         <div id="output"></div>
         <script type="text/javascript">
             var out = document.getElementById( 'output' );
+            //update
             function update( form ) {
               update_viewer_store("s_url",form.s_url.value,update_callback)
             };
+            //update 共通モジュール
             function update_viewer_store ( key, value, callbk ) {
               var req = opensocial.newDataRequest();
               if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
@@ -27,6 +29,7 @@
               req.add( req.newUpdatePersonAppDataRequest( viewer, key, value ), REQID_DATA );
               req.send( callbk );
             }
+            //アップデートコールバック
             function update_callback( res ) {
                 if( res.hadError() ){
                     out.innerHTML = res.getErrorMessage();
