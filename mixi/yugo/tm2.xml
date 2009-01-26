@@ -49,6 +49,7 @@
                 //update_viewer_store("url",form.url.value,function(){alert('Store OK!')});
             };
             function callback ( obj ){
+				console.log(obj);
                 var html = "";
                 for( var i=0; i<obj.data.length; i++ ){
                     var row = obj.data[i];
