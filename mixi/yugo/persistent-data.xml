@@ -17,7 +17,7 @@
         <script type="text/javascript">
             var out = document.getElementById( 'output' );
             function update( form ) {
-              update_viewer_store("url",form.s_url.value,update_callback)
+              update_viewer_store("s_url",form.s_url.value,update_callback)
             };
             function update_viewer_store ( key, value, callbk ) {
               var req = opensocial.newDataRequest();
@@ -80,7 +80,7 @@
               req.send( func );
             }
             function fetch() {
-                fetch_viewer_store("url",fetch_callback);
+                fetch_viewer_store("s_url",fetch_callback);
             };
             function fetch_callback( val ) {
                 console.log(val);
@@ -94,7 +94,7 @@
             };
             function clear_pd() {
                 var req = mixi.newDataRequest();
-                req.add( req.newRemovePersonAppDataRequest( opensocial.IdSpec.PersonId.VIEWER, ["url"] ), "clear_data" );
+                req.add( req.newRemovePersonAppDataRequest( opensocial.IdSpec.PersonId.VIEWER, ["s_url"] ), "clear_data" );
                 req.send( clear_callback );
             };
             function clear_callback( res ) {
