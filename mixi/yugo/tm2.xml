@@ -44,8 +44,9 @@
 					alert("URLを指定してね");
 					return;
 				}
+                console.log(req_url);
                 gadgets.io.makeRequest( req_url, callback, params );
-                update_viewer_store("url",form.url.value,{});
+                //update_viewer_store("url",form.url.value,function(){alert('Store OK!')});
             };
             function callback ( obj ){
                 var html = "";
