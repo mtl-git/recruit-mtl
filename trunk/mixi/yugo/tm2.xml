@@ -47,7 +47,7 @@
 					return;
 				}
                 console.log(req_url);
-            //    gadgets.io.makeRequest( req_url, callback, params );
+                gadgets.io.makeRequest( req_url, callback, params );
             };
             function callback ( obj ){
 				console.log(obj);
