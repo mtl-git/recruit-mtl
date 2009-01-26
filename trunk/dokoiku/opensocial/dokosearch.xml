@@ -8,7 +8,6 @@
     <Content type="html"><![CDATA[
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-<script type="text/javascript" src="http://www.kawa.net/works/js/jkl/share/jkl-dumper.js"></script>
 <script type="text/javascript"><!--
     var API_KEY = 'Rev18e560ff7196aa8f19942e37911b9b1aiewer';
     var keyword;
@@ -118,13 +117,13 @@
     // viewerのデータを読み出す関数
     function fetch_viewer_store ( key, callok, callng ) {
         var person = opensocial.IdSpec.PersonId.VIEWER;
-		fetch_store( person, key, callok, callng );
+        fetch_store( person, key, callok, callng );
     }
 
     // ownerのデータを読み出す関数
     function fetch_owner_store ( key, callok, callng ) {
         var person = opensocial.IdSpec.PersonId.OWNER;
-		fetch_store( person, key, callok, callng );
+        fetch_store( person, key, callok, callng );
     }
 
     // viewerのデータを読み出す関数
@@ -173,15 +172,6 @@
         req.send( func );
     }
 
-    // ダンプする
-    function dump ( data ) {
-        if ( ! JKL ) return;
-        if ( ! JKL.Dumper ) return;
-        var dumper = new JKL.Dumper();
-        data = dumper.dump( data );
-        alert( data );
-    }
-
     // 検索結果リストの表示
     function update_list (list) {
         var container = document.getElementById('shop_list');
@@ -225,49 +215,21 @@
 
     function init_width () {
         var window_width  = $(document.body).width();
-        var ava_width     = 160;
-        var ava_height    = 400;
-        var midnavi_width  = 250;
-        var midnavi_offset =  10;
-        var iframe_offset = $.browser.msie ? 21 : 5;
-        var canvas_padding = 5;
-        var canvas_addwid   = canvas_padding*3 + ava_width + midnavi_width;
-        var gadget_min    = 441;
         var gadget_width  = window_width;
-
-        var curview = gadgets.views.getCurrentView();  
-        if ( curview.getName() == 'canvas' ) {
-            if ( gadget_min+canvas_addwid < window_width ) {
-                gadget_width = window_width - canvas_addwid;
-
-                var dkelem = $('#midnavi_parts');
-                dkelem.width( midnavi_width );
-                dkelem.css('float','left');
-                dkelem.css('margin-left',canvas_padding+'px');
-
-                var avaelem = $('#apviaapps_parts');
-                avaelem.width( ava_width );
-                avaelem.height( ava_height );
-                avaelem.css('border','1px solid red');
-                avaelem.css('float','right');
-
-                var canelem = $('#content_canvas');
-                canelem.css('float','left');
-                canelem.css('margin-left',canvas_padding+'px');
-            } else {
-                $('#midnavi_parts').html('');
-                $('#apviaapps_parts').html('');
-            }
-        }
-        if ( gadget_width < gadget_min ) {
-            gadget_width = gadget_min
-        }
-
+        var canvas_padding = 5;
+        var iframe_offset = $.browser.msie ? 21 : 5;
         var preview_width = 320;
         var copy_width = 162;
         var submit_width = 40;
-        $('#area_upper').width( gadget_width );
-        $('#area_lower').width( gadget_width ).css('margin',canvas_padding+'px 0');
+
+        var curview = gadgets.views.getCurrentView();
+        if ( curview.getName() == 'canvas' ) {
+            var midnavi_width = $('#midnavi_parts').width();
+            var ava_width = $('#apviaapps_parts').width();
+            gadget_width = window_width - (canvas_padding*3 + ava_width + midnavi_width)-1;
+		}
+
+		$('#content_canvas').width( gadget_width );
         $('#shop_preview').width( preview_width+iframe_offset );
         $('#info_area').width( gadget_width-preview_width-iframe_offset );
         $('#shop_list').width( gadget_width-preview_width-iframe_offset );
@@ -279,19 +241,25 @@
 
     // ガジェットの高さの調整
     function adjust_height () {
-        setTimeout( call_adjust, 1 );
-    }
-
-    // ガジェットの高さの調整
-    function call_adjust () {
-        gadgets.window.adjustHeight();
+        var func = function () {
+            gadgets.window.adjustHeight();
+        };
+        setTimeout( func, 1 );
     }
 
     // 初期化
     function window_onload () {
+        // ビューをスタイルシート(class)に反映(window.onload後)
+        var curview = gadgets.views.getCurrentView();  
+        $(document.body).addClass('view_'+curview.getName());
+
+        // アプリの横幅に合わせて、div の幅を設定する
         init_width();
+
+        // 初期メッセージを表示する
         disp_mess('お店を検索できます。');
-//      fetch_viewer_store( 'rpin', display_preview );
+
+        // アプリのオーナーの店舗検索履歴を表示する
         fetch_owner_store( 'rpin', display_preview );
     }
     $(window_onload);
@@ -302,6 +270,7 @@
     iframe { overflow: hidden; }
     #area_lower {
         clear: left;
+		margin: 5px 0;
     }
     #shop_preview {
         float: left;
@@ -357,6 +326,27 @@
         margin-top: 12px;
     }
     .elem_library {
+        display: none;
+    }
+    .view_canvas #content_canvas {
+       	float: left;
+		margin-left: 5px;
+    }
+    .view_canvas #midnavi_parts {
+		width: 240px;
+		height: 400px;
+       	float: left;
+		margin-left: 5px;
+    }
+    .view_canvas #apviaapps_parts {
+		width: 160px;
+		height: 400px;
+       	float: right;
+    }
+    .view_home #apviaapps_parts, .view_profile #apviaapps_parts {
+        display: none;
+    }
+    .view_home #midnavi_parts, .view_profile #midnavi_parts {
         display: none;
     }
 --></style>
