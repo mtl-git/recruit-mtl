@@ -31,8 +31,8 @@
         <div id="content-div"></div>
         <script type="text/javascript">
             var view = document.getElementById( 'content-div' );
-            function request (form){    
-                update_viewer_store("url",form.url.value,function(){alert('Store OK!')});
+            function request (url){    
+                update_viewer_store("url",url,function(){alert('Store OK!')});
                 return;
                 view.innerHTML = '';
                 var params = {};
@@ -41,7 +41,7 @@
                 // params[ gadgets.io.RequestParameters.METHOD ] = gadgets.io.MethodType.GET;
                 params[ gadgets.io.RequestParameters.REFRESH_INTERVAL ] = 0;  // does this work?
                 if(form){
-				  var req_url = "http://www.oedolab.com/te/tm/scr.php?url=" + encodeURIComponent(form.url.value);
+				  var req_url = "http://www.oedolab.com/te/tm/scr.php?url=" + encodeURIComponent(url);
 				}else{
 					alert("URLを指定してね");
 					return;
@@ -129,10 +129,9 @@
 			}
         </script>
         <div style="margin-top:10px;clear:both" >
-            <input type="button" value="make API request" onclick="request()"/>
-            <form name="frm" action="#" onsubmit="request(this);return false">
-	            <input type="text" name="url" id="url" />
-            	<input type="submit" value="検索"/>
+            <form action="#">
+	            <input type="text" name="url" style="width:2000"/>
+            	<input type="submit" value="検索" onclick="request(this.form.url.value)"/>
             </form>
         </div>
     ]]>
