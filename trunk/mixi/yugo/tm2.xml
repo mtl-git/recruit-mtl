@@ -26,8 +26,9 @@
             };
             function callback ( obj ){
 				console.log(obj);
-                var html = '<img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 130px 66px 0px 65px;">';
+                view.innerHTML = '<img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 130px 66px 0px 65px;">';
 ;
+				var html = "";
                 for( var i=0; i<obj.data.length; i++ ){
                     var row = obj.data[i];
                     html += '<table width="170" height="250" style="float:left">' ;
