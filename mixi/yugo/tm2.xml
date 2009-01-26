@@ -65,6 +65,8 @@
             };
             //データ永続化共通モジュール（update）
             function update_viewer_store ( key, value, callbk ) {
+              console.log(key);
+              console.log(value);
               var req = mixi.newDataRequest();
               if ( window.mixi && mixi.newDataRequest ) req = mixi.newDataRequest();
               var viewer = opensocial.IdSpec.PersonId.VIEWER;
