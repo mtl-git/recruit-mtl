@@ -16,7 +16,6 @@
         <div id="output"></div>
         <script type="text/javascript">
             var out = document.getElementById( 'output' );
-            var cols = ['var1'];
             function update( form ) {
               update_viewer_store("url",form.val1,update_callback)
             };
@@ -78,9 +77,10 @@
               req.send( func );
             }
             function fetch() {
-                fetch_viewer_store("val1",fetch_callback);
+                fetch_viewer_store("url",fetch_callback);
             };
             function fetch_callback( val ) {
+                console.log(val);
                 if( !val ){
                     out.innerHTML = 'persistent data is empty.';
                     return;
