@@ -124,7 +124,7 @@
 				fetch_viewer_store("s_url",fetch_ok);
 			}
 			function fetch_ok(val){
-				getElementById("s_url").value = val;
+				document.getElementById("s_url").value = val;
 			}
 			init();
         </script>
