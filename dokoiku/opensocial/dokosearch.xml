@@ -43,10 +43,10 @@
 
     // メッセージ表示
     function disp_mess (mess) {
-        var libload = document.getElementById('lib_message');
-        var html = libload.innerHTML;
         var container = document.getElementById('shop_preview');
-        container.innerHTML = html;
+        var libtitl = document.getElementById('lib_title'+blogparts_size);
+        var libmess = document.getElementById('lib_message');
+        container.innerHTML = libtitl.innerHTML+libmess.innerHTML;
         var elem = container.getElementsByTagName('p')[0];
         $(elem).text( mess );
         adjust_height();
@@ -58,8 +58,9 @@
         empty_element( container );
         var div = document.createElement('div');
         container.appendChild( div );
-        var libload = document.getElementById('lib_loading_div'+blogparts_size);
-        div.innerHTML = libload.innerHTML;
+        var libload = document.getElementById('lib_loading'+blogparts_size);
+        var libtitl = document.getElementById('lib_title'+blogparts_size);
+        div.innerHTML = libtitl.innerHTML+libload.innerHTML;
         $(div).width( preview_width ).height( preview_height+4 ).css('overflow','hidden');
         adjust_height();
         if ( url ) {
@@ -431,23 +432,31 @@ iframe { overflow: hidden; }
     </div>
 </div>
 
-<div class="elem_library" id="lib_loading_div0">
+<div class="elem_library" id="lib_title0">
 <a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header0.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+</div>
+
+<div class="elem_library" id="lib_title1">
+<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header1.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+</div>
+
+<div class="elem_library" id="lib_title2">
+<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+</div>
+
+<div class="elem_library" id="lib_loading0">
 <img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 85px 0 0 -15px;">
 </div>
 
-<div class="elem_library" id="lib_loading_div1">
-<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header1.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+<div class="elem_library" id="lib_loading1">
 <img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 120px 0 0 25px;">
 </div>
 
-<div class="elem_library" id="lib_loading_div2">
-<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
+<div class="elem_library" id="lib_loading2">
 <img class="nowloading" src="http://www.doko.jp/search/images/ajax_loading.gif" alt="LOADING..." title="LOADING..." style="width: 189px; height: 111px; margin: 120px 0 0 65px;">
 </div>
 
 <div class="elem_library" id="lib_message">
-<a target="_blank" href="http://www.doko.jp/"><img src="http://map.doko.jp/blogparts/images/header2.gif" alt="ドコイク？" title="ドコイク？" border="0"></a>
 <p>&nbsp;</p>
 </div>
 
