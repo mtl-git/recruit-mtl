@@ -302,6 +302,7 @@
     }
     $(window_onload);
 //--></script>
+<script type="text/javascript"></script>
 <style><!--
 body, img, table, tr, td, div, form, ul, iframe { margin: 0; padding: 0; border: 0; }
 li { margin: 0; padding: 0; list-style: none; }
