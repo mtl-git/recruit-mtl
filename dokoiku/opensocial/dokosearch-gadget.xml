@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
     <ModulePrefs title="ドコイク？お店検索" author="株式会社リクルート" title_url="http://www.doko.jp/" height="250" screenshot="http://www.doko.jp/search/images/common/search_roope.gif" thumbnail="http://www.doko.jp/favicon.ico">
+<!--
         <Require feature="opensocial-0.8" />
+-->
         <Require feature="dynamic-height" />
         <Require feature="views" />
     </ModulePrefs>
@@ -15,12 +17,9 @@
     var query_pagesize = 20;
     var blogparts_size = 2;
     var preview_height = 400;
-    var preview_width  = 320;
+    var preview_width = 320;
     var in_canvas;
     var use_appdata;
-
-    // newUpdatePersonAppDataRequest を利用する
-    use_appdata = true;
 
     // 検索を開始する
     function start_search (btn) {
