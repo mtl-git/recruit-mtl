@@ -1,0 +1,45 @@
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1.2");</script>
+<script type="text/javascript">
+    var countries = [
+        {code:"AF",name:"アフガニスタン"},
+        {code:"AZ",name:"アゼルバイジャン "},
+        {code:"AU",name:"オーストラリア  "}
+    ];
+    var my_countries = {};
+
+    function init(){
+        var country_list = $("#country_list");
+        jQuery.each(countries, function() {
+           $('<a href="#" style="margin-right:10px;text-decoration : none;">' + this['name'] + '</a>')
+                .click( function(){
+                    
+                })
+                .attr("id",this['code'])
+                .appendTo(country_list);
+        });
+
+    }
+
+    $(document).ready(function(){
+        init();
+    })
+</script>
+
+<div style="margin:0px 0 0 7px;">
+<img style="float:left" src="http://chart.apis.google.com/chart?chld=AFAGAU&chd=s:111&cht=t&chtm=world&chs=440x220&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<div style="float:left">
+<h2 style="margin-top:5px;font-size:30px;margin-left:10px;margin-bottom:0px;color:#666666" >出国回数 <span style="color:#AA0000">6</span> 回</h2>
+<p style="margin:1px 0 5px 15px"> 1997/07/01 - 1997/08/01  31日間</p>
+<p style="margin:1px 0 5px 15px"> 1998/08/21 - 1998/08/29   7日間</p>
+<p style="margin:1px 0 5px 15px"> 1999/07/01 - 1999/09/01  15日間</p>
+<p style="margin:1px 0 5px 15px"> 2000/08/21 - 2000/12/31 136日間</p>
+<p style="margin:1px 0 5px 15px"> 2001/07/01 - 2001/08/01  23日間</p>
+<p style="margin:1px 0 5px 15px"> 2002/08/21 - 2002/09/30  32日間</p>
+<p style="margin:1px 0 5px 15px;font-size:20px"> 海外滞在日数　合計  432日間</p>
+<h2 style="margin-top:15px;font-size:30px;margin-left:10px;margin-bottom:0px;color:#666666" >訪問国数 <span style="color:#AA0000">12</span>ヶ国</h2>
+<p style="margin-left:15px;font-size:9pt;color:#888888">友人内ランキング<br /><strong>滞在日数<span style="color:#0000AA">1</span>位、訪<strong>出国回数<span style="color:#0000AA">1</span>位、訪問国数<span style="color:#0000AA">3</span>位</strong></p>
+</div>
+<br clear="all" />
+<div id="country_list" />
+</div>
