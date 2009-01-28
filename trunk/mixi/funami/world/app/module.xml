@@ -1,4 +1,5 @@
-<ModulePrefs title="untitled">
-  <Require feature="opensocial-0.8"/>
-  <Require feature="views"/>
+<ModulePrefs title="マイパスポートログ" >
+    <Require feature="opensocial-0.8"/>
+    <Require feature="views" />
+    <Require feature="dynamic-height"/>
 </ModulePrefs>
