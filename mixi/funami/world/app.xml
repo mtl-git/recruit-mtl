@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="こんな国に行きました" height="140">
+<ModulePrefs title="マイパスポートログ" >
     <Require feature="opensocial-0.8"/>
     <Require feature="views" />
     <Require feature="dynamic-height"/>
@@ -8,8 +8,13 @@
 
 <Content type="html" view="home">
 <![CDATA[
-<div style="margin:0px;padding:0;border:1px solid #bbbbbb">
-<img src="http://chart.apis.google.com/chart?chld=MGKETN&chd=s:111&cht=t&chtm=world&chs=220x110&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<div style="height:120px;margin:0px;padding:2px;">
+<img style="float:left;margin:7px" src="http://localhost/app/pass.png" />
+<div style="float:left">
+<h2 style="margin-top:9px;margin-left:10px;margin-bottom:0px;color:#666666" >出国回数 <span style="color:#AA0000">6</span> 回</h2>
+<h2 style="margin-top:3px;margin-left:10px;margin-bottom:0px;color:#666666" >訪問国数 <span style="color:#AA0000">12</span>ヶ国</h2>
+<p style="margin-left:3px;font-size:9pt;color:#888888">友人内ランキング<br /><strong>出国回数<span style="color:#0000AA">1</span>位、訪問国数<span style="color:#0000AA">3</span>位</strong></p>
+</div>
 </div>
  
 ]]>
@@ -45,7 +50,20 @@
 </script>
 
 <div style="margin:0px 0 0 7px;">
-<img src="http://chart.apis.google.com/chart?chld=AFAGAU&chd=s:111&cht=t&chtm=world&chs=440x220&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<img style="float:left" src="http://chart.apis.google.com/chart?chld=AFAGAU&chd=s:111&cht=t&chtm=world&chs=440x220&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<div style="float:left">
+<h2 style="margin-top:5px;font-size:30px;margin-left:10px;margin-bottom:0px;color:#666666" >出国回数 <span style="color:#AA0000">6</span> 回</h2>
+<p style="margin:1px 0 5px 15px"> 1997/07/01 - 1997/08/01  31日間</p>
+<p style="margin:1px 0 5px 15px"> 1998/08/21 - 1998/08/29   7日間</p>
+<p style="margin:1px 0 5px 15px"> 1999/07/01 - 1999/09/01  15日間</p>
+<p style="margin:1px 0 5px 15px"> 2000/08/21 - 2000/12/31 136日間</p>
+<p style="margin:1px 0 5px 15px"> 2001/07/01 - 2001/08/01  23日間</p>
+<p style="margin:1px 0 5px 15px"> 2002/08/21 - 2002/09/30  32日間</p>
+<p style="margin:1px 0 5px 15px;font-size:20px"> 海外滞在日数　合計  432日間</p>
+<h2 style="margin-top:15px;font-size:30px;margin-left:10px;margin-bottom:0px;color:#666666" >訪問国数 <span style="color:#AA0000">12</span>ヶ国</h2>
+<p style="margin-left:15px;font-size:9pt;color:#888888">友人内ランキング<br /><strong>滞在日数<span style="color:#0000AA">1</span>位、訪<strong>出国回数<span style="color:#0000AA">1</span>位、訪問国数<span style="color:#0000AA">3</span>位</strong></p>
+</div>
+<br clear="all" />
 <div id="country_list" />
 </div>
  
@@ -53,16 +71,26 @@
 </Content>
 <Content type="html" view="profile">
 <![CDATA[
-<div style="margin:0px;padding:0;border:1px solid #bbbbbb">
-<img src="http://chart.apis.google.com/chart?chld=MGKETN&chd=s:111&cht=t&chtm=world&chs=220x110&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<div style="height:120px;margin:0px;padding:2px;">
+<img style="float:left;margin:7px" src="http://localhost/app/pass.png" />
+<div style="float:left">
+<h2 style="margin-top:9px;margin-left:10px;margin-bottom:0px;color:#666666" >出国回数 <span style="color:#AA0000">6</span> 回</h2>
+<h2 style="margin-top:3px;margin-left:10px;margin-bottom:0px;color:#666666" >訪問国数 <span style="color:#AA0000">12</span>ヶ国</h2>
+<p style="margin-left:3px;font-size:9pt;color:#888888">友人内ランキング<br /><strong>出国回数<span style="color:#0000AA">1</span>位、訪問国数<span style="color:#0000AA">3</span>位</strong></p>
+</div>
 </div>
  
 ]]>
 </Content>
 <Content type="html" view="preview">
 <![CDATA[
-<div style="margin:0px;padding:0;border:1px solid #bbbbbb">
-<img src="http://chart.apis.google.com/chart?chld=MGKETN&chd=s:111&cht=t&chtm=world&chs=220x110&chco=cccccc,edf0d4,ed390a&chf=bg,s,EAF7FE" />
+<div style="height:120px;margin:0px;padding:2px;">
+<img style="float:left;margin:7px" src="http://localhost/app/pass.png" />
+<div style="float:left">
+<h2 style="margin-top:9px;margin-left:10px;margin-bottom:0px;color:#666666" >出国回数 <span style="color:#AA0000">6</span> 回</h2>
+<h2 style="margin-top:3px;margin-left:10px;margin-bottom:0px;color:#666666" >訪問国数 <span style="color:#AA0000">12</span>ヶ国</h2>
+<p style="margin-left:3px;font-size:9pt;color:#888888">友人内ランキング<br /><strong>出国回数<span style="color:#0000AA">1</span>位、訪問国数<span style="color:#0000AA">3</span>位</strong></p>
+</div>
 </div>
  
 ]]>
