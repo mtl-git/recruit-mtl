@@ -2,7 +2,6 @@
 <Module>
     <ModulePrefs title="セレク太〜２択ゲームで雑貨探し"> 
         <Require feature="opensocial-0.8"/>
-        <Require feature="minimessage"/>
         <Require feature="dynamic-height"/>
     </ModulePrefs>
     <Content type="html" view="home">
