@@ -41,7 +41,7 @@ function request (){
     params[ gadgets.io.RequestParameters.CONTENT_TYPE ] = gadgets.io.ContentType.JSON;
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
     params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 0;
-    var url = "http://selekta/json.php?num=2";  
+    var url = "http://selekta.jp/json.php?num=2";  
     gadgets.io.makeRequest( url, callback, params );
 };
 
