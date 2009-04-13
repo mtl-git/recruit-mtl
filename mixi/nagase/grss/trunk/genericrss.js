@@ -15,12 +15,19 @@ $.gadgets.ready(function(){
   var feeds_ul = $("#pref ul.feeds");
   var cue, entries;
   var entries_ul = $("#list ul.entries");
-	var content_id;
-  $("p.go-pref span.link").bind("click",prefView);
+  var content_id, viewer;
   $("p.add-feed span.link").bind("click",appendInput);
   $("#submit-feeds-button").bind("click",acceptPref);
   $("#cancel-feeds-button").bind("click",listView);
   wrapper.addClass("loading");
+  $("p.go-pref").addClass("hidden");
+  $.opensocial.person("viewer",function(d){
+    viewer = d;
+    if(viewer.isOwner()) {
+      $("p.go-pref span.link").bind("click",prefView);
+      $("p.go-pref").removeClass("hidden");
+    }
+  });
   $.opensocial.data.get(PrefKey.FEEDS,"owner",function(d){
     if(!d||!d.length) return prefView();
     feeds = d;
@@ -28,7 +35,7 @@ $.gadgets.ready(function(){
   });
 
   function prefView() {
-		content_id = "pref";
+    content_id = "pref";
     wrapper.removeClass("loading");
     wrapper.addClass("pref");
     wrapper.removeClass("list");
@@ -40,7 +47,7 @@ $.gadgets.ready(function(){
   }
 
   function listView() {
-		content_id = "list";
+    content_id = "list";
     wrapper.addClass("loading");
     wrapper.removeClass("pref");
     cue = 0;
@@ -87,8 +94,8 @@ $.gadgets.ready(function(){
   function getFeed() {
     if(!feeds[cue]) return onCompleteFeed();
     $.gadgets.getFeed(feeds[cue].URL,{},function(d){
-      feeds[cue] = $.extend(feeds[cue],d[0]);
       if(d&&d[0]&&d[0].Entry) {
+        feeds[cue] = $.extend(feeds[cue],d[0]);
         $.each(d[0].Entry,function(){
           entries.push($.extend({ Feed:cue },this));
         });
