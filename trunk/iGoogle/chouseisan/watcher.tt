@@ -2,15 +2,15 @@
 <Module>
     <ModulePrefs 
         title="調整さんウオッチャー" 
-        description="調整さん上のみんなの調整状況をウォッチするよ。調整さん（http://www.tatamilab.jp/~toshi_i/schedule）で登録が終わったら、このガジェットで他の人の調整状況をウォッチしよう。使い方はMedia Technology Labs Blog(http://mtl.recruit.co.jp/blog/2008/11/igoogle_1.html)にあるよ。" 
-        title_url="http://www.tatamilab.jp/~toshi_i/schedule"
+        description="調整さん上のみんなの調整状況をウォッチするよ。調整さん（http://chouseisan.com/schedule）で登録が終わったら、このガジェットで他の人の調整状況をウォッチしよう。使い方はMedia Technology Labs Blog(http://mtl.recruit.co.jp/blog/2008/11/igoogle_1.html)にあるよ。" 
+        title_url="http://chouseisan.com/schedule"
         author="taigo.yamada"
         author_email="mt.big5+ig_watcher@gmail.com"
         author_affiliation="Recruit Media Technology Labs"
         author_location="Tokyo,Japan"
         singleton="false"
         scrolling="true"
-        screenshot="http://mtl.recruit.co.jp/sandbox/igooge/chouseisan/chouseisan_280x324.png"
+        screenshot="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_280x324.png"
         thumbnail="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/watcher_logo.png"
         author_photo="http://mtl.recruit.co.jp/sandbox/yamada/self70x100.png"
         author_aboutme="Recruit Media Technology LabsでWebに関する研究開発をしています。mtl.recruit.co.jp/blogにエントリしているので是非ご覧くださいませ。" 
@@ -277,10 +277,10 @@
     <table id="schedules" cellspacing="0" cellpadding="4"></table>
 </div>
 <div id="banner">
-    <a href="http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">
+    <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 </div>
@@ -540,10 +540,10 @@
     <table id="schedules" cellspacing="0" cellpadding="4"></table>
 </div>
 <div id="banner">
-    <a href="http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">
+    <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 </div>
@@ -842,10 +842,10 @@
     <p>この登録情報は<span id="expire"></span>に削除されます。ご注意くださいませ。</p>
 </div>
 <div id="banner">
-    <a href="http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">
+    <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://www.tatamilab.jp/~toshi_i/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 
