@@ -134,7 +134,7 @@
         gadgets.io.makeRequest(request, show, params);
     };
     function show(obj){
-        if(obj.rc != 200 || obj.errors != "" ){
+        if(obj.errors[0] ){
             printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
         }else if( !obj.data.e || obj.data.error ){
             printError(obj.data.error[0]);
@@ -280,7 +280,7 @@
     <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href="http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 </div>
@@ -397,7 +397,7 @@
         gadgets.io.makeRequest(request, show, params);
     };
     function show(obj){
-        if(obj.rc != 200 || obj.errors != "" ){
+        if(obj.errors[0]){
             printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
         }else if( !obj.data.e || obj.data.error ){
             printError(obj.data.error[0]);
@@ -543,7 +543,7 @@
     <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href="http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 </div>
@@ -678,7 +678,7 @@
     };
         
     function show(obj){
-        if(obj.rc != 200 || obj.errors != "" ){
+        if(obj.errors[0] ){
             printError("データの取得に失敗。URLが間違ってないか確認の上、時間をおいて再度お試しください。");
         }else if(  !obj.data.e || obj.data.error ){
             printError(obj.data.error[0]);
@@ -845,7 +845,7 @@
     <a href="http://chouseisan.com/schedule" target="_blank">
         <img src="http://mtl.recruit.co.jp/sandbox/igoogle/chouseisan/chouseisan_log.gif"/>
     </a>
-    <p>このガジェットは<a href=""http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
+    <p>このガジェットは<a href="http://chouseisan.com/schedule" target="_blank">調整さん</a>の調整状況をウォッチするためのガジェットです。</p>
     <p>登録や更新は調整さん上で行ってくださいね。</p>
 </div>
 
