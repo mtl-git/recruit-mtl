@@ -88,7 +88,7 @@ $.gadgets.ready(function(){
   }
 
   function isValidURL(url) {
-    return url&&!!url.match(/^(https?)(:\/\/[-_.!~*\'()a-zA-Z0-9;¥/?:\@&=+¥$,%#]+)$/);
+    return url&&!!url.match(/^((http|feed)s?)(:\/\/[-_.!~*\'()a-zA-Z0-9;¥/?:\@&=+¥$,%#]+)$/);
   }
 
   function getFeed() {
