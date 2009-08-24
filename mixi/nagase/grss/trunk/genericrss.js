@@ -93,7 +93,7 @@ $.gadgets.ready(function(){
 
   function getFeed() {
     if(!feeds[cue]) return onCompleteFeed();
-    $.gadgets.getFeed(feeds[cue].URL,{},function(d){
+    $.gadgets.getFeed(feeds[cue].URL.replace(/feed:\/\//,"http:\/\/"),{},function(d){
       if(d&&d[0]&&d[0].Entry) {
         feeds[cue] = $.extend(feeds[cue],d[0]);
         $.each(d[0].Entry,function(){
