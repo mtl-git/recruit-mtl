@@ -91,6 +91,15 @@ $.gadgets.ready(function(){
     return url&&!!url.match(/^((http|feed)s?)(:\/\/[-_.!~*\'()a-zA-Z0-9;¥/?:\@&=+¥$,%#]+)$/);
   }
 
+  function openLink(url) {
+    if($.opensocial.container.mixi) {
+      mixi.util.requestExternalNavigateTo(url);
+      return false;
+    }
+    return true;
+  }
+  window.openLink = openLink;
+
   function getFeed() {
     if(!feeds[cue]) return onCompleteFeed();
     $.gadgets.getFeed(feeds[cue].URL.replace(/feed:\/\//,"http:\/\/"),{},function(d){
@@ -116,8 +125,8 @@ $.gadgets.ready(function(){
         "<li class=\"entry ",i%2?"odd":"even","\">",
           "<p class=\"head\">",
           "<span class=\"date\">",getDateString(this.Date),"<\/span>",
-          "<strong class=\"title\"><a href=\"",this.Link,"\" target=\"_blank\">",this.Title,"<\/a><\/strong>",
-          "<span class=\"site\"><a href=\"",f.Link,"\" target=\"_blank\">",f.Title,"<\/a><\/span>",
+          "<strong class=\"title\"><a href=\"",this.Link,"\" target=\"_blank\" onclick=\"return openLink('",this.Link,"')\">",this.Title,"<\/a><\/strong>",
+          "<span class=\"site\"><a href=\"",f.Link,"\" onclick=\"return openLink('",f.Link,"')\" target=\"_blank\">",f.Title,"<\/a><\/span>",
           "<\/p>",
           this.Summary?("<blockquote>"+this.Summary+"<\/blockquote>"):"",
         "<\/li>"
