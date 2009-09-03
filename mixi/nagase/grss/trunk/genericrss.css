@@ -9,6 +9,7 @@ body { font-size:10pt; color:#333; background:#fff; }
 .hidden { display:none; }
 #wrapper.list #list { display:block; }
 #wrapper.pref #pref { display:block; }
+#wrapper.canvas { padding-right:250px; }
 
 
 
