@@ -98,7 +98,6 @@ public class ImageCacheManeger {
     }
     
 	
-    @SuppressWarnings("unchecked")
 	public String getMostOldItem(){
     	String cacheKey ;
     	
@@ -213,8 +212,7 @@ public class ImageCacheManeger {
 	}
 } 
 
-@SuppressWarnings("unchecked")
-class CacheLastAccessComparator implements Comparator{
+class CacheLastAccessComparator implements Comparator<Object>{
 	public int compare(Object o1, Object o2){
 		BitmapCache b1 = (BitmapCache)o1;
 		BitmapCache b2 = (BitmapCache)o2;
