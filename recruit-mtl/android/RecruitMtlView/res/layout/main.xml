@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView android:text="WebImageViewのサンプル。URLを指定で非同期読み込みと、キャッシュができる" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+<Button android:text="読み込み" android:id="@+id/Button01" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+<Button android:text="キャッシュクリア" android:id="@+id/Button02" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+
+<jp.co.recruit.mtl.android.view.WebImageView
+        android:id="@+id/image"
+		android:padding="5dip"
+        android:layout_width="fill_parent"
+		android:layout_height="200dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+		android:layout_marginBottom="1dip"
+        android:maxHeight="276dip"
+        android:maxWidth="276dip"
+        android:scaleType="centerCrop" />
+    />
+<jp.co.recruit.mtl.android.view.WebImageView
+        android:id="@+id/image2"
+		android:padding="5dip"
+        android:layout_width="fill_parent"
+		android:layout_height="200dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+		android:layout_marginBottom="1dip"
+        android:maxHeight="276dip"
+        android:maxWidth="276dip"
+        android:scaleType="centerCrop" />
+    />
+
+
+</LinearLayout>
