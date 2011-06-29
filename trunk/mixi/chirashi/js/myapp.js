@@ -82,7 +82,7 @@ var myApp = {
                     }
                     var p = $("<p/>").text(v['name']);
                     if( self.clips[tid] && $.inArray(v.code,self.clips[tid]) != -1 ){
-                        var bm = $("<img/>").addClass("clip_icon").attr("src","http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/bookmark.gif");
+                        var bm = $("<img/>").addClass("clip_icon").attr("src","http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/bookmark.gif");
                         p.append(bm);
                     }
                     $("<td/>").addClass('store').attr('id',v.code).append(p).appendTo(tr);
@@ -334,7 +334,7 @@ var myApp = {
                 var div = $("<div/>");
                 $("<img/>").attr('src',v.preview_url).appendTo(div);
                 if( self.clips[v.store.trade.code] ){
-                    var bm = $("<img/>").addClass("clip_icon").attr("src","http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/bookmark.gif");
+                    var bm = $("<img/>").addClass("clip_icon").attr("src","http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/bookmark.gif");
                     $("<p/>").text(v.store.trade['name']).append(bm).appendTo(div);
                     div.appendTo(li);
                 }else{
@@ -386,9 +386,9 @@ var myApp = {
         
         var img = "";
         if(item.coupon_flag == "1"){
-            img = "http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/totownmarket_coupon.gif";
+            img = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/totownmarket_coupon.gif";
         }else{
-            img = "http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/totownmarket.gif";
+            img = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/totownmarket.gif";
         }
         $("#urls_wrapper").empty();
         $("<input/>").attr({
@@ -407,12 +407,12 @@ var myApp = {
         $("#flash").empty();
         var element = document.getElementById("flash");
         //var uri = "http://townmarket.jp/CSP/swf/view_kakudai20.swf";
-        var uri = "http://townmarket.jp/CSP/swf/view23.swf";
+        var uri = "http://chirashibu.jp/CSP/swf/view23.swf";
         var dt = (item.start_date && item.end_date) ?
                 "&dispDays=有効期間：" + item.start_date +" 〜 " + item.end_date :
                 "";
                     
-        var fvars = "debugmode=0&amp;settingPath=http://townmarket.jp/CSP/swf/setting_mixi.html&manuscriptNo=" + ("000000000" + item['code'] ).slice(-9) + "&clickmapIdCnt=0&zoominIdCnt=0&tradeName=" + item.store.trade['name'] + "&storeName=" + item.store['name'] + "&pageCnt=2&storeCode=" + item.store['code'] + dt + "&url1=&url2=&newlyMailButton=0&couponClass=0&url3=";
+        var fvars = "debugmode=0&amp;settingPath=http://chirashibu.jp/CSP/swf/setting_mixi.html&manuscriptNo=" + ("000000000" + item['code'] ).slice(-9) + "&clickmapIdCnt=0&zoominIdCnt=0&tradeName=" + item.store.trade['name'] + "&storeName=" + item.store['name'] + "&pageCnt=2&storeCode=" + item.store['code'] + dt + "&url1=&url2=&newlyMailButton=0&couponClass=0&url3=";
         gadgets.flash.embedFlash(uri, element, 9,
             { width: 912, height: 674,
                 allowScriptAccess: "always",
@@ -446,16 +446,16 @@ var myApp = {
         var id = "";
         if(self.clips[item.store.trade.code] && 
             $.inArray(item.store.code, self.clips[item.store.trade.code]) != -1 ){
-            img = "http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/del_clip.gif";
+            img = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/del_clip.gif";
             aid = "del_clip";
         }else{
-            img = "http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/set_clip.gif";
+            img = "http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/set_clip.gif";
             aid = "set_clip";
         }
         $("#clip_btn_wrapper").empty();
         $("<input/>").attr({type:"image",src:img,id:aid}).appendTo("#clip_btn_wrapper");
         var bc = $("#bc");
-        var bcUrl = "http://townmarket.jp/CSP/CSP01/mixiapilog.jsp?insertionno=" + item.code + "&storecd=" + item.store.code;
+        var bcUrl = "http://chirashibu.jp/CSP/CSP01/mixiapilog.jsp?insertionno=" + item.code + "&storecd=" + item.store.code;
         
         if(bc){
             bc.attr('src',bcUrl);

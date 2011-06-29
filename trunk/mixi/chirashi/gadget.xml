@@ -124,7 +124,7 @@
     <script type="text/javascript">
         var trace_p='mixi_ap';
     </script>
-    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/vos.js"></script>
+    <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/vos.js"></script>
     <style type="text/css">
         * {
             margin:0;
