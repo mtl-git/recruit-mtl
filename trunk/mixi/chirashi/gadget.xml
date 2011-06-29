@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs 
+        title="今日のチラシ" 
+        description="今日のチラシだよ"
+        singleton="false"
+        scrolling="true">
+        <Require feature="views"/>
+        <Require feature="dynamic-height"/>
+        <Require feature="opensocial-0.8" />
+        <Require feature="analytics" />
+        <Require feature="flash" />
+    </ModulePrefs>
+
+<Content type="html" view="home,preview,canvas,profile">
+<![CDATA[
+    <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+        google.load("jquery", "1.3.2");
+    </script>
+<link rel="stylesheet" type="text/css" href="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/jcarousel/jquery.jcarousel.css" />
+<link rel="stylesheet" type="text/css" href="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/jcarousel/skins/tango/skin.css" />
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/jcarousel/jquery.jcarousel.js"></script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/lib/jsdeferred.jquery.js"></script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/lib/jopensocial.js"></script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/lib/jopensocial.deferred.js"></script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/myapp.js"></script>
+    <script type="text/javascript">
+        $.gadgets.ready( function(){
+            myApp.init();
+        });
+        function redirect(url){
+            mixi.util.requestExternalNavigateTo(url);
+        }
+    </script>
+]]></Content>
+
+<Content type="html" view="home,profile,preview">
+<![CDATA[
+    <script type="text/javascript">
+        var trace_p='mixi_ho';
+    </script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/vos.js"></script>
+    <style type="text/css">
+        body {}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #content {
+            min-height: 211px;
+            height: auto !important;
+            height: 211px;
+        }
+        a {
+            color:#262626 !important;
+            cursor:pointer;
+            text-decoration:none;
+        }
+        a:hover {
+            color:#EA1F00 !important;
+        }
+        a:active {
+            color:#F9603C !important;
+        }
+        img {
+            border:0;
+        }
+        #slide{
+            cursor: pointer;
+            height: 211px;
+            width: 211px;
+        }
+        #slide div{
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/home_title_bg.gif) no-repeat left top;
+            position: absolute;
+            top: 120px;
+            padding: 5px 10px;
+            height: 66px;
+            width: 192px;
+        }
+        #slide div.no_clip{
+            top: 30px !important;
+            font-size: 14px;
+            width: 192px;
+            padding: 10px;
+        }
+        #slide div.no_clip p{
+            width:192px;
+            font-size: 12px;
+        }
+        #slide div p{
+            position: relative;
+        }
+        #slide div p.storename{
+            font-size: 14px;
+            color: #0066CC;
+            border-bottom: 1px solid #0066cc;
+            width:192px;
+            margin: 1px 0;
+        }
+        #slide div p.catchcopy{
+            font-size: 12px;
+            width:192px;
+            margin: 2px 0;
+        }
+        #loading{
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+    <div id="content">
+        <div id="loading">
+            <img src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/loading.gif" />
+        </div>
+        <div id="main" style="display:none">
+            <div id="slide"></div>
+        </div>
+    </div>
+]]></Content>
+<Content type="html" view="canvas">
+<![CDATA[
+    <script type="text/javascript">
+        var trace_p='mixi_ap';
+    </script>
+    <script type="text/javascript" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/vos.js"></script>
+    <style type="text/css">
+        * {
+            margin:0;
+            padding:0;
+        }
+        body { overflow: hidden; }
+        #content {
+            color: #222;
+        }
+        a {
+            color:#262626 !important;
+            cursor:pointer;
+            text-decoration:none;
+        }
+        a:hover {
+            color:#EA1F00 !important;
+        }
+        a:active {
+            color:#F9603C !important;
+        }
+        img {
+            border:0 none;
+        }
+        .clear_all {
+            width: 100%;
+            clear:both;
+        }
+        form input, textarea {
+            width:auto;
+        }
+        #button_wrapper {
+            text-align: right;
+        }
+        #header1 {
+            margin-top:20px;
+            width:100%;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header1_bg.gif) no-repeat left top;
+        }
+        #header1 span{
+            display:block;
+            position:relative;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header1_bg_right.gif) no-repeat right top;
+        }
+        #header2 {
+            margin-top:20px;
+            width:100%;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header2_bg.gif) no-repeat left top;
+        }
+        #header2 span{
+            display:block;
+            position:relative;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header1_bg_right.gif) no-repeat right top;
+        }
+        #header3 {
+            margin-top:20px;
+            width:100%;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header3_bg.gif) no-repeat left top;
+        }
+        #header3 span{
+            display:block;
+            position:relative;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header1_bg_right.gif) no-repeat right top;
+        }
+        #header4 {
+            margin-top:20px;
+            width:100%;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header4_bg.gif) no-repeat left top;
+        }
+        #header4 span{
+            display:block;
+            position:relative;
+            height:36px;
+            background:url(http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/header1_bg_right.gif) no-repeat right top;
+        }
+        #thumbs_wrapper {
+            padding: 10px 0;
+            height: 180px;
+        }
+        #thumbs_wrapper p {
+            font-size: 0.8em;
+        }
+        #thumbs {
+            float:left;
+            height: 180px;
+        }
+        #thumbs li {
+            cursor: pointer;
+        }
+        #thumbs li div {
+            width: 206px;
+            text-align: center;
+            margin: 0 auto;
+            min-height: 180px;
+            height: auto !important;
+            height: 180px;
+        }
+        #thumbs li div p{
+            font-size: 0.8em;
+        }
+        #stores {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        #stores td{
+            width: 150px;
+            cursor: pointer;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.8em;
+            color: #0066cc;
+        }
+        #flash {
+            height: 674px;
+            padding: 10px;
+        }
+        #clip_btn_wrapper {
+            text-align:center;
+        }
+        #urls_wrapper {
+            padding: 20px 0;
+            text-align:center;
+            height: 78px;
+        }
+        #tm {
+            margin: 10px 0;
+            text-align:center;
+        }
+        #settings_dialog{
+            padding: 10px;
+            text-align: center;
+        }
+        fieldset {
+            border: none;
+            padding: 20px 0;
+        }
+        #checkbox_wrapper{
+            margin: 20px 0;
+        }
+        .checkbox{
+            float: left;
+            margin: 5px;
+            width: 250px;
+        }
+        #loading{
+            margin-top: 30px;
+            text-align: center;
+        }
+        .clip_icon{
+            margin-left: 5px;
+        }
+
+    </style>
+    <div id="content">
+        <div id="loading">
+            <img src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/loading.gif" />
+        </div>
+        <div id="main" style="display:none">
+            <div id="button_wrapper" style="display:none">
+                <a id="openDialog"><img src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/settings.gif"/></a>
+            </div>
+            <div id="header1"><span></span></div>
+            <div id="thumbs_wrapper">
+                <ul id="thumbs"></ul>
+            </div>
+            <br class='clear_all' />
+            <div id="stores_wrapper" style="display:none">
+                <div id="header2"><span></span></div>
+                <table id="stores" cellpadding="0" cellspacing="0"><tbody></tbody></table>
+            </div>
+            <br class='clear_all' />
+            <div id="flash_wrapper">
+                <div id="flash"></div>
+                <div id="clip_btn_wrapper"></div>
+            </div>
+            <div id="header3"><span></span></div>
+            <div id="urls_wrapper"></div>
+            <div id="tm">
+                <a href="#" onClick="redirect('http://townmarket.jp/')"> <img src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/tm_logo.gif" alt="タウンマーケット"></a>
+            </div>
+        </div>
+            
+        <br class='clear_all' />
+            
+        <hr style="width:100%; border:1px solid #999"/>
+        <div id="grand-footer" style="height:80px;padding-top:10px;">
+            <div style="width:33%; float:left; margin-left: 20px;">
+                <a href="#" onClick="redirect('http://www.recruit.co.jp/')"> <img src="http://www.recruit.co.jp/corporate/shared/crrecruit2.gif" alt="リクルート"></a>
+            </div>
+            <div style="width:33%; float:left; text-align: center;">
+                <a id="requestShareApp" style="border-bottom: 1px dotted #222;font-size: 15px;">マイミクにこのアプリをおすすめしよう！</a>
+            </div>
+        </div>
+        <div>
+        <div id="settings_dialog" style="display:none">
+            <div id="header4"><span></span></div>
+            <form id="set_address_form">
+                <fieldset>
+                    <select id="pref">
+                        <option value="01">北海道</option>
+                        <option value="02">青森県</option>
+                        <option value="03">岩手県</option>
+                        <option value="04">宮城県</option>
+                        <option value="05">秋田県</option>
+                        <option value="06">山形県</option>
+                        <option value="07">福島県</option>
+                        <option value="08">茨城県</option>
+                        <option value="09">栃木県</option>
+                        <option value="10">群馬県</option>
+                        <option value="11">埼玉県</option>
+                        <option value="12">千葉県</option>
+                        <option value="13">東京都</option>
+                        <option value="14">神奈川県</option>
+                        <option value="15">新潟県</option>
+                        <option value="16">富山県</option>
+                        <option value="17">石川県</option>
+                        <option value="18">福井県</option>
+                        <option value="19">山梨県</option>
+                        <option value="20">長野県</option>
+                        <option value="21">岐阜県</option>
+                        <option value="22">静岡県</option>
+                        <option value="23">愛知県</option>
+                        <option value="24">三重県</option>
+                        <option value="25">滋賀県</option>
+                        <option value="26">京都府</option>
+                        <option value="27">大阪府</option>
+                        <option value="28">兵庫県</option>
+                        <option value="29">奈良県</option>
+                        <option value="30">和歌山県</option>
+                        <option value="31">鳥取県</option>
+                        <option value="32">島根県</option>
+                        <option value="33">岡山県</option>
+                        <option value="34">広島県</option>
+                        <option value="35">山口県</option>
+                        <option value="36">徳島県</option>
+                        <option value="37">香川県</option>
+                        <option value="38">愛媛県</option>
+                        <option value="39">高知県</option>
+                        <option value="40">福岡県</option>
+                        <option value="41">佐賀県</option>
+                        <option value="42">長崎県</option>
+                        <option value="43">熊本県</option>
+                        <option value="44">大分県</option>
+                        <option value="45">宮崎県</option>
+                        <option value="46">鹿児島県</option>
+                        <option value="47">沖縄県</option>
+                    </select>
+                    <select id="city">
+                        <option value="13101">Loading...</option>
+                    </select>
+                    <div id="checkbox_wrapper">
+                    </div>
+                    <div id="action_btn_wrapper">
+                        <input type="image" id="cancel" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/cancel.gif"/>
+                        <input type="image" id="set_settings" src="http://mtl.recruit.co.jp/sandbox/mixi/chirashi/image/ok.gif"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+]]></Content>
+</Module>
