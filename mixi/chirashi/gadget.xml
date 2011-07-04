@@ -24,7 +24,7 @@
     <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/lib/jsdeferred.jquery.js"></script>
     <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/lib/jopensocial.js"></script>
     <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/lib/jopensocial.deferred.js"></script>
-    <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/lib/jquery.blockUI.js"></script>
     <script type="text/javascript" src="http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/js/myapp.js"></script>
     <script type="text/javascript">
         $.gadgets.ready( function(){
