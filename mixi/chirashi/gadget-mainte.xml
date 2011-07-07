@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs 
+        title="今日のチラシ" 
+        description="今日のチラシだよ"
+        singleton="false"
+        scrolling="true">
+        <Require feature="views"/>
+        <Require feature="dynamic-height"/>
+        <Require feature="opensocial-0.8" />
+        <Require feature="analytics" />
+        <Require feature="flash" />
+    </ModulePrefs>
+
+<Content type="html" view="home,profile,preview">
+<![CDATA[
+<p>
+<font size="3" color="#ffa500">「今日のチラシ」にアクセス頂きありがとうございます。</font><br>
+<br>
+<font size="3" color="#ffa500">誠に勝手ながら、現在メンテナンスを行っております。</font><br>
+<font size="3" color="#ffa500">しばらくお待ちいただいてから、再度アクセスしてください。</font><br>
+</p>
+]]></Content>
+<Content type="html" view="canvas">
+<![CDATA[
+<p>
+<font size="5" color="#ffa500">「今日のチラシ」にアクセス頂きありがとうございます。</font><br>
+<br>
+<font size="5" color="#ffa500">誠に勝手ながら、現在メンテナンスを行っております。</font><br>
+<font size="5" color="#ffa500">しばらくお待ちいただいてから、再度アクセスしてください。</font><br>
+</p>
+]]></Content>
+</Module>
