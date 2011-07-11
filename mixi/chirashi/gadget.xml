@@ -219,9 +219,10 @@
         }
         #thumbs li {
             cursor: pointer;
+            width: 185px;
         }
         #thumbs li div {
-            width: 206px;
+            padding:0 10px 0 0;
             text-align: center;
             margin: 0 auto;
             min-height: 180px;
@@ -244,7 +245,7 @@
             color: #0066cc;
         }
         #flash {
-            height: 674px;
+            height: 530px;
             padding: 10px;
         }
         #clip_btn_wrapper {

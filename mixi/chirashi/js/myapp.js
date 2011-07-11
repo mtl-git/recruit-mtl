@@ -234,21 +234,21 @@ var myApp = {
                     //catchcopy: v.insertion[0].catch_copy,
                     //img: v.insertion[0].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_0_1')
                     catchcopy: v.insertion[ v.insertion.length-1 ].catch_copy,
-                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_0_1')
+                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/1/pict')
                 };
                 var h2 = {
                     name: v.trade['name'],
                     //catchcopy: v.insertion[0].catch_copy,
                     //img: v.insertion[0].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_1_2')
                     catchcopy: v.insertion[v.insertion.length-1].catch_copy,
-                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_1_2')
+                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'2/1/pict')
                 };
                 var h3 = {
                     name: v.trade['name'],
                     //catchcopy: v.insertion[0].catch_copy,
                     //img: v.insertion[0].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_2_3')
                     catchcopy: v.insertion[v.insertion.length-1].catch_copy,
-                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'1/2/pict_2_3')
+                    img: v.insertion[v.insertion.length-1].preview_url.replace(/thumb/,'crs').replace(/t_top/,'3/1/pict')
                 };
                 gallery.push(h1);
                 gallery.push(h2);
@@ -332,7 +332,14 @@ var myApp = {
 
                 var li = $("<li/>").addClass('thumbnail').attr('id',v.store.trade.code);
                 var div = $("<div/>");
-                $("<img/>").attr('src',v.preview_url).appendTo(div);
+                $("<img/>").attr('src',v.preview_url).appendTo(div).bind("load",function(){
+                    var
+                        self = $(this),
+                        w = self.width(),
+                        h = self.height();
+                    self.css(w > h ? "width" : "height" ,"100%");
+                    self.parent().css("padding-top", (180 - 15 - self.height())+"px" );
+                })
                 if( self.clips[v.store.trade.code] ){
                     var bm = $("<img/>").addClass("clip_icon").attr("src","http://recruit-mtl.googlecode.com/svn/trunk/mixi/chirashi/img/bookmark.gif");
                     $("<p/>").text(v.store.trade['name']).append(bm).appendTo(div);
@@ -355,7 +362,7 @@ var myApp = {
             //});
             //jcarouselがsafariだと動かない対応
             if($.browser.safari){
-                $("#thumbs").css("width","900px");
+                $("#thumbs").css("width","800px");
                 $("#thumbs").css("padding","5px 10px");
                 $("#thumbs li").css("float","left");
             }else{
@@ -402,19 +409,38 @@ var myApp = {
         }, 1 );
     },
     _showFlash: function(){
-        var self = this;
-        var item = self.insertion[self.storeId];
         $("#flash").empty();
-        var element = document.getElementById("flash");
-        //var uri = "http://townmarket.jp/CSP/swf/view_kakudai20.swf";
-        var uri = "http://chirashibu.jp/CSP/swf/view23.swf";
-        var dt = (item.start_date && item.end_date) ?
-                "&dispDays=有効期間：" + item.start_date +" 〜 " + item.end_date :
-                "";
-                    
-        var fvars = "debugmode=0&amp;settingPath=http://chirashibu.jp/CSP/swf/setting_mixi.html&manuscriptNo=" + ("000000000" + item['code'] ).slice(-9) + "&clickmapIdCnt=0&zoominIdCnt=0&tradeName=" + item.store.trade['name'] + "&storeName=" + item.store['name'] + "&pageCnt=2&storeCode=" + item.store['code'] + dt + "&url1=&url2=&newlyMailButton=0&couponClass=0&url3=";
+        var
+            self = this,
+            item = self.insertion[self.storeId],
+            store = item.store,
+            element = $("#flash").get(0),
+            uri = "http://chirashibu.jp/CSP/swf/view23.swf",
+            files = [4,4,8,8].join("\t"),
+            param = {
+                debugmode       : 1,
+                settingPath     : "http://chirashibu.jp/CSP/swf/setting_mixi.html",
+                manuscriptNo    :  ("000000000" + item['code'] ).slice(-9),
+                fileCnt         :  [files,files].join("｜"),
+                clickmapIdCnt   : 0,
+                zoominIdCnt     : 0,
+                tradeName       : store.trade.name,
+                storeName       : store.name,
+                pageCnt         : 2,
+                storeCode       : store.code,
+                url1            : "",
+                url2            : "",
+                url3            : "",
+                url4            : "https://chirashibu.jp/CSP/CSP01/CSP0100210/"+ store.code +"/", // newlyMailButton
+                newlyMailButton : 0,
+                couponClass     : 0
+            };
+        if(item.start_date && item.end_date)
+            param.dispDays = "有効期間：" + item.start_date +" 〜 " + item.end_date;
+
+        var fvars = $.param(param);
         gadgets.flash.embedFlash(uri, element, 9,
-            { width: 912, height: 674,
+            { width: 746, height: 516,
                 allowScriptAccess: "always",
                 allowNetworking: "all",
                 wmode: "window",
